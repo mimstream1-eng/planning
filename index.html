@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyeksi & Simulator Keuangan 2027 — Executive Advisory</title>
+  <!-- Google Fonts: Google Sans Flex & Google Sans Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:ital,wght@0,300..700;1,300..700&family=Google+Sans+Code:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  <!-- Chart.js 4.4.1 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+    onerror="let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';document.head.appendChild(s)"></script>
+
+  <style>
+    /* ============================================================
+     * LUMINOUS DESIGN SYSTEM TOKENS (LIGHT & DARK MODE)
+     * ============================================================ */
+    :root {
+      --ff-sans: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --ff-mono: 'Google Sans Code', 'SFMono-Regular', Consolas, monospace;
+
+      --surface: #fdfcfc;
+      --surface-dim: #f2f0f0;
+      --surface-bright: #ffffff;
+      --surface-container: #f2f0f0;
+      --surface-container-high: #e6e6e6;
+      --on-surface: #000000;
+      --on-surface-variant: rgba(0, 0, 0, 0.62);
+      --on-surface-low: rgba(0, 0, 0, 0.08);
+
+      --primary: #3186ff;
+      --accent: #9dd2ff;
+      --accent-container: #dcf1ff;
+      --on-primary: #ffffff;
+
+      --positive: #008052;
+      --positive-container: #daf9d4;
+      --warning: #b26a00;
+      --warning-container: #fff0d6;
+      --error: #de2d29;
+      --error-container: #ffdeec;
+
+      --stroke-default: #e3e3e3;
+      --elevation-1: 0 2px 14px 0 rgba(0, 0, 0, 0.05);
+
+      --chart-1: #2575fc;
+      --chart-2: #5b6e9e;
+      --chart-3: #228a49;
+      --chart-4: #997112;
+      --chart-5: #705ec2;
+      --chart-6: #c84288;
+
+      --r-s: 8px;
+      --r-m: 12px;
+      --r-l: 16px;
+      --r-xl: 24px;
+      --r-full: 999px;
+    }
+
+    :root[data-theme="dark"] {
+      --surface: #0f0f0f;
+      --surface-dim: #161618;
+      --surface-bright: #1f1f22;
+      --surface-container: #161618;
+      --surface-container-high: #26262a;
+      --on-surface: #e8e8e8;
+      --on-surface-variant: rgba(255, 255, 255, 0.60);
+      --on-surface-low: rgba(255, 255, 255, 0.10);
+
+      --primary: #9dd2ff;
+      --accent: #1f3b9b;
+      --accent-container: #192967;
+      --on-primary: #0f172a;
+
+      --positive: #27d97a;
+      --positive-container: #062e1e;
+      --warning: #f5b942;
+      --warning-container: #332406;
+      --error: #ff625c;
+      --error-container: #3c0a0a;
+
+      --stroke-default: #2d2f38;
+      --elevation-1: 0 4px 20px 0 rgba(0, 0, 0, 0.35);
+
+      --chart-1: #9dd2ff;
+      --chart-2: #96a7d6;
+      --chart-3: #50e389;
+      --chart-4: #f5d77f;
+      --chart-5: #d9ceff;
+      --chart-6: #ffa6d7;
+    }
+
+    /* ============================================================
+     * BASE & LAYOUT
+     * ============================================================ */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--ff-sans);
+      background-color: var(--surface);
+      color: var(--on-surface);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 20px 20px 64px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ============================================================
+     * TOP HEADER & NAVIGATION TABS
+     * ============================================================ */
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--stroke-default);
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      margin: 0;
+      font-size: 13px;
+      color: var(--on-surface-variant);
+    }
+
+    .nav-bar-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--surface-dim);
+      padding: 6px;
+      border-radius: var(--r-full);
+      border: 1px solid var(--stroke-default);
+    }
+
+    .lumi-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .nav-tab-btn {
+      flex: 1 1 auto;
+      min-height: 40px;
+      padding: 8px 18px;
+      border-radius: var(--r-full);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--on-surface-variant);
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .nav-tab-btn:hover {
+      color: var(--on-surface);
+      background: var(--surface-container-high);
+    }
+
+    .nav-tab-btn.active {
+      background: var(--accent-container);
+      color: var(--on-surface);
+      border-color: var(--primary);
+      font-weight: 600;
+      box-shadow: var(--elevation-1);
+    }
+
+    .nav-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      background: var(--surface-bright);
+      color: var(--on-surface);
+      border: 1px solid var(--stroke-default);
+    }
+
+    .nav-tab-btn.active .nav-step-num {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: transparent;
+    }
+
+    /* Tab Panels */
+    .tab-panel {
+      display: none;
+      flex-direction: column;
+      gap: 18px;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .tab-panel.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+     * CARDS, BUTTONS, CHIPS & BADGES
+     * ============================================================ */
+    .card {
+      background: var(--surface-dim);
+      border-radius: var(--r-m);
+      padding: 18px;
+      border: 1px solid var(--stroke-default);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+
+    .card-subtitle {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: var(--on-surface-variant);
+    }
+
+    /* Executive Summary Card */
+    .exec-card {
+      background: var(--surface-dim);
+      border-radius: var(--r-m);
+      padding: 18px 20px;
+      border: 1px solid var(--stroke-default);
+      border-left: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .exec-title {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .exec-badge {
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: var(--r-full);
+      font-weight: 500;
+    }
+
+    .exec-body {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--on-surface);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exec-body p {
+      margin: 0;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 820px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kpi-card {
+      background: var(--surface-dim);
+      border-radius: var(--r-m);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border: 1px solid var(--stroke-default);
+    }
+
+    .kpi-card.is-accent {
+      background: var(--accent-container);
+      border-color: var(--primary);
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      color: var(--on-surface-variant);
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      font-family: var(--ff-mono);
+      font-style: italic;
+      color: var(--on-surface-variant);
+    }
+
+    /* Charts Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-card {
+      background: var(--surface-dim);
+      border-radius: var(--r-m);
+      padding: 16px;
+      border: 1px solid var(--stroke-default);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chart-viewport {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+     * LUMINOUS SLIDER & CONTROL DECK
+     * ============================================================ */
+    .control-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      background: var(--surface-dim);
+      border-radius: var(--r-m);
+      border: 1px solid var(--stroke-default);
+    }
+
+    .preset-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--stroke-default);
+    }
+
+    .preset-label {
+      font-size: 12px;
+      font-family: var(--ff-mono);
+      color: var(--on-surface-variant);
+      margin-right: 4px;
+    }
+
+    .lumi-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 4px 14px;
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--on-surface);
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-radius: var(--r-full);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .lumi-chip:hover {
+      background: var(--surface-container-high);
+    }
+
+    .lumi-chip.active {
+      background: var(--accent-container);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .control-label-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 210px;
+      flex: 1 1 210px;
+    }
+
+    .control-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--on-surface);
+    }
+
+    .control-desc {
+      font-size: 12px;
+      font-family: var(--ff-mono);
+      color: var(--on-surface-variant);
+    }
+
+    .lumi-slider-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 2 1 320px;
+    }
+
+    .lumi-slider {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 36px;
+      background: transparent;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .lumi-slider:focus {
+      outline: none;
+    }
+
+    .lumi-slider::-webkit-slider-runnable-track {
+      height: 6px;
+      border-radius: var(--r-full);
+      background: linear-gradient(
+        to right,
+        var(--primary) 0%,
+        var(--primary) var(--progress, 50%),
+        var(--stroke-default) var(--progress, 50%),
+        var(--stroke-default) 100%
+      );
+    }
+
+    .lumi-slider::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--on-surface);
+      border: 3px solid var(--surface-bright);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      margin-top: -7px;
+      transition: transform 0.12s ease;
+    }
+
+    .lumi-slider:hover::-webkit-slider-thumb {
+      transform: scale(1.12);
+    }
+
+    .lumi-slider-value {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 110px;
+      height: 36px;
+      padding: 0 12px;
+      background-color: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-radius: var(--r-m);
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--on-surface);
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+     * TABLES & FORMS
+     * ============================================================ */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: var(--r-m);
+      border: 1px solid var(--stroke-default);
+      background: var(--surface-dim);
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .mini-table th, .mini-table td {
+      padding: 10px 14px;
+      text-align: right;
+      border-bottom: 1px solid var(--stroke-default);
+    }
+
+    .mini-table th:first-child, .mini-table td:first-child {
+      text-align: left;
+    }
+
+    .mini-table th {
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      font-size: 12px;
+      background: var(--surface-container-high);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .mini-table td {
+      font-family: var(--ff-mono);
+    }
+
+    .mini-table td:first-child {
+      font-family: var(--ff-sans);
+      font-weight: 500;
+    }
+
+    .mini-table tr.row-highlight {
+      font-weight: 600;
+      background: var(--surface-container-high);
+    }
+
+    .mini-table tr.row-accent {
+      font-weight: 700;
+      background: var(--accent-container);
+    }
+
+    /* Inputs & Buttons */
+    .input-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 760px) {
+      .input-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--on-surface);
+    }
+
+    .field-hint {
+      font-size: 11px;
+      color: var(--on-surface-variant);
+    }
+
+    .lumi-input, .lumi-select {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 12px;
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      color: var(--on-surface);
+      background-color: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-radius: var(--r-s);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .lumi-input.mono {
+      font-family: var(--ff-mono);
+    }
+
+    .lumi-input:focus, .lumi-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--accent-container);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 6px 16px;
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: var(--r-full);
+      border: 1px solid var(--stroke-default);
+      background: var(--surface-bright);
+      color: var(--on-surface);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn:hover {
+      background: var(--surface-container-high);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.92;
+      background: var(--primary);
+    }
+
+    .btn-danger {
+      color: var(--error);
+      border-color: transparent;
+      background: var(--error-container);
+      padding: 4px 10px;
+      min-height: 30px;
+      font-size: 12px;
+    }
+
+    .highlight-Banner {
+      background: var(--accent-container);
+      border: 1px solid var(--primary);
+      border-radius: var(--r-s);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Timeline Cards */
+    .timeline-card {
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-left: 5px solid var(--primary);
+      border-radius: var(--r-m);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .timeline-card.status-done {
+      border-left-color: var(--positive);
+    }
+
+    .timeline-card.status-pending {
+      border-left-color: var(--on-surface-variant);
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 780px) {
+      .timeline-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 8px;
+      background: var(--surface-container-high);
+      border-radius: var(--r-full);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: var(--r-full);
+      transition: width 0.25s ease;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--r-full);
+      font-size: 11px;
+      font-family: var(--ff-mono);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- ================= HEADER & THEME SWITCHER ================= -->
+    <header class="top-bar">
+      <div class="brand-group">
+        <span class="brand-badge">● FINANCIAL PLANNING & SCENARIO SIMULATOR 2027</span>
+        <h1 class="brand-title">Dashboard Perencanaan & Proyeksi Bisnis 2027</h1>
+        <p class="brand-subtitle">Simulator P&L Interaktif, Multi-Produk HPP, Pajak Dinamis, ROI Otomasi & Roadmap Eksekusi</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn" id="btn-theme-toggle" onclick="toggleTheme()">
+          <span id="theme-label">Mode Gelap / Terang</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= 4 MENU NAVIGATION BAR ================= -->
+    <nav class="nav-bar-wrapper" aria-label="Menu Utama">
+      <div class="lumi-nav-tabs">
+        <button type="button" class="nav-tab-btn active" data-tab="panel-dashboard" onclick="switchMenu('panel-dashboard', this)">
+          <span class="nav-step-num">1</span>
+          <span>Dashboard & Simulator Visual</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-input" onclick="switchMenu('panel-input', this)">
+          <span class="nav-step-num">2</span>
+          <span>Input Data (Produk, HPP, Gaji, Pajak)</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-proyeksi" onclick="switchMenu('panel-proyeksi', this)">
+          <span class="nav-step-num">3</span>
+          <span>Proyeksi P&L & ROI (2027)</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-timeline" onclick="switchMenu('panel-timeline', this)">
+          <span class="nav-step-num">4</span>
+          <span>Langkah Kerja & Timeline</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- =========================================================================
+         TAB 1: DASHBOARD & SIMULATOR VISUAL (LUMINOUS INTERACTIVE WIDGET)
+         ========================================================================= -->
+    <section id="panel-dashboard" class="tab-panel active">
+
+      <!-- Ringkasan Eksekutif (Senior Business Analyst & Board Advisor) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif & Rekomendasi Penasihat Direksi</h2>
+          <span id="exec-health-badge" class="exec-badge" style="background: var(--positive-container); color: var(--positive);">
+            Margin Sehat (28.73%)
+          </span>
+        </div>
+        <div id="exec-summary-content" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- 4 KPI Summary Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Gross Revenue (Omzet)</span>
+          <span class="kpi-value" id="kpi-revenue">Rp 5,325 M</span>
+          <span class="kpi-sub" id="kpi-revenue-delta">Baseline (15.000 unit)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Total Beban, HPP & Pajak</span>
+          <span class="kpi-value" id="kpi-costs">Rp 3,795 M</span>
+          <span class="kpi-sub" id="kpi-cost-pct">71.27% dari Omzet</span>
+        </div>
+        <div class="kpi-card is-accent">
+          <span class="kpi-label">Net Profit (Laba Bersih / Bln)</span>
+          <span class="kpi-value" id="kpi-profit">Rp 1,530 M</span>
+          <span class="kpi-sub" id="kpi-profit-delta">Baseline</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Net Profit Margin</span>
+          <span class="kpi-value" id="kpi-margin">28.73%</span>
+          <span class="kpi-sub" id="kpi-margin-delta">Baseline</span>
+        </div>
+      </div>
+
+      <!-- 2 Interactive Charts (Bar & Doughnut) -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="card-header">
+            <h3 class="card-title" style="font-size: 14px;">P&L Comparison (Baseline vs Scenario)</h3>
+            <span class="kpi-sub">Dalam Miliar Rupiah (B)</span>
+          </div>
+          <div class="chart-viewport">
+            <canvas id="barChart" role="img" aria-label="Perbandingan P&L Baseline vs Skenario"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <h3 class="card-title" style="font-size: 14px;">Cost Composition (Komposisi Biaya Skenario)</h3>
+            <span class="kpi-sub">Dalam Juta Rupiah (M)</span>
+          </div>
+          <div class="chart-viewport">
+            <canvas id="donutChart" role="img" aria-label="Komposisi Biaya Bulanan"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario Parameter Controls (Luminous Sliders + Presets) -->
+      <div class="control-deck">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title" style="font-size: 15px;">Scenario Parameter Controls (Simulator Skenario 2027)</h3>
+            <p class="card-subtitle">Geser slider atau klik tombol preset untuk melakukan stress-test terhadap target laba 2027.</p>
+          </div>
+        </div>
+
+        <!-- Preset Pills -->
+        <div class="preset-row">
+          <span class="preset-label">Skenario Cepat:</span>
+          <button type="button" class="lumi-chip active" id="preset-baseline" onclick="applyPreset('baseline', this)">
+            1. Baseline (Flat 60% | 15.000 Unit)
+          </button>
+          <button type="button" class="lumi-chip" id="preset-pareto" onclick="applyPreset('pareto', this)">
+            2. Tiered Pareto (Payout 57% + Vol +15%)
+          </button>
+          <button type="button" class="lumi-chip" id="preset-moderat" onclick="applyPreset('moderat', this)">
+            3. Tiered Moderat (Payout 52.5% + Efisiensi 5 Staf)
+          </button>
+          <button type="button" class="lumi-chip" id="preset-optimal" onclick="applyPreset('optimal', this)">
+            4. Transformasi Penuh (Vol +15% + Otomasi 10 Staf + OpEx 100Jt)
+          </button>
+        </div>
+
+        <!-- Volume Slider -->
+        <div class="control-row">
+          <div class="control-label-group">
+            <span class="control-title">Target Volume Penjualan</span>
+            <span class="control-desc" id="desc-base-vol">Baseline: 15,000 unit/bulan</span>
+          </div>
+          <div class="lumi-slider-container">
+            <input type="range" id="slider-volume" class="lumi-slider" min="3000" max="35000" step="250" value="15000" oninput="onSliderChange('volume', this.value)">
+            <div id="slider-volume-val" class="lumi-slider-value">15.000 unit</div>
+          </div>
+        </div>
+
+        <!-- Price / Unit Slider -->
+        <div class="control-row">
+          <div class="control-label-group">
+            <span class="control-title">Rata-rata Harga Jual / Unit</span>
+            <span class="control-desc" id="desc-base-price">Baseline: Rp 355.000</span>
+          </div>
+          <div class="lumi-slider-container">
+            <input type="range" id="slider-price" class="lumi-slider" min="150000" max="750000" step="5000" value="355000" oninput="onSliderChange('price', this.value)">
+            <div id="slider-price-val" class="lumi-slider-value">Rp 355.000</div>
+          </div>
+        </div>
+
+        <!-- Bonus Share Slider -->
+        <div class="control-row">
+          <div class="control-label-group">
+            <span class="control-title">Rasio Payout Bonus Mitra (%)</span>
+            <span class="control-desc" id="desc-base-bonus">Baseline: 60.0% (Pareto Tiered = 57.0%)</span>
+          </div>
+          <div class="lumi-slider-container">
+            <input type="range" id="slider-bonus" class="lumi-slider" min="35" max="75" step="0.5" value="60" oninput="onSliderChange('bonusPct', this.value)">
+            <div id="slider-bonus-val" class="lumi-slider-value">60.0%</div>
+          </div>
+        </div>
+
+        <!-- Headcount Slider -->
+        <div class="control-row">
+          <div class="control-label-group">
+            <span class="control-title">Jumlah Karyawan Aktif (Orang)</span>
+            <span class="control-desc" id="desc-base-emp">Baseline: 48 orang (@ Rp 9.375.000/org)</span>
+          </div>
+          <div class="lumi-slider-container">
+            <input type="range" id="slider-emp" class="lumi-slider" min="10" max="80" step="1" value="48" oninput="onSliderChange('employees', this.value)">
+            <div id="slider-emp-val" class="lumi-slider-value">48 orang</div>
+          </div>
+        </div>
+
+        <!-- OPEX Slider -->
+        <div class="control-row">
+          <div class="control-label-group">
+            <span class="control-title">Beban Operasional Bulanan (OPEX)</span>
+            <span class="control-desc" id="desc-base-opex">Baseline: Rp 150.000.000 (Rentang 100Jt–150Jt)</span>
+          </div>
+          <div class="lumi-slider-container">
+            <input type="range" id="slider-opex" class="lumi-slider" min="50000000" max="300000000" step="5000000" value="150000000" oninput="onSliderChange('opex', this.value)">
+            <div id="slider-opex-val" class="lumi-slider-value">Rp 150 Jt</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini Variance Breakdown Table -->
+      <div class="table-wrapper">
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Metrik Keuangan (Bulanan)</th>
+              <th>Baseline</th>
+              <th>Skenario Simulasi</th>
+              <th>Selisih (Variance)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total Volume Penjualan (Unit)</td>
+              <td id="tbl-base-vol">15.000</td>
+              <td id="tbl-scen-vol">15.000</td>
+              <td id="tbl-var-vol">0</td>
+            </tr>
+            <tr>
+              <td>Gross Revenue (Pendapatan Kotor)</td>
+              <td id="tbl-base-rev">Rp 5.325.000.000</td>
+              <td id="tbl-scen-rev">Rp 5.325.000.000</td>
+              <td id="tbl-var-rev">Rp 0</td>
+            </tr>
+            <tr>
+              <td>Total HPP (Harga Pokok Produk)</td>
+              <td id="tbl-base-hpp">Rp 0</td>
+              <td id="tbl-scen-hpp">Rp 0</td>
+              <td id="tbl-var-hpp">Rp 0</td>
+            </tr>
+            <tr>
+              <td>Beban Bonus Mitra</td>
+              <td id="tbl-base-bonus">Rp 3.195.000.000</td>
+              <td id="tbl-scen-bonus">Rp 3.195.000.000</td>
+              <td id="tbl-var-bonus">Rp 0</td>
+            </tr>
+            <tr>
+              <td>Beban Gaji Karyawan</td>
+              <td id="tbl-base-sal">Rp 450.000.000</td>
+              <td id="tbl-scen-sal">Rp 450.000.000</td>
+              <td id="tbl-var-sal">Rp 0</td>
+            </tr>
+            <tr>
+              <td>Beban Operasional (OPEX)</td>
+              <td id="tbl-base-opex">Rp 150.000.000</td>
+              <td id="tbl-scen-opex">Rp 150.000.000</td>
+              <td id="tbl-var-opex">Rp 0</td>
+            </tr>
+            <tr>
+              <td>Estimasi Pajak Aktif</td>
+              <td id="tbl-base-tax">Rp 0</td>
+              <td id="tbl-scen-tax">Rp 0</td>
+              <td id="tbl-var-tax">Rp 0</td>
+            </tr>
+            <tr class="row-accent">
+              <td>LABA BERSIH (NET PROFIT / BULAN)</td>
+              <td id="tbl-base-profit">Rp 1.530.000.000</td>
+              <td id="tbl-scen-profit">Rp 1.530.000.000</td>
+              <td id="tbl-var-profit">Rp 0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB 2: INPUT DATA (MULTI-PRODUK, HPP, GAJI OTOMATIS, PAJAK DINAMIS)
+         ========================================================================= -->
+    <section id="panel-input" class="tab-panel">
+
+      <!-- Quick Live Preview Banner inside Input Tab -->
+      <div class="highlight-Banner">
+        <div>
+          <span style="font-size: 12px; font-family: var(--ff-mono); text-transform: uppercase;">Ringkasan Baseline Saat Ini</span>
+          <div style="font-size: 15px; font-weight: 600; margin-top: 2px;">
+            Omzet Baseline: <span id="banner-base-rev">Rp 5.325.000.000</span> &nbsp;|&nbsp;
+            Laba Bersih Baseline: <span id="banner-base-profit" style="color: var(--positive);">Rp 1.530.000.000</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="syncScenarioToBaselineAndView()">
+          Terapkan ke Simulator & Lihat Grafik →
+        </button>
+      </div>
+
+      <!-- 1. Multi-Product & HPP Table -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">1. Lini Produk, HPP (Modal) & Target Penjualan Bulanan</h2>
+            <p class="card-subtitle">Tambahkan beberapa produk sekaligus. Masukkan HPP (opsional, isi 0 jika harga sudah bersih) dan harga jual masing-masing produk.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="addProductRow()">+ Tambah Lini Produk</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="min-width: 180px;">Nama Produk</th>
+                <th style="min-width: 140px;">HPP / Modal per Unit (Rp)</th>
+                <th style="min-width: 140px;">Harga Jual per Unit (Rp)</th>
+                <th style="min-width: 120px;">Target Volume (Unit/Bln)</th>
+                <th>Subtotal HPP</th>
+                <th>Subtotal Omzet</th>
+                <th style="text-align: center; width: 70px;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="product-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+            <tfoot>
+              <tr class="row-highlight">
+                <td>TOTAL SELURUH PRODUK</td>
+                <td>-</td>
+                <td id="foot-avg-price">Rata2: Rp 355.000</td>
+                <td id="foot-total-vol">15.000</td>
+                <td id="foot-total-hpp">Rp 0</td>
+                <td id="foot-total-rev">Rp 5.325.000.000</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2. Beban Gaji Karyawan & Operasional Mitra -->
+      <div class="input-grid-2">
+        <!-- Card Gaji: Input Jumlah Karyawan dulu, lalu Total Gaji, otomatis bagi rata-rata -->
+        <div class="card">
+          <div>
+            <h2 class="card-title">2. Beban Gaji & Jumlah Karyawan</h2>
+            <p class="card-subtitle">Masukkan total jumlah karyawan terlebih dahulu, lalu total anggaran gaji bulanan. Sistem otomatis membagi rata-rata gaji per kepala.</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inp-base-emp">Langkah 1: Jumlah Total Karyawan Saat Ini (Orang)</label>
+            <input type="number" id="inp-base-emp" class="lumi-input mono" value="48" min="1" step="1" oninput="onBaselineInputChange()">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inp-base-salary">Langkah 2: Total Beban Gaji Setiap Bulan (Rp)</label>
+            <input type="number" id="inp-base-salary" class="lumi-input mono" value="450000000" min="0" step="1000000" oninput="onBaselineInputChange()">
+          </div>
+
+          <div class="highlight-Banner" style="margin-top: 4px;">
+            <div>
+              <span style="font-size: 12px; color: var(--on-surface-variant); display: block;">Otomatis: Rata-rata Beban Gaji per Karyawan / Bulan</span>
+              <strong id="out-avg-salary" style="font-size: 18px; font-family: var(--ff-mono);">Rp 9.375.000 / orang</strong>
+            </div>
+            <span class="status-pill" style="background: var(--surface-bright);">Basis Efisiensi SDM</span>
+          </div>
+
+          <div class="field-group" style="margin-top: 6px;">
+            <label class="field-label" for="inp-it-capex">Anggaran Investasi Sistem IT / Otomasi (One-Time CapEx Rp)</label>
+            <input type="number" id="inp-it-capex" class="lumi-input mono" value="500000000" min="0" step="25000000" oninput="onBaselineInputChange()">
+            <span class="field-hint">Digunakan untuk menghitung ROI & waktu balik modal (Payback Period) saat jumlah staf dikurangi.</span>
+          </div>
+        </div>
+
+        <!-- Card Bonus Mitra & OPEX -->
+        <div class="card">
+          <div>
+            <h2 class="card-title">3. Beban Bonus Mitra & Operasional (OPEX)</h2>
+            <p class="card-subtitle">Atur komisi baseline serta gunakan kalkulator skema berjenjang (Tiered Bonus) untuk simulasi efisiensi komisi.</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inp-base-bonus">Persentase Bonus Mitra Baseline (% dari Harga Jual)</label>
+            <input type="number" id="inp-base-bonus" class="lumi-input mono" value="60" min="0" max="100" step="0.5" oninput="onBaselineInputChange()">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inp-base-opex">Beban Operasional Bulanan / OPEX (Rp)</label>
+            <input type="number" id="inp-base-opex" class="lumi-input mono" value="150000000" min="0" step="5000000" oninput="onBaselineInputChange()">
+            <span class="field-hint">Estimasi konservatif batas atas Rp 150.000.000 (atau batas bawah Rp 100.000.000).</span>
+          </div>
+
+          <!-- Kalkulator Tiered Bonus -->
+          <div style="background: var(--surface-bright); border: 1px solid var(--stroke-default); border-radius: var(--r-s); padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 13px;">Kalkulator Skema Bonus Berjenjang (Tiered)</strong>
+              <span id="badge-effective-bonus" class="status-pill" style="background: var(--accent-container); color: var(--primary);">Payout Aktual: 57.0%</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+              <div>
+                <label class="field-hint">Base Komisi (%)</label>
+                <input type="number" id="calc-tier-base" class="lumi-input mono" value="45" oninput="updateTieredCalculator()">
+              </div>
+              <div>
+                <label class="field-hint">Bonus Top Tier (%)</label>
+                <input type="number" id="calc-tier-top" class="lumi-input mono" value="15" oninput="updateTieredCalculator()">
+              </div>
+              <div>
+                <label class="field-hint">Porsi Omzet Top 20% (%)</label>
+                <input type="number" id="calc-tier-pareto" class="lumi-input mono" value="80" oninput="updateTieredCalculator()">
+              </div>
+            </div>
+            <button type="button" class="btn" onclick="applyTieredRateToScenario()">
+              Gunakan Tarif Efektif Ini di Skenario Simulator
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Pajak Dinamis (Optional / Checkboxes) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">4. Konfigurasi Pajak Perusahaan (Opsional / Dapat Dicentang)</h2>
+            <p class="card-subtitle">Centang pajak yang ingin dimasukkan ke dalam hitungan P&L, atau biarkan tidak dicentang jika ingin melihat hitungan sebelum pajak.</p>
+          </div>
+          <button type="button" class="btn" onclick="addTaxRow()">+ Tambah Jenis Pajak</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="width: 70px; text-align: center;">Aktif</th>
+                <th>Nama Pajak / Kewajiban</th>
+                <th style="width: 140px;">Tarif (%)</th>
+                <th style="width: 260px;">Dasar Pemotongan (Basis)</th>
+                <th>Estimasi Beban / Bulan (Baseline)</th>
+                <th style="width: 70px; text-align: center;">Hapus</th>
+              </tr>
+            </thead>
+            <tbody id="tax-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB 3: PROYEKSI P&L LENGKAP & ANALISIS ROI OTOMASI (2027)
+         ========================================================================= -->
+    <section id="panel-proyeksi" class="tab-panel">
+
+      <!-- ROI Otomasi & Efisiensi Gaji Card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Analisis ROI Otomasi Internal & Efisiensi SDM (2027)</h2>
+            <p class="card-subtitle">Perhitungan kelayakan investasi sistem IT dibandingkan penghematan beban gaji bulanan pada Skenario.</p>
+          </div>
+          <span id="roi-verdict-badge" class="status-pill" style="background: var(--positive-container); color: var(--positive);">
+            Siap Simulasi Efisiensi
+          </span>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Perubahan Jumlah Staf</span>
+            <span class="kpi-value" id="roi-emp-diff">48 → 48 Org</span>
+            <span class="kpi-sub" id="roi-emp-sub">Tidak ada pengurangan</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Penghematan Gaji / Tahun</span>
+            <span class="kpi-value" id="roi-annual-saving">Rp 0</span>
+            <span class="kpi-sub" id="roi-monthly-saving">Rp 0 / bulan</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Budget Investasi IT (CapEx)</span>
+            <span class="kpi-value" id="roi-capex-val">Rp 500 Jt</span>
+            <span class="kpi-sub">One-time investment</span>
+          </div>
+          <div class="kpi-card is-accent">
+            <span class="kpi-label">Payback Period (Balik Modal)</span>
+            <span class="kpi-value" id="roi-payback">N/A</span>
+            <span class="kpi-sub" id="roi-payback-sub">Kurangi staf di Simulator untuk melihat BEP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Proyeksi Laba Rugi (P&L) Bulanan & Tahunan 2027 -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Laporan Proyeksi Laba Rugi (P&L) Komprehensif Tahun 2027</h2>
+            <p class="card-subtitle">Perbandingan rinci antara Baseline Bulanan, Skenario Bulanan, Selisih (Variance), dan Proyeksi Penuh 12 Bulan (2027).</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th>Komponen Laporan Laba Rugi</th>
+                <th>Baseline / Bulan</th>
+                <th>% Omzet</th>
+                <th>Skenario / Bulan</th>
+                <th>% Omzet</th>
+                <th>Variance / Bulan</th>
+                <th>Proyeksi Skenario 1 Tahun (2027)</th>
+              </tr>
+            </thead>
+            <tbody id="full-pnl-tbody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB 4: LANGKAH KERJA & TIMELINE EKSEKUSI 2027 (EDITABLE)
+         ========================================================================= -->
+    <section id="panel-timeline" class="tab-panel">
+
+      <!-- Overall Roadmap Progress Card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Progres Eksekusi Roadmap Transformasi 2027</h2>
+            <p class="card-subtitle">Seluruh poin langkah kerja, tanggal mulai/selesai, target KPI, dan persentase progres di bawah ini dapat Anda ubah secara langsung.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="addTimelineItem()">+ Tambah Langkah Kerja Baru</button>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 240px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px;">
+              <span>Rata-rata Progres Keseluruhan Rencana Kerja 2027</span>
+              <span id="overall-progress-txt" style="font-family: var(--ff-mono); color: var(--primary);">25%</span>
+            </div>
+            <div class="progress-bar-track" style="height: 12px;">
+              <div id="overall-progress-bar" class="progress-bar-fill" style="width: 25%;"></div>
+            </div>
+          </div>
+          <div id="timeline-stats-badges" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <!-- Badges injected via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Editable Timeline List -->
+      <div id="timeline-container" style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Rendered via JS -->
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- ================= APPLICATION JAVASCRIPT ================= -->
+  <script>
+    // =========================================================================
+    // 1. CENTRAL APPLICATION STATE
+    // =========================================================================
+    const appState = {
+      // Multi-product baseline (Default matches 15,000 units @ Rp 355,000 = Rp 5.325B)
+      products: [
+        { id: 1, name: 'Produk Utama (Reguler)', hpp: 0, price: 355000, volume: 15000 }
+      ],
+      // Baseline expenses
+      baseEmployees: 48,
+      baseTotalSalary: 450000000,
+      baseBonusPct: 60.0,
+      baseOpex: 150000000,
+      itCapex: 500000000,
+
+      // Dynamic Optional Taxes (Unchecked by default so baseline matches exact Rp 1.53B)
+      taxes: [
+        { id: 1, active: false, name: 'PPh Final / UMKM', rate: 0.5, base: 'revenue' },
+        { id: 2, active: false, name: 'PPN (Opsional)', rate: 11.0, base: 'revenue' },
+        { id: 3, active: false, name: 'PPh Badan Tahunan', rate: 22.0, base: 'ebt' }
+      ],
+
+      // Scenario Simulator Controls
+      scenario: {
+        volume: 15000,
+        price: 355000,
+        bonusPct: 60.0,
+        employees: 48,
+        opex: 150000000
+      },
+
+      // Editable Action Plan & Timeline
+      timeline: [
+        {
+          id: 1,
+          quarter: 'Q1 2027',
+          title: 'Pengembangan Sistem Otomasi IT & Penetapan KPI Top 20% Mitra',
+          pic: 'Direksi & Tim IT',
+          startDate: '2027-01-05',
+          endDate: '2027-03-31',
+          status: 'Sedang Berjalan',
+          progress: 35,
+          notes: 'Otomatisasi perhitungan komisi berjenjang dan portal self-service mitra senilai budget Rp 500 Juta untuk memangkas beban admin manual.'
+        },
+        {
+          id: 2,
+          quarter: 'Q2 2027',
+          title: 'Sosialisasi Eksternal Skema Tiered Bonus & Uji Coba Paralel (Shadow Run)',
+          pic: 'VP Sales & Network',
+          startDate: '2027-04-01',
+          endDate: '2027-06-30',
+          status: 'Belum Dimulai',
+          progress: 0,
+          notes: 'Transisi bertahap dari flat 60% ke skema 45% Base + 15% Kualifikasi Top Performer agar memicu FOMO positif dan kenaikan volume +15%.'
+        },
+        {
+          id: 3,
+          quarter: 'Q3 2027',
+          title: 'Cut-Off Komisi Lama & Rasionalisasi 5-10 Posisi Administratif',
+          pic: 'HRD & Finance',
+          startDate: '2027-07-01',
+          endDate: '2027-09-30',
+          status: 'Belum Dimulai',
+          progress: 0,
+          notes: 'Pemberlakuan penuh Tiered Bonus (efektif 57% Pareto) dan realokasi/pengurangan staf admin yang fungsinya telah diambil alih sistem IT.'
+        },
+        {
+          id: 4,
+          quarter: 'Q4 2027',
+          title: 'Evaluasi Kinerja P&L Tahunan & Pengamanan Laba Ditahan',
+          pic: 'Dewan Direksi',
+          startDate: '2027-10-01',
+          endDate: '2027-12-31',
+          status: 'Belum Dimulai',
+          progress: 0,
+          notes: 'Audit pencapaian Net Profit Margin di atas 32% dan evaluasi Payback Period investasi IT (< 11 bulan).'
+        }
+      ]
+    };
+
+    let barChartInst = null;
+    let donutChartInst = null;
+
+    // =========================================================================
+    // 2. FORMATTING HELPERS
+    // =========================================================================
+    function formatNum(n) {
+      return new Intl.NumberFormat('id-ID').format(Math.round(n || 0));
+    }
+
+    function formatRp(n) {
+      const val = Math.round(n || 0);
+      if (val < 0) {
+        return '-Rp ' + formatNum(Math.abs(val));
+      }
+      return 'Rp ' + formatNum(val);
+    }
+
+    function formatCompactRp(n) {
+      const abs = Math.abs(n || 0);
+      const sign = n < 0 ? '-' : '';
+      if (abs >= 1e9) {
+        return sign + 'Rp ' + (abs / 1e9).toFixed(3).replace('.', ',') + ' M';
+      }
+      if (abs >= 1e6) {
+        return sign + 'Rp ' + (abs / 1e6).toFixed(1).replace('.', ',') + ' Jt';
+      }
+      return formatRp(n);
+    }
+
+    function getCssVar(name, fallback) {
+      try {
+        const val = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        return val || fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    // =========================================================================
+    // 3. TAB NAVIGATION & THEME SWITCHING
+    // =========================================================================
+    function switchMenu(panelId, btnEl) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById(panelId);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) {
+        btnEl.classList.add('active');
+      } else {
+        const matchBtn = document.querySelector(`.nav-tab-btn[data-tab="${panelId}"]`);
+        if (matchBtn) matchBtn.classList.add('active');
+      }
+
+      if (panelId === 'panel-dashboard') {
+        setTimeout(() => {
+          if (barChartInst) barChartInst.resize();
+          if (donutChartInst) donutChartInst.resize();
+          updateAllViews();
+        }, 30);
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      initCharts();
+      updateAllViews();
+    }
+
+    // =========================================================================
+    // 4. CORE FINANCIAL ENGINE (BASELINE VS SCENARIO)
+    // =========================================================================
+    function computeFinancials() {
+      // 1. Baseline Product Aggregates
+      let baseVolume = 0;
+      let baseRevenue = 0;
+      let baseHpp = 0;
+
+      appState.products.forEach(p => {
+        const v = Math.max(0, Number(p.volume) || 0);
+        const pr = Math.max(0, Number(p.price) || 0);
+        const hp = Math.max(0, Number(p.hpp) || 0);
+        baseVolume += v;
+        baseRevenue += v * pr;
+        baseHpp += v * hp;
+      });
+
+      const baseAvgPrice = baseVolume > 0 ? baseRevenue / baseVolume : 0;
+      const baseAvgHpp = baseVolume > 0 ? baseHpp / baseVolume : 0;
+      const baseGrossProfit = baseRevenue - baseHpp;
+
+      // 2. Baseline Salary, Bonus, OPEX
+      const baseEmp = Math.max(1, Number(appState.baseEmployees) || 1);
+      const baseSalary = Math.max(0, Number(appState.baseTotalSalary) || 0);
+      const avgSalaryPerEmp = baseSalary / baseEmp;
+      const baseBonus = baseRevenue * (appState.baseBonusPct / 100);
+      const baseOpex = Math.max(0, Number(appState.baseOpex) || 0);
+
+      const baseEbt = baseGrossProfit - baseBonus - baseSalary - baseOpex;
+
+      // 3. Baseline Taxes
+      let baseTax = 0;
+      const taxDetails = appState.taxes.map(t => {
+        let amountBase = 0;
+        if (t.active) {
+          if (t.base === 'revenue') {
+            amountBase = baseRevenue * (t.rate / 100);
+          } else {
+            amountBase = Math.max(0, baseEbt) * (t.rate / 100);
+          }
+        }
+        baseTax += amountBase;
+        return { ...t, amountBase };
+      });
+
+      const baseTotalCost = baseHpp + baseBonus + baseSalary + baseOpex + baseTax;
+      const baseNetProfit = baseEbt - baseTax;
+      const baseMarginPct = baseRevenue > 0 ? (baseNetProfit / baseRevenue) * 100 : 0;
+
+      // 4. Scenario Calculations
+      const scenVolume = Math.max(0, Number(appState.scenario.volume) || 0);
+      const scenPrice = Math.max(0, Number(appState.scenario.price) || 0);
+      const scenRevenue = scenVolume * scenPrice;
+
+      // HPP scales proportionally with scenario volume
+      const scenHpp = scenVolume * baseAvgHpp;
+      const scenGrossProfit = scenRevenue - scenHpp;
+
+      const scenBonus = scenRevenue * (appState.scenario.bonusPct / 100);
+      const scenEmp = Math.max(0, Number(appState.scenario.employees) || 0);
+      const scenSalary = scenEmp * avgSalaryPerEmp;
+      const scenOpex = Math.max(0, Number(appState.scenario.opex) || 0);
+
+      const scenEbt = scenGrossProfit - scenBonus - scenSalary - scenOpex;
+
+      let scenTax = 0;
+      appState.taxes.forEach(t => {
+        if (t.active) {
+          if (t.base === 'revenue') {
+            scenTax += scenRevenue * (t.rate / 100);
+          } else {
+            scenTax += Math.max(0, scenEbt) * (t.rate / 100);
+          }
+        }
+      });
+
+      const scenTotalCost = scenHpp + scenBonus + scenSalary + scenOpex + scenTax;
+      const scenNetProfit = scenEbt - scenTax;
+      const scenMarginPct = scenRevenue > 0 ? (scenNetProfit / scenRevenue) * 100 : 0;
+
+      return {
+        base: {
+          volume: baseVolume,
+          avgPrice: baseAvgPrice,
+          avgHpp: baseAvgHpp,
+          revenue: baseRevenue,
+          hpp: baseHpp,
+          grossProfit: baseGrossProfit,
+          bonus: baseBonus,
+          bonusPct: appState.baseBonusPct,
+          employees: baseEmp,
+          avgSalaryPerEmp,
+          salary: baseSalary,
+          opex: baseOpex,
+          ebt: baseEbt,
+          tax: baseTax,
+          taxDetails,
+          totalCost: baseTotalCost,
+          netProfit: baseNetProfit,
+          marginPct: baseMarginPct
+        },
+        scen: {
+          volume: scenVolume,
+          price: scenPrice,
+          revenue: scenRevenue,
+          hpp: scenHpp,
+          grossProfit: scenGrossProfit,
+          bonus: scenBonus,
+          bonusPct: appState.scenario.bonusPct,
+          employees: scenEmp,
+          salary: scenSalary,
+          opex: scenOpex,
+          ebt: scenEbt,
+          tax: scenTax,
+          totalCost: scenTotalCost,
+          netProfit: scenNetProfit,
+          marginPct: scenMarginPct
+        }
+      };
+    }
+
+    // =========================================================================
+    // 5. SLIDER CONTROLS & PRESET HANDLERS
+    // =========================================================================
+    function syncSliderTrackProgress(sliderEl) {
+      if (!sliderEl) return;
+      const min = parseFloat(sliderEl.min || 0);
+      const max = parseFloat(sliderEl.max || 100);
+      const val = parseFloat(sliderEl.value || 0);
+      const pct = max > min ? ((val - min) / (max - min)) * 100 : 50;
+      sliderEl.style.setProperty('--progress', Math.max(0, Math.min(100, pct)) + '%');
+    }
+
+    function updateAllSliderUIs() {
+      const sVol = document.getElementById('slider-volume');
+      const sPrice = document.getElementById('slider-price');
+      const sBonus = document.getElementById('slider-bonus');
+      const sEmp = document.getElementById('slider-emp');
+      const sOpex = document.getElementById('slider-opex');
+
+      if (sVol) {
+        sVol.value = appState.scenario.volume;
+        syncSliderTrackProgress(sVol);
+        document.getElementById('slider-volume-val').textContent = formatNum(appState.scenario.volume) + ' unit';
+      }
+      if (sPrice) {
+        sPrice.value = appState.scenario.price;
+        syncSliderTrackProgress(sPrice);
+        document.getElementById('slider-price-val').textContent = formatRp(appState.scenario.price);
+      }
+      if (sBonus) {
+        sBonus.value = appState.scenario.bonusPct;
+        syncSliderTrackProgress(sBonus);
+        document.getElementById('slider-bonus-val').textContent = Number(appState.scenario.bonusPct).toFixed(1) + '%';
+      }
+      if (sEmp) {
+        sEmp.value = appState.scenario.employees;
+        syncSliderTrackProgress(sEmp);
+        document.getElementById('slider-emp-val').textContent = appState.scenario.employees + ' orang';
+      }
+      if (sOpex) {
+        sOpex.value = appState.scenario.opex;
+        syncSliderTrackProgress(sOpex);
+        document.getElementById('slider-opex-val').textContent = formatCompactRp(appState.scenario.opex);
+      }
+    }
+
+    function onSliderChange(key, rawValue) {
+      appState.scenario[key] = parseFloat(rawValue);
+      document.querySelectorAll('.preset-row .lumi-chip').forEach(c => c.classList.remove('active'));
+      updateAllSliderUIs();
+      updateAllViews();
+    }
+
+    function applyPreset(presetName, btnEl) {
+      document.querySelectorAll('.preset-row .lumi-chip').forEach(c => c.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      const fin = computeFinancials();
+      const baseVol = fin.base.volume || 15000;
+      const basePrice = fin.base.avgPrice || 355000;
+
+      if (presetName === 'baseline') {
+        appState.scenario.volume = baseVol;
+        appState.scenario.price = basePrice;
+        appState.scenario.bonusPct = appState.baseBonusPct;
+        appState.scenario.employees = appState.baseEmployees;
+        appState.scenario.opex = appState.baseOpex;
+      } else if (presetName === 'pareto') {
+        // Pareto 57% bonus + Volume +15% (17,250 units)
+        appState.scenario.volume = Math.round(baseVol * 1.15);
+        appState.scenario.price = basePrice;
+        appState.scenario.bonusPct = 57.0;
+        appState.scenario.employees = appState.baseEmployees;
+        appState.scenario.opex = appState.baseOpex;
+      } else if (presetName === 'moderat') {
+        // Moderat 52.5% bonus + Efisiensi 5 karyawan
+        appState.scenario.volume = baseVol;
+        appState.scenario.price = basePrice;
+        appState.scenario.bonusPct = 52.5;
+        appState.scenario.employees = Math.max(1, appState.baseEmployees - 5);
+        appState.scenario.opex = appState.baseOpex;
+      } else if (presetName === 'optimal') {
+        // Transformasi Penuh: Volume +15%, Pareto 57%, Otomasi -10 staf, OpEx Rp 100 Jt
+        appState.scenario.volume = Math.round(baseVol * 1.15);
+        appState.scenario.price = basePrice;
+        appState.scenario.bonusPct = 57.0;
+        appState.scenario.employees = Math.max(1, appState.baseEmployees - 10);
+        appState.scenario.opex = 100000000;
+      }
+
+      updateAllSliderUIs();
+      updateAllViews();
+    }
+
+    // =========================================================================
+    // 6. UPDATE ALL VIEWS (DASHBOARD, EXECUTIVE SUMMARY, CHARTS, P&L)
+    // =========================================================================
+    function updateAllViews() {
+      const { base, scen } = computeFinancials();
+
+      // Update Baseline Reference Descriptions on Sliders
+      document.getElementById('desc-base-vol').textContent = `Baseline: ${formatNum(base.volume)} unit/bulan`;
+      document.getElementById('desc-base-price').textContent = `Baseline: ${formatRp(base.avgPrice)}`;
+      document.getElementById('desc-base-bonus').textContent = `Baseline: ${base.bonusPct.toFixed(1)}% (Tiered Pareto = 57.0%)`;
+      document.getElementById('desc-base-emp').textContent = `Baseline: ${base.employees} org (@ ${formatRp(base.avgSalaryPerEmp)}/org)`;
+      document.getElementById('desc-base-opex').textContent = `Baseline: ${formatRp(base.opex)}`;
+
+      // Update Banner in Tab 2
+      document.getElementById('banner-base-rev').textContent = formatRp(base.revenue);
+      document.getElementById('banner-base-profit').textContent = formatRp(base.netProfit);
+
+      // Update 4 KPI Cards on Dashboard
+      document.getElementById('kpi-revenue').textContent = formatCompactRp(scen.revenue);
+      const revDiff = scen.revenue - base.revenue;
+      const revDeltaEl = document.getElementById('kpi-revenue-delta');
+      revDeltaEl.textContent = revDiff === 0
+        ? `Baseline (${formatNum(scen.volume)} unit)`
+        : `${revDiff > 0 ? '+' : ''}${formatCompactRp(revDiff)} vs Baseline`;
+      revDeltaEl.style.color = revDiff >= 0 ? 'var(--positive)' : 'var(--error)';
+
+      document.getElementById('kpi-costs').textContent = formatCompactRp(scen.totalCost);
+      const costPctOfRev = scen.revenue > 0 ? ((scen.totalCost / scen.revenue) * 100).toFixed(2) : '0.00';
+      document.getElementById('kpi-cost-pct').textContent = `${costPctOfRev}% dari Omzet`;
+
+      document.getElementById('kpi-profit').textContent = formatCompactRp(scen.netProfit);
+      const profDiff = scen.netProfit - base.netProfit;
+      const profDeltaEl = document.getElementById('kpi-profit-delta');
+      profDeltaEl.textContent = profDiff === 0
+        ? `Setara Tahun: ${formatCompactRp(scen.netProfit * 12)}/thn`
+        : `${profDiff > 0 ? '+' : ''}${formatCompactRp(profDiff)}/bln vs Baseline`;
+      profDeltaEl.style.color = profDiff >= 0 ? 'var(--positive)' : 'var(--error)';
+
+      document.getElementById('kpi-margin').textContent = scen.marginPct.toFixed(2) + '%';
+      const marginDiff = scen.marginPct - base.marginPct;
+      const marginDeltaEl = document.getElementById('kpi-margin-delta');
+      marginDeltaEl.textContent = Math.abs(marginDiff) < 0.01
+        ? 'Baseline Margin'
+        : `${marginDiff > 0 ? '+' : ''}${marginDiff.toFixed(2)}% pts vs Baseline`;
+      marginDeltaEl.style.color = marginDiff >= 0 ? 'var(--positive)' : 'var(--error)';
+
+      // Update Mini Variance Table on Tab 1
+      const setVarCell = (id, diff, invertColor = false) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const prefix = diff > 0 ? '+' : '';
+        el.textContent = diff === 0 ? 'Rp 0' : prefix + formatRp(diff);
+        if (diff === 0) {
+          el.style.color = 'var(--on-surface-variant)';
+        } else {
+          const isGood = invertColor ? diff < 0 : diff > 0;
+          el.style.color = isGood ? 'var(--positive)' : 'var(--error)';
+        }
+      };
+
+      document.getElementById('tbl-base-vol').textContent = formatNum(base.volume);
+      document.getElementById('tbl-scen-vol').textContent = formatNum(scen.volume);
+      const volDiff = scen.volume - base.volume;
+      document.getElementById('tbl-var-vol').textContent = (volDiff > 0 ? '+' : '') + formatNum(volDiff);
+
+      document.getElementById('tbl-base-rev').textContent = formatRp(base.revenue);
+      document.getElementById('tbl-scen-rev').textContent = formatRp(scen.revenue);
+      setVarCell('tbl-var-rev', scen.revenue - base.revenue, false);
+
+      document.getElementById('tbl-base-hpp').textContent = formatRp(base.hpp);
+      document.getElementById('tbl-scen-hpp').textContent = formatRp(scen.hpp);
+      setVarCell('tbl-var-hpp', scen.hpp - base.hpp, true);
+
+      document.getElementById('tbl-base-bonus').textContent = formatRp(base.bonus);
+      document.getElementById('tbl-scen-bonus').textContent = formatRp(scen.bonus);
+      setVarCell('tbl-var-bonus', scen.bonus - base.bonus, true);
+
+      document.getElementById('tbl-base-sal').textContent = formatRp(base.salary);
+      document.getElementById('tbl-scen-sal').textContent = formatRp(scen.salary);
+      setVarCell('tbl-var-sal', scen.salary - base.salary, true);
+
+      document.getElementById('tbl-base-opex').textContent = formatRp(base.opex);
+      document.getElementById('tbl-scen-opex').textContent = formatRp(scen.opex);
+      setVarCell('tbl-var-opex', scen.opex - base.opex, true);
+
+      document.getElementById('tbl-base-tax').textContent = formatRp(base.tax);
+      document.getElementById('tbl-scen-tax').textContent = formatRp(scen.tax);
+      setVarCell('tbl-var-tax', scen.tax - base.tax, true);
+
+      document.getElementById('tbl-base-profit').textContent = formatRp(base.netProfit);
+      document.getElementById('tbl-scen-profit').textContent = formatRp(scen.netProfit);
+      setVarCell('tbl-var-profit', scen.netProfit - base.netProfit, false);
+
+      // Update Executive Summary Narrative
+      renderExecutiveSummary(base, scen);
+
+      // Update Charts
+      if (barChartInst) {
+        barChartInst.data.datasets[0].data = [
+          +(base.revenue / 1e9).toFixed(3),
+          +(base.totalCost / 1e9).toFixed(3),
+          +(base.netProfit / 1e9).toFixed(3)
+        ];
+        barChartInst.data.datasets[1].data = [
+          +(scen.revenue / 1e9).toFixed(3),
+          +(scen.totalCost / 1e9).toFixed(3),
+          +(scen.netProfit / 1e9).toFixed(3)
+        ];
+        barChartInst.update('none');
+      }
+
+      if (donutChartInst) {
+        donutChartInst.data.datasets[0].data = [
+          Math.round(scen.bonus / 1e6),
+          Math.round(scen.salary / 1e6),
+          Math.round(scen.opex / 1e6),
+          Math.round(scen.hpp / 1e6),
+          Math.round(scen.tax / 1e6)
+        ];
+        donutChartInst.update('none');
+      }
+
+      // Update Tab 3 Full P&L & ROI
+      renderFullPnlAndRoi(base, scen);
+    }
+
+    function renderExecutiveSummary(base, scen) {
+      const badge = document.getElementById('exec-health-badge');
+      const container = document.getElementById('exec-summary-content');
+
+      let statusLabel = 'Sangat Sehat & Likuid';
+      if (scen.marginPct >= 25) {
+        statusLabel = `Sangat Tangguh (${scen.marginPct.toFixed(2)}% Margin)`;
+        badge.style.background = 'var(--positive-container)';
+        badge.style.color = 'var(--positive)';
+      } else if (scen.marginPct >= 12) {
+        statusLabel = `Moderat / Stabil (${scen.marginPct.toFixed(2)}% Margin)`;
+        badge.style.background = 'var(--warning-container)';
+        badge.style.color = 'var(--warning)';
+      } else {
+        statusLabel = `Waspada Tekanan Margin (${scen.marginPct.toFixed(2)}%)`;
+        badge.style.background = 'var(--error-container)';
+        badge.style.color = 'var(--error)';
+      }
+      badge.textContent = statusLabel;
+
+      const profitDelta = scen.netProfit - base.netProfit;
+      const empSaved = base.employees - scen.employees;
+      const salarySaved = base.salary - scen.salary;
+
+      const p1 = `<p><strong>1. Postur Unit Economics & Pendapatan 2027:</strong> Pada skenario aktif (${formatNum(scen.volume)} produk/bulan dengan harga jual rata-rata ${formatRp(scen.price)}), perusahaan memproyeksikan Omzet Kotor sebesar <strong>${formatRp(scen.revenue)}/bulan</strong> (${formatCompactRp(scen.revenue * 12)}/tahun) dan Laba Bersih (Net Profit) sebesar <strong>${formatRp(scen.netProfit)}/bulan</strong> atau <strong>${formatRp(scen.netProfit * 12)}/tahun</strong>.</p>`;
+
+      let p2 = `<p><strong>2. Evaluasi Beban Terbesar (Payout Jaringan & HPP):</strong> Struktur biaya diserap paling besar oleh komisi kemitraan sebesar <strong>${scen.bonusPct.toFixed(1)}%</strong> (${formatRp(scen.bonus)}/bulan)${scen.hpp > 0 ? ` serta HPP Produk sebesar <strong>${formatRp(scen.hpp)}/bulan</strong>` : ''}. `;
+      if (scen.bonusPct < base.bonusPct) {
+        p2 += `Penurunan rasio payout efektif dari ${base.bonusPct.toFixed(1)}% ke ${scen.bonusPct.toFixed(1)}% melalui skema <em>Tiered Bonus</em> berhasil menahan kebocoran komisi (<em>slippage</em>) yang langsung menambah arus kas bersih perusahaan.</p>`;
+      } else {
+        p2 += `Kami menyarankan Direksi mengubah skema komisi flat ${scen.bonusPct.toFixed(1)}% menjadi berjenjang (45% Base + 15% Top 20% Leader) untuk menghemat 3%–7,5% omzet menjadi ekstra Laba Bersih.</p>`;
+      }
+
+      let p3 = `<p><strong>3. Rekomendasi Efisiensi SDM & Operasional:</strong> `;
+      if (empSaved > 0) {
+        const paybackMonths = salarySaved > 0 ? (appState.itCapex / salarySaved).toFixed(1) : '-';
+        p3 += `Rasionalisasi <strong>${empSaved} posisi karyawan</strong> (dari ${base.employees} menjadi ${scen.employees} orang) melalui otomasi back-office menghemat beban gaji sebesar <strong>${formatRp(salarySaved)}/bulan</strong> (${formatRp(salarySaved * 12)}/tahun), dengan waktu balik modal investasi IT (BEP) hanya <strong>${paybackMonths} bulan</strong>.`;
+      } else {
+        p3 += `Saat ini perusahaan menanggung <strong>${scen.employees} karyawan</strong> (${formatRp(scen.salary)}/bulan, rata-rata ${formatRp(base.avgSalaryPerEmp)}/orang). Merampingkan 5–10 staf administratif melalui otomasi sistem IT akan membebaskan kas Rp 46,8 Juta – Rp 93,7 Juta setiap bulan tanpa mengganggu penjualan.`;
+      }
+      if (profitDelta !== 0) {
+        p3 += ` Secara keseluruhan, skenario ini memberikan selisih Laba Bersih <strong>${profitDelta > 0 ? '+' : ''}${formatRp(profitDelta)}/bulan</strong> dibanding Baseline.</p>`;
+      } else {
+        p3 += `</p>`;
+      }
+
+      container.innerHTML = p1 + p2 + p3;
+    }
+
+    // =========================================================================
+    // 7. TAB 2 HANDLERS: MULTI-PRODUCTS, SALARY, TIERED BONUS, TAXES
+    // =========================================================================
+    function renderProductsTable() {
+      const tbody = document.getElementById('product-tbody');
+      tbody.innerHTML = '';
+
+      let totalVol = 0;
+      let totalHpp = 0;
+      let totalRev = 0;
+
+      appState.products.forEach((p, idx) => {
+        const subHpp = (Number(p.hpp) || 0) * (Number(p.volume) || 0);
+        const subRev = (Number(p.price) || 0) * (Number(p.volume) || 0);
+        totalVol += Number(p.volume) || 0;
+        totalHpp += subHpp;
+        totalRev += subRev;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <input type="text" class="lumi-input" value="${p.name}" aria-label="Nama Produk"
+               oninput="updateProductItem(${idx}, 'name', this.value)">
+          </td>
+          <td>
+            <input type="number" class="lumi-input mono" value="${p.hpp}" min="0" step="1000" aria-label="HPP per Unit"
+              oninput="updateProductItem(${idx}, 'hpp', this.value)">
+          </td>
+          <td>
+            <input type="number" class="lumi-input mono" value="${p.price}" min="0" step="5000" aria-label="Harga Jual per Unit"
+              oninput="updateProductItem(${idx}, 'price', this.value)">
+          </td>
+          <td>
+            <input type="number" class="lumi-input mono" value="${p.volume}" min="0" step="100" aria-label="Target Volume"
+              oninput="updateProductItem(${idx}, 'volume', this.value)">
+          </td>
+          <td id="prod-subhpp-${idx}">${formatRp(subHpp)}</td>
+          <td id="prod-subrev-${idx}" style="font-weight: 600;">${formatRp(subRev)}</td>
+          <td style="text-align: center;">
+            <button type="button" class="btn btn-danger" onclick="removeProductRow(${idx})" ${appState.products.length <= 1 ? 'disabled' : ''}>Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const avgPrice = totalVol > 0 ? totalRev / totalVol : 0;
+      document.getElementById('foot-avg-price').textContent = 'Rata2: ' + formatRp(avgPrice);
+      document.getElementById('foot-total-vol').textContent = formatNum(totalVol);
+      document.getElementById('foot-total-hpp').textContent = formatRp(totalHpp);
+      document.getElementById('foot-total-rev').textContent = formatRp(totalRev);
+    }
+
+    function updateProductItem(idx, field, val) {
+      if (!appState.products[idx]) return;
+      appState.products[idx][field] = field === 'name' ? val : (parseFloat(val) || 0);
+
+      // Update row subtotals without losing input focus
+      let totalVol = 0, totalHpp = 0, totalRev = 0;
+      appState.products.forEach((p, i) => {
+        const subHpp = (Number(p.hpp) || 0) * (Number(p.volume) || 0);
+        const subRev = (Number(p.price) || 0) * (Number(p.volume) || 0);
+        totalVol += Number(p.volume) || 0;
+        totalHpp += subHpp;
+        totalRev += subRev;
+        const hEl = document.getElementById(`prod-subhpp-${i}`);
+        const rEl = document.getElementById(`prod-subrev-${i}`);
+        if (hEl) hEl.textContent = formatRp(subHpp);
+        if (rEl) rEl.textContent = formatRp(subRev);
+      });
+
+      const avgPrice = totalVol > 0 ? totalRev / totalVol : 0;
+      document.getElementById('foot-avg-price').textContent = 'Rata2: ' + formatRp(avgPrice);
+      document.getElementById('foot-total-vol').textContent = formatNum(totalVol);
+      document.getElementById('foot-total-hpp').textContent = formatRp(totalHpp);
+      document.getElementById('foot-total-rev').textContent = formatRp(totalRev);
+
+      // Keep scenario volume and price synced with baseline when editing baseline products
+      appState.scenario.volume = totalVol;
+      appState.scenario.price = Math.round(avgPrice);
+      updateAllSliderUIs();
+      updateAllViews();
+    }
+
+    function addProductRow() {
+      const nextNum = appState.products.length + 1;
+      appState.products.push({
+        id: Date.now(),
+        name: `Produk Lini ${nextNum}`,
+        hpp: 75000,
+        price: 250000,
+        volume: 2500
+      });
+      renderProductsTable();
+      const fin = computeFinancials();
+      appState.scenario.volume = fin.base.volume;
+      appState.scenario.price = Math.round(fin.base.avgPrice);
+      updateAllSliderUIs();
+      updateAllViews();
+    }
+
+    function removeProductRow(idx) {
+      if (appState.products.length <= 1) return;
+      appState.products.splice(idx, 1);
+      renderProductsTable();
+      const fin = computeFinancials();
+      appState.scenario.volume = fin.base.volume;
+      appState.scenario.price = Math.round(fin.base.avgPrice);
+      updateAllSliderUIs();
+      updateAllViews();
+    }
+
+    function onBaselineInputChange() {
+      const emp = Math.max(1, parseFloat(document.getElementById('inp-base-emp').value) || 1);
+      const sal = Math.max(0, parseFloat(document.getElementById('inp-base-salary').value) || 0);
+      const bonus = Math.max(0, parseFloat(document.getElementById('inp-base-bonus').value) || 0);
+      const opex = Math.max(0, parseFloat(document.getElementById('inp-base-opex').value) || 0);
+      const capex = Math.max(0, parseFloat(document.getElementById('inp-it-capex').value) || 0);
+
+      appState.baseEmployees = emp;
+      appState.baseTotalSalary = sal;
+      appState.baseBonusPct = bonus;
+      appState.baseOpex = opex;
+      appState.itCapex = capex;
+
+      const avgSal = sal / emp;
+      document.getElementById('out-avg-salary').textContent = formatRp(avgSal) + ' / orang';
+
+      renderTaxesTable();
+      updateAllViews();
+    }
+
+    function syncScenarioToBaselineAndView() {
+      const fin = computeFinancials();
+      appState.scenario.volume = fin.base.volume;
+      appState.scenario.price = Math.round(fin.base.avgPrice);
+      appState.scenario.bonusPct = appState.baseBonusPct;
+      appState.scenario.employees = appState.baseEmployees;
+      appState.scenario.opex = appState.baseOpex;
+      updateAllSliderUIs();
+      updateAllViews();
+      switchMenu('panel-dashboard');
+    }
+
+    function updateTieredCalculator() {
+      const base = parseFloat(document.getElementById('calc-tier-base').value) || 0;
+      const top = parseFloat(document.getElementById('calc-tier-top').value) || 0;
+      const pareto = parseFloat(document.getElementById('calc-tier-pareto').value) || 0;
+      const effective = base + (top * (pareto / 100));
+      document.getElementById('badge-effective-bonus').textContent = `Payout Aktual: ${effective.toFixed(2)}%`;
+      return effective;
+    }
+
+    function applyTieredRateToScenario() {
+      const effective = updateTieredCalculator();
+      appState.scenario.bonusPct = +effective.toFixed(2);
+      updateAllSliderUIs();
+      updateAllViews();
+      switchMenu('panel-dashboard');
+    }
+
+    function renderTaxesTable() {
+      const tbody = document.getElementById('tax-tbody');
+      tbody.innerHTML = '';
+      const fin = computeFinancials();
+
+      appState.taxes.forEach((t, idx) => {
+        const estVal = fin.base.taxDetails[idx] ? fin.base.taxDetails[idx].amountBase : 0;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align: center;">
+            <input type="checkbox" ${t.active ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;"
+              onchange="updateTaxItem(${idx}, 'active', this.checked)" aria-label="Aktifkan Pajak">
+          </td>
+          <td>
+            <input type="text" class="lumi-input" value="${t.name}" aria-label="Nama Pajak"
+              oninput="updateTaxItem(${idx}, 'name', this.value)">
+          </td>
+          <td>
+            <input type="number" class="lumi-input mono" value="${t.rate}" min="0" max="100" step="0.5" aria-label="Tarif Pajak"
+              oninput="updateTaxItem(${idx}, 'rate', this.value)">
+          </td>
+          <td>
+            <select class="lumi-select" onchange="updateTaxItem(${idx}, 'base', this.value)" aria-label="Basis Pajak">
+              <option value="revenue" ${t.base === 'revenue' ? 'selected' : ''}>Dari Pendapatan Kotor (Omzet)</option>
+              <option value="ebt" ${t.base === 'ebt' ? 'selected' : ''}>Dari Laba Sebelum Pajak (EBT)</option>
+            </select>
+          </td>
+          <td id="tax-est-${idx}" style="font-weight: ${t.active ? '600' : '400'}; color: ${t.active ? 'var(--error)' : 'var(--on-surface-variant)'};">
+            ${t.active ? formatRp(estVal) : 'Rp 0 (Nonaktif)'}
+          </td>
+          <td style="text-align: center;">
+            <button type="button" class="btn btn-danger" onclick="removeTaxRow(${idx})">Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateTaxItem(idx, field, val) {
+      if (!appState.taxes[idx]) return;
+      appState.taxes[idx][field] = field === 'rate' ? (parseFloat(val) || 0) : val;
+      const fin = computeFinancials();
+      appState.taxes.forEach((t, i) => {
+        const cell = document.getElementById(`tax-est-${i}`);
+        if (cell) {
+          const estVal = fin.base.taxDetails[i] ? fin.base.taxDetails[i].amountBase : 0;
+          cell.textContent = t.active ? formatRp(estVal) : 'Rp 0 (Nonaktif)';
+          cell.style.fontWeight = t.active ? '600' : '400';
+          cell.style.color = t.active ? 'var(--error)' : 'var(--on-surface-variant)';
+        }
+      });
+      updateAllViews();
+    }
+
+    function addTaxRow() {
+      appState.taxes.push({
+        id: Date.now(),
+        active: true,
+        name: 'Pajak Daerah / Lainnya',
+        rate: 2.5,
+        base: 'revenue'
+      });
+      renderTaxesTable();
+      updateAllViews();
+    }
+
+    function removeTaxRow(idx) {
+      appState.taxes.splice(idx, 1);
+      renderTaxesTable();
+      updateAllViews();
+    }
+
+    // =========================================================================
+    // 8. TAB 3 RENDERER: FULL P&L & ROI OTOMASI
+    // =========================================================================
+    function renderFullPnlAndRoi(base, scen) {
+      // 1. ROI Card
+      const empReduced = base.employees - scen.employees;
+      const monthlySaving = base.salary - scen.salary;
+      const annualSaving = monthlySaving * 12;
+
+      document.getElementById('roi-emp-diff').textContent = `${base.employees} → ${scen.employees} Org`;
+      document.getElementById('roi-emp-sub').textContent = empReduced > 0
+        ? `Efisiensi ${empReduced} staf (${((empReduced / base.employees) * 100).toFixed(1)}%)`
+        : (empReduced < 0 ? `Penambahan ${Math.abs(empReduced)} staf` : 'Jumlah karyawan tetap');
+
+      document.getElementById('roi-annual-saving').textContent = formatCompactRp(annualSaving);
+      document.getElementById('roi-monthly-saving').textContent = `${formatRp(monthlySaving)} / bulan`;
+      document.getElementById('roi-capex-val').textContent = formatCompactRp(appState.itCapex);
+
+      const paybackEl = document.getElementById('roi-payback');
+      const paybackSub = document.getElementById('roi-payback-sub');
+      const roiBadge = document.getElementById('roi-verdict-badge');
+
+      if (monthlySaving > 0) {
+        const months = appState.itCapex / monthlySaving;
+        paybackEl.textContent = months.toFixed(1) + ' Bulan';
+        paybackSub.textContent = `ROI Tahun Pertama: ${(((annualSaving - appState.itCapex) / Math.max(1, appState.itCapex)) * 100).toFixed(0)}%`;
+        roiBadge.textContent = months <= 12 ? 'Sangat Layak (BEP < 1 Tahun)' : 'Layak Jangka Menengah';
+        roiBadge.style.background = 'var(--positive-container)';
+        roiBadge.style.color = 'var(--positive)';
+      } else {
+        paybackEl.textContent = 'Belum Aktif';
+        paybackSub.textContent = 'Kurangi staf di Simulator untuk menghitung BEP';
+        roiBadge.textContent = 'Headcount Tetap';
+        roiBadge.style.background = 'var(--surface-container-high)';
+        roiBadge.style.color = 'var(--on-surface-variant)';
+      }
+
+      // 2. Full P&L Table
+      const pct = (val, rev) => rev > 0 ? ((val / rev) * 100).toFixed(2) + '%' : '0.00%';
+      const rows = [
+        { label: 'Pendapatan Kotor (Gross Revenue)', b: base.revenue, s: scen.revenue, cls: 'row-highlight' },
+        { label: '(-) Harga Pokok Penjualan / HPP Produk', b: -base.hpp, s: -scen.hpp, cls: '' },
+        { label: 'LABA KOTOR (GROSS PROFIT)', b: base.grossProfit, s: scen.grossProfit, cls: 'row-highlight' },
+        { label: `(-) Beban Bonus Mitra (${base.bonusPct.toFixed(1)}% vs ${scen.bonusPct.toFixed(1)}%)`, b: -base.bonus, s: -scen.bonus, cls: '' },
+        { label: `(-) Beban Gaji Karyawan (${base.employees} vs ${scen.employees} Orang)`, b: -base.salary, s: -scen.salary, cls: '' },
+        { label: '(-) Beban Operasional Bulanan (OPEX)', b: -base.opex, s: -scen.opex, cls: '' },
+        { label: 'LABA SEBELUM PAJAK (EBT)', b: base.ebt, s: scen.ebt, cls: 'row-highlight' },
+        { label: '(-) Total Estimasi Pajak Aktif', b: -base.tax, s: -scen.tax, cls: '' },
+        { label: 'LABA BERSIH (NET PROFIT)', b: base.netProfit, s: scen.netProfit, cls: 'row-accent' }
+      ];
+
+      const tbody = document.getElementById('full-pnl-tbody');
+      tbody.innerHTML = rows.map(r => {
+        const diff = r.s - r.b;
+        const diffSign = diff > 0 ? '+' : '';
+        return `
+          <tr class="${r.cls}">
+            <td>${r.label}</td>
+            <td>${formatRp(r.b)}</td>
+            <td>${pct(Math.abs(r.b), base.revenue)}</td>
+            <td>${formatRp(r.s)}</td>
+            <td>${pct(Math.abs(r.s), scen.revenue)}</td>
+            <td style="color: ${diff === 0 ? 'inherit' : (diff > 0 ? 'var(--positive)' : 'var(--error)')};">
+              ${diff === 0 ? 'Rp 0' : diffSign + formatRp(diff)}
+            </td>
+            <td style="font-weight: 700;">${formatRp(r.s * 12)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 9. TAB 4 HANDLERS: EDITABLE TIMELINE & ROADMAP
+    // =========================================================================
+    function renderTimelineList() {
+      const container = document.getElementById('timeline-container');
+      container.innerHTML = '';
+
+      let sumProgress = 0;
+      let doneCount = 0, activeCount = 0, pendingCount = 0;
+
+      appState.timeline.forEach((item, idx) => {
+        const prog = Math.max(0, Math.min(100, Number(item.progress) || 0));
+        sumProgress += prog;
+        if (prog >= 100 || item.status === 'Selesai') doneCount++;
+        else if (prog > 0 || item.status === 'Sedang Berjalan') activeCount++;
+        else pendingCount++;
+
+        const statusClass = prog >= 100 ? 'status-done' : (prog > 0 ? '' : 'status-pending');
+
+        const card = document.createElement('div');
+        card.className = `timeline-card ${statusClass}`;
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 240px;">
+              <input type="text" class="lumi-input mono" style="width: 110px; font-weight: 600;" value="${item.quarter}"
+                aria-label="Kuartal" oninput="updateTimelineField(${idx}, 'quarter', this.value)">
+              <input type="text" class="lumi-input" style="font-weight: 600; font-size: 15px;" value="${item.title}"
+                aria-label="Judul Langkah Kerja" oninput="updateTimelineField(${idx}, 'title', this.value)">
+            </div>
+            <button type="button" class="btn btn-danger" onclick="removeTimelineItem(${idx})">Hapus Langkah</button>
+          </div>
+
+          <div class="timeline-grid">
+            <div class="field-group">
+              <label class="field-hint">Target KPI / Catatan Eksekusi</label>
+              <input type="text" class="lumi-input" value="${item.notes}" aria-label="Catatan KPI"
+                oninput="updateTimelineField(${idx}, 'notes', this.value)">
+            </div>
+            <div class="field-group">
+              <label class="field-hint">PIC / Penanggung Jawab</label>
+              <input type="text" class="lumi-input" value="${item.pic}" aria-label="PIC"
+                oninput="updateTimelineField(${idx}, 'pic', this.value)">
+            </div>
+            <div class="field-group">
+              <label class="field-hint">Tanggal Mulai</label>
+              <input type="date" class="lumi-input mono" value="${item.startDate}" aria-label="Tanggal Mulai"
+                onchange="updateTimelineField(${idx}, 'startDate', this.value)">
+            </div>
+            <div class="field-group">
+              <label class="field-hint">Tanggal Target Selesai</label>
+              <input type="date" class="lumi-input mono" value="${item.endDate}" aria-label="Tanggal Selesai"
+                onchange="updateTimelineField(${idx}, 'endDate', this.value)">
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <span class="field-hint" style="min-width: 120px; font-weight: 600;" id="tl-status-txt-${idx}">
+              Status: ${item.status} (${prog}%)
+            </span>
+            <div style="flex: 1; min-width: 200px;">
+              <input type="range" class="lumi-slider" min="0" max="100" step="5" value="${prog}"
+                style="--progress: ${prog}%;" aria-label="Slider Progres"
+                oninput="updateTimelineProgress(${idx}, this)">
+            </div>
+          </div>
+
+          <div class="progress-bar-track">
+            <div id="tl-bar-${idx}" class="progress-bar-fill" style="width: ${prog}%; background: ${prog >= 100 ? 'var(--positive)' : 'var(--primary)'};"></div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      const avgProg = appState.timeline.length > 0 ? Math.round(sumProgress / appState.timeline.length) : 0;
+      document.getElementById('overall-progress-txt').textContent = avgProg + '%';
+      document.getElementById('overall-progress-bar').style.width = avgProg + '%';
+
+      document.getElementById('timeline-stats-badges').innerHTML = `
+        <span class="status-pill" style="background: var(--positive-container); color: var(--positive);">Selesai: ${doneCount}</span>
+        <span class="status-pill" style="background: var(--accent-container); color: var(--primary);">Berjalan: ${activeCount}</span>
+        <span class="status-pill" style="background: var(--surface-container-high); color: var(--on-surface-variant);">Belum Mulai: ${pendingCount}</span>
+      `;
+    }
+
+    function updateTimelineField(idx, field, val) {
+      if (!appState.timeline[idx]) return;
+      appState.timeline[idx][field] = val;
+    }
+
+    function updateTimelineProgress(idx, sliderEl) {
+      if (!appState.timeline[idx]) return;
+      const val = parseInt(sliderEl.value, 10) || 0;
+      appState.timeline[idx].progress = val;
+      syncSliderTrackProgress(sliderEl);
+
+      if (val >= 100) appState.timeline[idx].status = 'Selesai';
+      else if (val > 0) appState.timeline[idx].status = 'Sedang Berjalan';
+      else appState.timeline[idx].status = 'Belum Dimulai';
+
+      const statusTxt = document.getElementById(`tl-status-txt-${idx}`);
+      if (statusTxt) statusTxt.textContent = `Status: ${appState.timeline[idx].status} (${val}%)`;
+
+      const bar = document.getElementById(`tl-bar-${idx}`);
+      if (bar) {
+        bar.style.width = val + '%';
+        bar.style.background = val >= 100 ? 'var(--positive)' : 'var(--primary)';
+      }
+
+      // Recalculate header summary
+      let sum = 0, done = 0, act = 0, pend = 0;
+      appState.timeline.forEach(t => {
+        sum += Number(t.progress) || 0;
+        if (t.progress >= 100) done++;
+        else if (t.progress > 0) act++;
+        else pend++;
+      });
+      const avg = appState.timeline.length > 0 ? Math.round(sum / appState.timeline.length) : 0;
+      document.getElementById('overall-progress-txt').textContent = avg + '%';
+      document.getElementById('overall-progress-bar').style.width = avg + '%';
+      document.getElementById('timeline-stats-badges').innerHTML = `
+        <span class="status-pill" style="background: var(--positive-container); color: var(--positive);">Selesai: ${done}</span>
+        <span class="status-pill" style="background: var(--accent-container); color: var(--primary);">Berjalan: ${act}</span>
+        <span class="status-pill" style="background: var(--surface-container-high); color: var(--on-surface-variant);">Belum Mulai: ${pend}</span>
+      `;
+    }
+
+    function addTimelineItem() {
+      appState.timeline.push({
+        id: Date.now(),
+        quarter: 'Q1-Q4 2027',
+        title: 'Inisiatif Strategis Baru',
+        pic: 'Tim Proyek',
+        startDate: '2027-01-15',
+        endDate: '2027-03-15',
+        status: 'Belum Dimulai',
+        progress: 0,
+        notes: 'Masukkan rincian langkah kerja dan target penghematan/pendapatan di sini.'
+      });
+      renderTimelineList();
+    }
+
+    function removeTimelineItem(idx) {
+      appState.timeline.splice(idx, 1);
+      renderTimelineList();
+    }
+
+    // =========================================================================
+    // 10. INITIALIZE CHART.JS INSTANCES
+    // =========================================================================
+    function initCharts() {
+      if (typeof Chart === 'undefined') return;
+
+      const c1 = getCssVar('--chart-1', '#2575fc');
+      const c2 = getCssVar('--chart-2', '#5b6e9e');
+      const c3 = getCssVar('--chart-3', '#228a49');
+      const c4 = getCssVar('--chart-4', '#997112');
+      const c5 = getCssVar('--chart-5', '#705ec2');
+      const textColor = getCssVar('--on-surface', '#000000');
+      const deColor = getCssVar('--on-surface-variant', 'rgba(0,0,0,0.62)');
+      const gridColor = getCssVar('--stroke-default', '#e3e3e3');
+      const fontSans = getCssVar('--ff-sans', 'sans-serif');
+      const fontMono = getCssVar('--ff-mono', 'monospace');
+
+      if (barChartInst) barChartInst.destroy();
+      if (donutChartInst) donutChartInst.destroy();
+
+      const { base, scen } = computeFinancials();
+
+      // 1. Grouped Bar Chart
+      const ctxBar = document.getElementById('barChart').getContext('2d');
+      barChartInst = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: ['Gross Revenue', 'Total Costs', 'Net Profit'],
+          datasets: [
+            {
+              label: 'Baseline',
+              data: [
+                +(base.revenue / 1e9).toFixed(3),
+                +(base.totalCost / 1e9).toFixed(3),
+                +(base.netProfit / 1e9).toFixed(3)
+              ],
+              backgroundColor: c2,
+              borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+              maxBarThickness: 34
+            },
+            {
+              label: 'Scenario',
+              data: [
+                +(scen.revenue / 1e9).toFixed(3),
+                +(scen.totalCost / 1e9).toFixed(3),
+                +(scen.netProfit / 1e9).toFixed(3)
+              ],
+              backgroundColor: c1,
+              borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+              maxBarThickness: 34
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 150 },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: { color: textColor, font: { family: fontSans, size: 12 }, boxWidth: 10, usePointStyle: true }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label}: Rp ${ctx.parsed.y.toFixed(3)} Miliar`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: deColor, font: { family: fontSans, size: 12 } }
+            },
+            y: {
+              grid: { color: gridColor },
+              ticks: {
+                color: deColor,
+                font: { family: fontMono, size: 11 },
+                callback: v => v + 'B'
+              }
+            }
+          }
+        }
+      });
+
+      // 2. Doughnut Cost Composition Chart
+      const ctxDonut = document.getElementById('donutChart').getContext('2d');
+      donutChartInst = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+          labels: ['Bonus Mitra', 'Beban Gaji', 'OPEX', 'HPP Produk', 'Pajak'],
+          datasets: [{
+            data: [
+              Math.round(scen.bonus / 1e6),
+              Math.round(scen.salary / 1e6),
+              Math.round(scen.opex / 1e6),
+              Math.round(scen.hpp / 1e6),
+              Math.round(scen.tax / 1e6)
+            ],
+            backgroundColor: [c1, c2, c3, c4, c5],
+            borderWidth: 2,
+            borderColor: getCssVar('--surface-dim', '#f2f0f0'),
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          animation: { duration: 150 },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { color: textColor, font: { family: fontSans, size: 11 }, boxWidth: 8, padding: 10, usePointStyle: true }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.label}: Rp ${formatNum(ctx.raw)} Juta`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // =========================================================================
+    // 11. BOOTSTRAP ON LOAD
+    // =========================================================================
+    function bootApp() {
+      renderProductsTable();
+      renderTaxesTable();
+      renderTimelineList();
+      updateTieredCalculator();
+      updateAllSliderUIs();
+      initCharts();
+      updateAllViews();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      bootApp();
+      // Retry chart initialization if Chart.js CDN finishes loading slightly after DOMContentLoaded
+      let tries = 20;
+      const timer = setInterval(() => {
+        if (typeof Chart !== 'undefined' && !barChartInst) {
+          initCharts();
+          updateAllViews();
+          clearInterval(timer);
+        }
+        if (--tries <= 0) clearInterval(timer);
+      }, 150);
+    });
+  </script>
+</body>
+</html>
