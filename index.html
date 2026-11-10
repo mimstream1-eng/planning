@@ -789,6 +789,179 @@
       font-family: var(--ff-mono);
       font-weight: 600;
     }
+
+    /* Sharia Treasury & Guard Styles */
+    .treasury-guard-alert {
+      background: var(--error-container);
+      border: 2px solid var(--error);
+      border-radius: var(--r-m);
+      padding: 16px 20px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      color: var(--on-surface);
+      box-shadow: var(--elevation-1);
+    }
+
+    .treasury-guard-alert.is-triggered {
+      display: flex;
+    }
+
+    .sim-disclaimer-banner {
+      background: var(--accent-container);
+      border: 1px solid var(--primary);
+      border-left: 5px solid var(--primary);
+      border-radius: var(--r-m);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--on-surface);
+    }
+
+    .sim-info-alert {
+      background: var(--warning-container);
+      border: 1px solid var(--warning);
+      border-left: 5px solid var(--warning);
+      border-radius: var(--r-m);
+      padding: 14px 18px;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--on-surface);
+    }
+
+    .sim-info-alert.is-visible {
+      display: flex;
+    }
+
+    .projection-lock-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: opacity 0.2s ease;
+    }
+
+    .projection-lock-wrapper.is-locked .lockable-content {
+      opacity: 0.22;
+      pointer-events: none;
+      filter: grayscale(0.85) blur(2px);
+      user-select: none;
+    }
+
+    .projection-lock-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: var(--error-container);
+      border: 1px dashed var(--error);
+      border-radius: var(--r-m);
+      padding: 16px 20px;
+      color: var(--error);
+      font-weight: 600;
+    }
+
+    .projection-lock-wrapper.is-locked .projection-lock-banner {
+      display: flex;
+    }
+
+    .region-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--r-full);
+      font-size: 11px;
+      font-family: var(--ff-mono);
+      font-weight: 600;
+    }
+
+    .region-id {
+      background: var(--positive-container);
+      color: var(--positive);
+    }
+
+    .region-global {
+      background: var(--accent-container);
+      color: var(--primary);
+    }
+
+    .quick-alloc-group {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn-xs {
+      min-height: 24px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-family: var(--ff-mono);
+      border-radius: var(--r-s);
+      border: 1px solid var(--stroke-default);
+      background: var(--surface-dim);
+      color: var(--on-surface);
+      cursor: pointer;
+    }
+
+    .btn-xs:hover {
+      background: var(--accent-container);
+      border-color: var(--primary);
+    }
+
+    .tranche-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      margin: 2px 4px 2px 0;
+      border-radius: var(--r-s);
+      font-size: 11px;
+      font-family: var(--ff-mono);
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      color: var(--on-surface);
+    }
+
+    .tranche-badge.is-maturity {
+      background: var(--positive-container);
+      border-color: var(--positive);
+      color: var(--positive);
+      font-weight: 600;
+    }
+
+    .tranche-badge.is-coupon {
+      background: var(--accent-container);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .tenor-group-card {
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-radius: var(--r-m);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .empty-state-box {
+      background: var(--surface-dim);
+      border: 2px dashed var(--stroke-default);
+      border-radius: var(--r-l);
+      padding: 40px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
   </style>
 </head>
 <body>
@@ -798,9 +971,9 @@
     <!-- ================= HEADER & THEME SWITCHER ================= -->
     <header class="top-bar">
       <div class="brand-group">
-        <span class="brand-badge">● FINANCIAL PLANNING & SCENARIO SIMULATOR 2027</span>
+        <span class="brand-badge">● FINANCIAL PLANNING & SHARIA TREASURY SIMULATOR 2027</span>
         <h1 class="brand-title">Dashboard Perencanaan & Proyeksi Bisnis 2027</h1>
-        <p class="brand-subtitle">Simulator P&L Interaktif, Multi-Produk HPP, Pajak Dinamis, ROI Otomasi & Roadmap Eksekusi</p>
+        <p class="brand-subtitle">Simulator P&L Interaktif, Multi-Produk HPP, Beban Kustom, Proyek & Sumber Dana, Investasi Syariah, serta Dividen Direksi & Loyalty Bonus Manager</p>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
         <button type="button" class="btn" id="btn-theme-toggle" onclick="toggleTheme()">
@@ -809,24 +982,36 @@
       </div>
     </header>
 
-    <!-- ================= 4 MENU NAVIGATION BAR ================= -->
+    <!-- ================= 6 MENU NAVIGATION BAR ================= -->
     <nav class="nav-bar-wrapper" aria-label="Menu Utama">
       <div class="lumi-nav-tabs">
         <button type="button" class="nav-tab-btn active" data-tab="panel-dashboard" onclick="switchMenu('panel-dashboard', this)">
           <span class="nav-step-num">1</span>
-          <span>Dashboard & Simulator Visual</span>
+          <span>Dashboard Visual</span>
         </button>
         <button type="button" class="nav-tab-btn" data-tab="panel-input" onclick="switchMenu('panel-input', this)">
           <span class="nav-step-num">2</span>
-          <span>Input Data (Produk, HPP, Gaji, Pajak)</span>
+          <span>Input Data</span>
         </button>
         <button type="button" class="nav-tab-btn" data-tab="panel-proyeksi" onclick="switchMenu('panel-proyeksi', this)">
           <span class="nav-step-num">3</span>
-          <span>Proyeksi P&L & ROI (2027)</span>
+          <span>Proyeksi P&L & ROI</span>
         </button>
         <button type="button" class="nav-tab-btn" data-tab="panel-timeline" onclick="switchMenu('panel-timeline', this)">
           <span class="nav-step-num">4</span>
-          <span>Langkah Kerja & Timeline</span>
+          <span>Langkah Kerja</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-sharia" onclick="switchMenu('panel-sharia', this)">
+          <span class="nav-step-num">5</span>
+          <span>Pilih Investasi Syariah</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-sharia-report" onclick="switchMenu('panel-sharia-report', this)">
+          <span class="nav-step-num">6</span>
+          <span>Laporan Proyeksi & Jatuh Tempo</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-dividen" onclick="switchMenu('panel-dividen', this)">
+          <span class="nav-step-num">7</span>
+          <span>Dividen Direksi & Loyalty Manager</span>
         </button>
       </div>
     </nav>
@@ -1032,6 +1217,12 @@
               <td id="tbl-var-opex">Rp 0</td>
             </tr>
             <tr>
+              <td>Beban & Biaya Tambahan Kustom</td>
+              <td id="tbl-base-cust-exp">Rp 0</td>
+              <td id="tbl-scen-cust-exp">Rp 0</td>
+              <td id="tbl-var-cust-exp">Rp 0</td>
+            </tr>
+            <tr>
               <td>Estimasi Pajak Aktif</td>
               <td id="tbl-base-tax">Rp 0</td>
               <td id="tbl-scen-tax">Rp 0</td>
@@ -1188,11 +1379,50 @@
         </div>
       </div>
 
-      <!-- 3. Pajak Dinamis (Optional / Checkboxes) -->
+      <!-- 3B. Beban & Biaya Tambahan Kustom (Custom Expenses) -->
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 class="card-title">4. Konfigurasi Pajak Perusahaan (Opsional / Dapat Dicentang)</h2>
+            <h2 class="card-title">4. Beban & Biaya Tambahan Kustom (Dapat Ditambah Sesuai Kebutuhan)</h2>
+            <p class="card-subtitle">Tambahkan pos biaya atau beban operasional/pemasaran tambahan di luar Gaji, Bonus Mitra, dan OPEX standar. Anda dapat memilih tipe nominal tetap (Rp/bulan) atau persentase dari omzet (%).</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="addCustomExpenseRow()">+ Tambah Beban / Biaya Baru</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="width: 65px; text-align: center;">Aktif</th>
+                <th style="min-width: 200px;">Nama Beban / Biaya Tambahan</th>
+                <th style="min-width: 150px;">Kategori / Keterangan</th>
+                <th style="width: 190px;">Tipe Perhitungan</th>
+                <th style="width: 165px;">Input Nominal (Rp) / (%)</th>
+                <th>Beban Baseline / Bln</th>
+                <th>Beban Skenario / Bln</th>
+                <th style="width: 70px; text-align: center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="custom-expense-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+            <tfoot>
+              <tr class="row-highlight">
+                <td colspan="5">TOTAL BEBAN & BIAYA TAMBAHAN KUSTOM AKTIF</td>
+                <td id="foot-cust-exp-base">Rp 0</td>
+                <td id="foot-cust-exp-scen">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. Pajak Dinamis (Optional / Checkboxes) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">5. Konfigurasi Pajak Perusahaan (Opsional / Dapat Dicentang)</h2>
             <p class="card-subtitle">Centang pajak yang ingin dimasukkan ke dalam hitungan P&L, atau biarkan tidak dicentang jika ingin melihat hitungan sebelum pajak.</p>
           </div>
           <button type="button" class="btn" onclick="addTaxRow()">+ Tambah Jenis Pajak</button>
@@ -1229,11 +1459,24 @@
         <div class="card-header">
           <div>
             <h2 class="card-title">Analisis ROI Otomasi Internal & Efisiensi SDM (2027)</h2>
-            <p class="card-subtitle">Perhitungan kelayakan investasi sistem IT dibandingkan penghematan beban gaji bulanan pada Skenario.</p>
+            <p class="card-subtitle">Simulasikan target pengurangan staf administratif dan budget investasi IT untuk melihat Payback Period (BEP).</p>
           </div>
           <span id="roi-verdict-badge" class="status-pill" style="background: var(--positive-container); color: var(--positive);">
             Siap Simulasi Efisiensi
           </span>
+        </div>
+
+        <div class="input-grid-2" style="background: var(--surface-bright); padding: 14px; border-radius: var(--r-s); border: 1px solid var(--stroke-default);">
+          <div class="field-group">
+            <label class="field-label" for="inp-roi-reduce-emp">Simulasi Target Efisiensi / Pengurangan Staf (Orang)</label>
+            <input type="number" id="inp-roi-reduce-emp" class="lumi-input mono" value="5" min="0" max="48" step="1" oninput="onRoiDirectChange()">
+            <span class="field-hint">Mengurangi jumlah karyawan aktif di Skenario dari Baseline (48 orang).</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="inp-roi-capex-direct">Plafon Investasi Sistem IT / ERP (One-Time CapEx Rp)</label>
+            <input type="number" id="inp-roi-capex-direct" class="lumi-input mono" value="500000000" min="0" step="25000000" oninput="onRoiDirectChange()">
+            <span class="field-hint">Rekomendasi: Rp 500 Juta (efisiensi 5 staf) s/d Rp 1 Miliar (efisiensi 10 staf).</span>
+          </div>
         </div>
 
         <div class="kpi-grid">
@@ -1292,24 +1535,48 @@
     </section>
 
     <!-- =========================================================================
-         TAB 4: LANGKAH KERJA & TIMELINE EKSEKUSI 2027 (EDITABLE)
+         TAB 4: LANGKAH KERJA, PENGEMBANGAN PROYEK & ANGGARAN BIAYA (MULTI-TERMIN)
          ========================================================================= -->
     <section id="panel-timeline" class="tab-panel">
 
-      <!-- Overall Roadmap Progress Card -->
+      <!-- Overall Roadmap & Project Budget Summary Card -->
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 class="card-title">Progres Eksekusi Roadmap Transformasi 2027</h2>
-            <p class="card-subtitle">Seluruh poin langkah kerja, tanggal mulai/selesai, target KPI, dan persentase progres di bawah ini dapat Anda ubah secara langsung.</p>
+            <h2 class="card-title">Roadmap Langkah Kerja & Anggaran Proyek Pengembangan 2027</h2>
+            <p class="card-subtitle">Kelola langkah kerja sekaligus proyek yang akan dikembangkan beserta rincian termin biaya/modal (multi-input nominal manual, tanggal pencairan, keterangan peruntukan, dan pilihan sumber dana).</p>
           </div>
-          <button type="button" class="btn btn-primary" onclick="addTimelineItem()">+ Tambah Langkah Kerja Baru</button>
+          <button type="button" class="btn btn-primary" onclick="addTimelineItem()">+ Tambah Langkah Kerja / Proyek Baru</button>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <!-- 4 KPI Cards for Project Budget & Funding Sources -->
+        <div class="kpi-grid">
+          <div class="kpi-card is-accent">
+            <span class="kpi-label">Total Anggaran Seluruh Proyek</span>
+            <span class="kpi-value" id="proj-kpi-total">Rp 700 Jt</span>
+            <span class="kpi-sub" id="proj-kpi-count">4 Proyek (5 Termin Biaya)</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Sumber: Saldo Profit Bulanan</span>
+            <span class="kpi-value" id="proj-kpi-profit">Rp 520 Jt</span>
+            <span class="kpi-sub" id="proj-kpi-profit-sub">Sisa Profit 1 Bln: Rp 1,010 M</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Sumber: Dana Tambahan Lain</span>
+            <span class="kpi-value" id="proj-kpi-extra">Rp 80 Jt</span>
+            <span class="kpi-sub">Kas cadangan / sponsor / eksternal</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Sumber: Modal dari Owner</span>
+            <span class="kpi-value" id="proj-kpi-owner">Rp 100 Jt</span>
+            <span class="kpi-sub">Setoran modal khusus pemilik</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid var(--stroke-default);">
           <div style="flex: 1; min-width: 240px;">
             <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px;">
-              <span>Rata-rata Progres Keseluruhan Rencana Kerja 2027</span>
+              <span>Rata-rata Progres Fisik Keseluruhan Rencana Kerja & Proyek 2027</span>
               <span id="overall-progress-txt" style="font-family: var(--ff-mono); color: var(--primary);">25%</span>
             </div>
             <div class="progress-bar-track" style="height: 12px;">
@@ -1322,9 +1589,512 @@
         </div>
       </div>
 
-      <!-- Editable Timeline List -->
-      <div id="timeline-container" style="display: flex; flex-direction: column; gap: 14px;">
+      <!-- Editable Timeline & Project Disbursements List -->
+      <div id="timeline-container" style="display: flex; flex-direction: column; gap: 16px;">
         <!-- Rendered via JS -->
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB 5: PILIH & INPUT INVESTASI SYARIAH (100% MANUAL SELECTION & RECURRING)
+         ========================================================================= -->
+    <section id="panel-sharia" class="tab-panel">
+
+      <!-- CATATAN SIMULASI / PROYEKSI BANNER -->
+      <div class="sim-disclaimer-banner" role="note">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="status-pill" style="background: var(--primary); color: var(--on-primary);">CATATAN: INI HANYA SIMULASI / PROYEKSI</span>
+            <strong style="font-size: 14px;">Mode Simulasi Penyisihan Investasi Rutin Bulanan Aktif (Tanpa Penguncian Saldo)</strong>
+          </div>
+          <p style="margin: 0; font-size: 13px; color: var(--on-surface-variant); line-height: 1.5;">
+            Perhitungan di bawah ini mensimulasikan penyisihan dana untuk membeli produk investasi setiap bulannya berdasarkan nominal yang Anda input. <strong>Proyeksi keuntungan & jadwal jatuh tempo tetap dihitung dan ditampilkan penuh</strong> meskipun akumulasi pembelian multi-bulan melebihi saldo real 1 bulan saat ini.
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0;">
+          <button type="button" class="btn" onclick="loadSampleRecurringSimulation()">Isi Contoh Simulasi Rutin</button>
+          <button type="button" class="btn" onclick="resetShariaAllocations()">Reset Pilihan (Rp 0)</button>
+        </div>
+      </div>
+
+      <!-- 1. Pengaturan Sumber Saldo Profit Perusahaan -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Brankas Saldo Profit Bulanan & Simulasi Penyisihan Investasi Syariah</h2>
+            <p class="card-subtitle">Lihat perbandingan antara Saldo Laba Bersih Real per Bulan, nominal yang Anda sisihkan setiap bulan untuk membeli produk investasi, serta total akumulasi modal & proyeksi bagi hasilnya.</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn" onclick="setAllInstrumentsMode('monthly')">Set Semua: Rutin Tiap Bulan</button>
+            <button type="button" class="btn" onclick="setAllInstrumentsMode('once')">Set Semua: Sekali Beli (1x)</button>
+            <button type="button" class="btn btn-primary" onclick="switchMenu('panel-sharia-report')">
+              Lihat Laporan Proyeksi & Jatuh Tempo (Menu 6) →
+            </button>
+          </div>
+        </div>
+
+        <div class="input-grid-2" style="align-items: center; background: var(--surface-bright); padding: 14px 16px; border-radius: var(--r-s); border: 1px solid var(--stroke-default);">
+          <div class="field-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="field-label" for="slider-profit-months">Horizon Bulan Akumulasi Laba Referensi (1–12 Bulan)</label>
+              <span id="val-profit-months" class="status-pill" style="background: var(--accent-container); color: var(--primary);">12 Bulan Laba Bersih</span>
+            </div>
+            <div class="lumi-slider-container" style="flex: 1;">
+              <input type="range" id="slider-profit-months" class="lumi-slider" min="1" max="12" step="1" value="12" style="--progress: 100%;" oninput="onShariaPoolSettingChange()">
+            </div>
+            <span class="field-hint" id="hint-monthly-netprofit">Saldo Real Laba Bersih 1 Bulan: Rp 1.530.000.000 / bulan. Anda tetap bebas menginput nominal penyisihan bulanan berapapun untuk simulasi.</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px;">
+            <div class="field-group">
+              <label class="field-label" for="inp-extra-treasury">Tambahan Kas Awal / Laba Ditahan Lainnya (Rp)</label>
+              <input type="number" id="inp-extra-treasury" class="lumi-input mono" value="0" min="0" step="50000000" oninput="onShariaPoolSettingChange()">
+              <span class="field-hint">Opsional: Kas cadangan di luar laba bulanan 2027.</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="chk-zakat-corp">Zakat Korporasi atas Bagi Hasil</label>
+              <label style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; background: var(--surface-dim); border-radius: var(--r-s); border: 1px solid var(--stroke-default); cursor: pointer; font-size: 13px;">
+                <input type="checkbox" id="chk-zakat-corp" style="width: 16px; height: 16px;" onchange="onShariaPoolSettingChange()">
+                <span>Potong Zakat 2,5%</span>
+              </label>
+              <span class="field-hint">Dihitung dari bagi hasil bersih.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Treasury KPI Cards (Distinguishing Real 1-Month Balance vs Monthly Set-Aside vs Cumulative Simulation) -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Laba Bersih / Bln (Saldo Real 1 Bln)</span>
+            <span class="kpi-value" id="sharia-kpi-pool">Rp 1,530 M</span>
+            <span class="kpi-sub" id="sharia-kpi-pool-sub">Akumulasi 12 Bln: Rp 18,360 M</span>
+          </div>
+          <div class="kpi-card" id="card-sharia-allocated">
+            <span class="kpi-label">Nominal Disisihkan / Bulan</span>
+            <span class="kpi-value" id="sharia-kpi-allocated">Rp 0</span>
+            <span class="kpi-sub" id="sharia-kpi-alloc-pct">Sisa Kas Laba/Bln: Rp 1,530 M</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Total Akumulasi Modal (Simulasi)</span>
+            <span class="kpi-value" id="sharia-kpi-remaining">Rp 0</span>
+            <span class="kpi-sub" id="sharia-kpi-rem-sub">0 Produk (0x Tranche Pembelian)</span>
+          </div>
+          <div class="kpi-card is-accent" id="card-sharia-return">
+            <span class="kpi-label">Proyeksi Bagi Hasil Bersih (Simulasi)</span>
+            <span class="kpi-value" id="sharia-kpi-net-return">Rp 0</span>
+            <span class="kpi-sub" id="sharia-kpi-yield-avg">Ini Hanya Simulasi / Proyeksi</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. NON-BLOCKING SIMULATION INFO BANNER (KETIKA NOMINAL MELEBIHI SALDO REAL) -->
+      <div id="treasury-guard-banner" class="sim-info-alert" role="status">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <strong style="font-size: 14px; color: var(--warning); text-transform: uppercase; letter-spacing: 0.03em;">
+              ℹ CATATAN: INI HANYA SIMULASI / PROYEKSI — PENYISIHAN DANA RUTIN TETAP DIJALANKAN
+            </strong>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5;" id="treasury-guard-msg">
+              Total akumulasi pembelian investasi Anda melebihi saldo real 1 bulan saat ini, namun dibiayai secara bertahap dari penyisihan laba setiap bulannya. Seluruh proyeksi keuntungan dan jadwal jatuh tempo tetap ditampilkan secara penuh sebagai simulasi.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0;">
+            <button type="button" class="btn btn-primary" onclick="switchMenu('panel-sharia-report')">
+              Buka Laporan Proyeksi & Jatuh Tempo (Menu 6) →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Tabel Katalog Instrumen Investasi Syariah (Manual Selection + Sekali Beli vs Rutin Bulanan) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Katalog Instrumen Investasi Syariah Indonesia & Global (Input Manual)</h2>
+            <p class="card-subtitle">
+              Centang <strong>Pilih</strong> pada produk yang diinginkan, ketik <strong>Nominal per Pembelian</strong>, lalu atur apakah <strong>Sekali Beli (1x)</strong> atau <strong>Rutin Tiap Bulan (Beli Terus)</strong>. Jika rutin tiap bulan dipilih, proyeksi modal & keuntungan akan bertambah secara bertingkat sesuai durasi bulan pembelian.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="lumi-chip active" id="filter-sharia-all" onclick="setShariaFilter('ALL', this)">Semua Instrumen</button>
+            <button type="button" class="lumi-chip" id="filter-sharia-id" onclick="setShariaFilter('Indonesia', this)">Indonesia</button>
+            <button type="button" class="lumi-chip" id="filter-sharia-gl" onclick="setShariaFilter('Global', this)">Global / Dunia</button>
+            <button type="button" class="btn btn-primary" onclick="addCustomShariaInstrument()">+ Tambah Produk Kustom</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="width: 54px; text-align: center;">Pilih</th>
+                <th style="min-width: 210px;">Instrumen, Akad & Wilayah</th>
+                <th style="width: 100px;">Yield (% p.a.) & Pajak</th>
+                <th style="width: 150px;">Tenor (Bln) & Skema Cair</th>
+                <th style="min-width: 185px;">Input Nominal per Pembelian (Rp)</th>
+                <th style="min-width: 175px;">Frekuensi / Mode Pembelian</th>
+                <th>Total Modal Pokok Diinvestasikan</th>
+                <th>Proyeksi Bagi Hasil Bersih & Jatuh Tempo</th>
+                <th style="width: 50px; text-align: center;">Hapus</th>
+              </tr>
+            </thead>
+            <tbody id="sharia-tbody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+            <tfoot>
+              <tr class="row-accent" id="sharia-tfoot-row">
+                <td colspan="6">TOTAL AKUMULASI INVESTASI YANG DIPILIH</td>
+                <td id="sharia-foot-alloc">Rp 0</td>
+                <td id="sharia-foot-net-return">Rp 0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- CTA Menuju Laporan Proyeksi Terpisah (Menu 6) -->
+        <div class="highlight-Banner" style="margin-top: 6px;">
+          <div>
+            <strong style="font-size: 14px; display: block;">Ingin melihat rincian bulan pencairan kupon dan tanggal jatuh tempo pokok per bulan?</strong>
+            <span style="font-size: 12px; color: var(--on-surface-variant);">
+              Karena setiap instrumen memiliki tenor berbeda (1, 3, 6, 12, 24, hingga 36 bulan) dan bisa dibeli rutin tiap bulan, buka Menu 6 untuk melihat breakdown pendapatan setiap bulannya.
+            </span>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="switchMenu('panel-sharia-report')">
+            Buka Laporan Proyeksi Terpisah & Jadwal Jatuh Tempo (Menu 6) →
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB 6: LAPORAN PROYEKSI TERPISAH & JADWAL JATUH TEMPO INVESTASI PER BULAN
+         ========================================================================= -->
+    <section id="panel-sharia-report" class="tab-panel">
+
+      <!-- CATATAN SIMULASI / PROYEKSI BANNER DI MENU 6 -->
+      <div class="sim-disclaimer-banner" role="note">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="status-pill" style="background: var(--primary); color: var(--on-primary);">CATATAN: INI HANYA SIMULASI / PROYEKSI</span>
+            <strong style="font-size: 14px;">Laporan Proyeksi Keuntungan & Jadwal Jatuh Tempo Berdasarkan Penyisihan Bulanan Anda</strong>
+          </div>
+          <p style="margin: 0; font-size: 13px; color: var(--on-surface-variant); line-height: 1.5;">
+            Seluruh angka di bawah ini merupakan <strong>simulasi / proyeksi</strong> apabila perusahaan disiplin menyisihkan dana setiap bulannya untuk membeli instrumen syariah sesuai nominal dan tenor yang Anda pilih di Menu 5.
+          </p>
+        </div>
+        <button type="button" class="btn" onclick="switchMenu('panel-sharia')">
+          ← Ubah Pilihan / Nominal di Menu 5
+        </button>
+      </div>
+
+      <!-- Header Card Menu 6 -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Laporan Proyeksi Terpisah & Jadwal Jatuh Tempo Investasi Syariah</h2>
+            <p class="card-subtitle">Breakdown komprehensif berdasarkan kelompok jangka waktu (tenor), efek akumulasi pembelian rutin bulanan, dan tabel kas masuk setiap bulan sesuai tanggal jatuh temponya.</p>
+          </div>
+          <span class="status-pill" style="background: var(--accent-container); color: var(--primary);">Status: Ini Hanya Simulasi / Proyeksi</span>
+        </div>
+
+        <!-- Empty State (Jika belum ada produk yang dipilih di Menu 5) -->
+        <div id="report-empty-state" class="empty-state-box">
+          <div style="font-size: 32px;">📊</div>
+          <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Belum Ada Instrumen Investasi yang Dipilih</h3>
+          <p style="margin: 0; max-width: 560px; font-size: 14px; color: var(--on-surface-variant); line-height: 1.5;">
+            Silakan masuk ke <strong>Menu 5 (Pilih Investasi Syariah)</strong> untuk mencentang produk dan mengisi nominal penyisihan bulanan Anda secara manual, atau klik tombol contoh simulasi di bawah.
+          </p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="btn btn-primary" onclick="switchMenu('panel-sharia')">
+              Pilih Produk & Input Nominal Manual di Menu 5 →
+            </button>
+            <button type="button" class="btn" onclick="loadSampleRecurringSimulation()">
+              Muat Contoh Simulasi Penyisihan Rutin Bulanan
+            </button>
+          </div>
+        </div>
+
+        <!-- Informational Simulation Banner inside Menu 6 -->
+        <div id="report-overalloc-banner" class="sim-info-alert">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+            <div>
+              <strong style="font-size: 14px; color: var(--warning);">
+                ℹ CATATAN SIMULASI / PROYEKSI: PENYISIHAN DANA MULTI-BULAN AKTIF
+              </strong>
+              <p style="margin: 4px 0 0 0; font-size: 13px;" id="report-overalloc-msg">
+                Ini hanya simulasi / proyeksi berdasarkan nominal pembelian rutin bulanan yang Anda masukkan.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Report Content (Shown when valid allocations exist) -->
+        <div id="report-main-content" class="projection-lock-wrapper" style="display: none;">
+
+          <!-- 4 KPI Cards for Projection Report -->
+          <div class="kpi-grid lockable-content">
+            <div class="kpi-card">
+              <span class="kpi-label">Total Akumulasi Modal (Simulasi)</span>
+              <span class="kpi-value" id="rep-kpi-principal">Rp 0</span>
+              <span class="kpi-sub" id="rep-kpi-principal-sub">0 Tranche Pembelian</span>
+            </div>
+            <div class="kpi-card is-accent">
+              <span class="kpi-label">Total Proyeksi Bagi Hasil Bersih</span>
+              <span class="kpi-value" id="rep-kpi-netreturn">Rp 0</span>
+              <span class="kpi-sub" id="rep-kpi-roi-sub">Total ROI: 0.00% (Simulasi)</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Total Nilai Akhir (Pokok + Bagi Hasil)</span>
+              <span class="kpi-value" id="rep-kpi-maturity">Rp 0</span>
+              <span class="kpi-sub" id="rep-kpi-zakat-sub">Bersih setelah pajak final</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Nominal Disisihkan / Bulan</span>
+              <span class="kpi-value" id="rep-kpi-unallocated">Rp 0</span>
+              <span class="kpi-sub" id="rep-kpi-yield-sub">Weighted Net Yield: 0.00% p.a.</span>
+            </div>
+          </div>
+
+          <!-- Executive Callout: Efek Pembelian Rutin Tiap Bulan vs Sekali Beli -->
+          <div class="exec-card lockable-content" id="rep-recurring-callout">
+            <!-- Populated via JS -->
+          </div>
+
+          <!-- BAGIAN 1: LAPORAN PROYEKSI TERPISAH PER KELOMPOK TENOR -->
+          <div class="card lockable-content" style="background: var(--surface);">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Bagian 1: Laporan Proyeksi Terpisah Berdasarkan Jangka Waktu (Tenor)</h3>
+                <p class="card-subtitle">Pemisahan portofolio investasi berdasarkan instrumen Jangka Pendek (1–6 Bulan), Jangka Menengah (9–12 Bulan), dan Jangka Panjang (24–36 Bulan).</p>
+              </div>
+            </div>
+            <div id="rep-tenor-groups-container" style="display: flex; flex-direction: column; gap: 16px;">
+              <!-- Injected dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: GRAFIK ARUS KAS MASUK & JATUH TEMPO BULANAN -->
+          <div class="card lockable-content" style="background: var(--surface);">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Bagian 2: Grafik Proyeksi Pendapatan Bagi Hasil & Pencairan Pokok per Bulan</h3>
+                <p class="card-subtitle">Visualisasi kapan kupon bulanan cair, kapan pokok investasi jatuh tempo kembali ke kas, serta kurva akumulasi keuntungan bersih.</p>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="lumi-chip" id="btn-horizon-12" onclick="setReportHorizon(12, this)">12 Bulan (2027)</button>
+                <button type="button" class="lumi-chip active" id="btn-horizon-24" onclick="setReportHorizon(24, this)">24 Bulan (2027–2028)</button>
+                <button type="button" class="lumi-chip" id="btn-horizon-36" onclick="setReportHorizon(36, this)">36 Bulan (s/d 2029)</button>
+                <button type="button" class="lumi-chip" id="btn-horizon-48" onclick="setReportHorizon(48, this)">48 Bulan (s/d 2030)</button>
+              </div>
+            </div>
+            <div class="chart-viewport" style="height: 290px;">
+              <canvas id="shariaScheduleChart" role="img" aria-label="Grafik Jadwal Pencairan Bagi Hasil dan Jatuh Tempo per Bulan"></canvas>
+            </div>
+          </div>
+
+          <!-- BAGIAN 3: TABEL BREAKDOWN PENDAPATAN & JATUH TEMPO PER BULAN -->
+          <div class="card lockable-content" style="background: var(--surface);">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Bagian 3: Tabel Breakdown Pendapatan & Jatuh Tempo Setiap Bulan</h3>
+                <p class="card-subtitle">Rincian bulan demi bulan yang menampilkan modal keluar (jika beli rutin tiap bulan), kupon bulanan yang cair, bagi hasil saat jatuh tempo, serta pokok investasi yang kembali.</p>
+              </div>
+              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; background: var(--surface-dim); padding: 6px 12px; border-radius: var(--r-full); border: 1px solid var(--stroke-default);">
+                <input type="checkbox" id="chk-only-active-months" onchange="updateShariaTreasuryView()">
+                <span>Hanya tampilkan bulan dengan transaksi / pencairan</span>
+              </label>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="mini-table">
+                <thead>
+                  <tr>
+                    <th style="min-width: 125px;">Bulan & Tahun</th>
+                    <th>Setoran Investasi Baru (Modal Keluar)</th>
+                    <th>Kupon Bulanan Cair (Bersih)</th>
+                    <th>Bagi Hasil Cair Saat Jatuh Tempo</th>
+                    <th>Pokok Jatuh Tempo Kembali</th>
+                    <th>Total Kas Masuk Bulan Ini (Bagi Hasil + Pokok)</th>
+                    <th style="min-width: 280px; text-align: left;">Rincian Instrumen Cair & Jatuh Tempo</th>
+                  </tr>
+                </thead>
+                <tbody id="rep-monthly-schedule-tbody">
+                  <!-- Populated dynamically via JS -->
+                </tbody>
+                <tfoot id="rep-monthly-schedule-tfoot">
+                  <!-- Summary row populated via JS -->
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB 7: PROYEKSI PEMBAGIAN DIVIDEN DIREKSI & LOYALTY BONUS MANAGER
+         ========================================================================= -->
+    <section id="panel-dividen" class="tab-panel">
+
+      <!-- 1. Konfigurasi Sumber Dana Pool (Saldo Profit + Hasil Investasi Syariah) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Sumber Dana Pembagian: Saldo Profit & Hasil Investasi Perusahaan</h2>
+            <p class="card-subtitle">Sumber dana untuk pembagian Dividen Direksi dan Loyalty Bonus Manager diambil dari gabungan <strong>Saldo Laba Bersih (Profit)</strong> serta <strong>Bagi Hasil Bersih Investasi Syariah</strong> yang dilakukan perusahaan.</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="lumi-chip" id="btn-div-horizon-1" onclick="setDividendPoolHorizon(1, this)">Basis 1 Bulan Profit</button>
+            <button type="button" class="lumi-chip" id="btn-div-horizon-6" onclick="setDividendPoolHorizon(6, this)">Basis 6 Bulan (Semester)</button>
+            <button type="button" class="lumi-chip active" id="btn-div-horizon-12" onclick="setDividendPoolHorizon(12, this)">Basis 12 Bulan (Tahunan 2027)</button>
+          </div>
+        </div>
+
+        <div class="input-grid-2" style="background: var(--surface-bright); padding: 14px 16px; border-radius: var(--r-s); border: 1px solid var(--stroke-default); align-items: center;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <span class="field-label">Komponen Sumber Dana Tersedia (Distributable Pool)</span>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                <input type="checkbox" id="chk-div-include-inv" checked style="width: 16px; height: 16px;" onchange="onDividendPoolConfigChange()">
+                <span>Sertakan Proyeksi Hasil Investasi Syariah (Menu 5 & 6)</span>
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                <input type="checkbox" id="chk-div-deduct-proj" style="width: 16px; height: 16px;" onchange="onDividendPoolConfigChange()">
+                <span>Kurangi dengan Modal Proyek dari Saldo Profit (Menu 4)</span>
+              </label>
+            </div>
+            <span class="field-hint" id="div-pool-formula-hint">
+              Pool = Akumulasi Laba Bersih Skenario (12 Bln) + Total Bagi Hasil Bersih Investasi Syariah.
+            </span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="inp-div-extra-pool">Tambahan Saldo Laba Ditahan / Penyesuaian Manual Pool (Rp)</label>
+            <input type="number" id="inp-div-extra-pool" class="lumi-input mono" value="0" step="50000000" oninput="onDividendPoolConfigChange()">
+            <span class="field-hint">Opsional: Tambahkan saldo kas laba tahun sebelumnya jika ikut dibagikan.</span>
+          </div>
+        </div>
+
+        <!-- 4 KPI Cards for Distributable Pool, Dividend, Loyalty Bonus, and Retained Earnings -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Sumber Dana (Profit + Investasi)</span>
+            <span class="kpi-value" id="div-kpi-total-pool">Rp 18,360 M</span>
+            <span class="kpi-sub" id="div-kpi-pool-breakdown">Profit: Rp 18,360 M | Inv: Rp 0</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Total Dividen Direksi</span>
+            <span class="kpi-value" id="div-kpi-directors" style="color: var(--primary);">Rp 3,672 M</span>
+            <span class="kpi-sub" id="div-kpi-directors-pct">20.00% dari Total Sumber Dana</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Total Loyalty Bonus Manager</span>
+            <span class="kpi-value" id="div-kpi-managers" style="color: var(--positive);">Rp 918,0 Jt</span>
+            <span class="kpi-sub" id="div-kpi-managers-pct">5.00% dari Total Sumber Dana</span>
+          </div>
+          <div class="kpi-card is-accent">
+            <span class="kpi-label">Sisa Laba Ditahan Bersih (Kas)</span>
+            <span class="kpi-value" id="div-kpi-retained">Rp 13,770 M</span>
+            <span class="kpi-sub" id="div-kpi-retained-pct">75.00% Ditahan di Perusahaan</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Tabel Proyeksi Pembagian Dividen untuk Direksi (Input Manual % & Nominal) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">1. Proyeksi Pembagian Dividen untuk Direksi (Input Manual % & Nominal)</h2>
+            <p class="card-subtitle">Ketik langsung <strong>Persentase (%)</strong> atau <strong>Jumlah Nominal (Rp)</strong> yang dibagikan untuk setiap posisi/anggota Direksi. Sistem otomatis menyinkronkan keduanya secara dua arah terhadap Total Sumber Dana.</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn" onclick="addDirectorDividendRow()">+ Tambah Penerima Dividen Direksi</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="width: 60px; text-align: center;">Aktif</th>
+                <th style="min-width: 210px;">Jabatan / Nama Direksi</th>
+                <th style="min-width: 180px;">Keterangan / Basis Alokasi</th>
+                <th style="width: 165px;">Input Persentase (%)</th>
+                <th style="width: 210px;">Input Jumlah Nominal (Rp)</th>
+                <th>Estimasi Rata-rata / Bulan</th>
+                <th>Porsi dari Total Pool</th>
+                <th style="width: 70px; text-align: center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="director-dividend-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+            <tfoot>
+              <tr class="row-accent">
+                <td colspan="3">TOTAL PEMBAGIAN DIVIDEN DIREKSI</td>
+                <td id="foot-dir-pct">20.00%</td>
+                <td id="foot-dir-amount">Rp 3.672.000.000</td>
+                <td id="foot-dir-monthly">Rp 306.000.000 / bln</td>
+                <td id="foot-dir-share">20.00% Pool</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Tabel Proyeksi Loyalty Bonus untuk Para Manager (Input Manual % & Nominal) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">2. Proyeksi Pembagian Loyalty Bonus untuk Para Manager (Input Manual % & Nominal)</h2>
+            <p class="card-subtitle">Atur alokasi <strong>Loyalty Bonus</strong> untuk jajaran Manager (baik persentase maupun besaran nominal Rp dapat diinput manual dan dibagi per jumlah orang/jabatan).</p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn" onclick="addManagerLoyaltyRow()">+ Tambah Pos Loyalty Bonus Manager</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="width: 60px; text-align: center;">Aktif</th>
+                <th style="min-width: 210px;">Jabatan / Divisi Manager</th>
+                <th style="width: 110px;">Jml Manager (Org)</th>
+                <th style="width: 160px;">Input Persentase (%)</th>
+                <th style="width: 205px;">Input Total Nominal (Rp)</th>
+                <th>Nominal per Manager (Rp/Org)</th>
+                <th>Keterangan KPI / Syarat Loyalty</th>
+                <th style="width: 70px; text-align: center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="manager-loyalty-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+            <tfoot>
+              <tr class="row-highlight">
+                <td colspan="2">TOTAL LOYALTY BONUS PARA MANAGER</td>
+                <td id="foot-mgr-headcount">3 Org</td>
+                <td id="foot-mgr-pct">5.00%</td>
+                <td id="foot-mgr-amount">Rp 918.000.000</td>
+                <td id="foot-mgr-avg">Rata2: Rp 306.000.000 / org</td>
+                <td id="foot-mgr-share">5.00% dari Pool</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. Ringkasan Alokasi Penggunaan Laba & Hasil Investasi -->
+      <div class="exec-card" id="div-summary-callout">
+        <!-- Populated dynamically via JS -->
       </div>
 
     </section>
@@ -1348,6 +2118,12 @@
       baseOpex: 150000000,
       itCapex: 500000000,
 
+      // Dynamic Custom Expenses (Unchecked / Rp 0 by default so initial baseline matches Rp 1.53B, ready to customize/add)
+      customExpenses: [
+        { id: 1, active: false, name: 'Biaya Event & Promosi Nasional (MCD)', category: 'Marketing & Event', calcType: 'fixed', value: 50000000 },
+        { id: 2, active: false, name: 'Cadangan Logistik & Pemeliharaan Sistem', category: 'Operasional Tambahan', calcType: 'pct_revenue', value: 1.0 }
+      ],
+
       // Dynamic Optional Taxes (Unchecked by default so baseline matches exact Rp 1.53B)
       taxes: [
         { id: 1, active: false, name: 'PPh Final / UMKM', rate: 0.5, base: 'revenue' },
@@ -1364,57 +2140,295 @@
         opex: 150000000
       },
 
-      // Editable Action Plan & Timeline
+      // Editable Action Plan, Project Development & Multi-Disbursement Budget
       timeline: [
         {
           id: 1,
           quarter: 'Q1 2027',
           title: 'Pengembangan Sistem Otomasi IT & Penetapan KPI Top 20% Mitra',
+          projectName: 'Proyek ERP & Portal Otomasi Komisi Mitra',
           pic: 'Direksi & Tim IT',
           startDate: '2027-01-05',
           endDate: '2027-03-31',
           status: 'Sedang Berjalan',
           progress: 35,
-          notes: 'Otomatisasi perhitungan komisi berjenjang dan portal self-service mitra senilai budget Rp 500 Juta untuk memangkas beban admin manual.'
+          notes: 'Otomatisasi perhitungan komisi berjenjang dan portal self-service mitra senilai budget Rp 500 Juta untuk memangkas beban admin manual.',
+          disbursements: [
+            { id: 101, date: '2027-01-15', description: 'Termin 1: Arsitektur Database & Engine Komisi Berjenjang', amount: 200000000, source: 'profit_pool' },
+            { id: 102, date: '2027-02-20', description: 'Termin 2: Portal Self-Service Mitra & Integrasi Payment', amount: 200000000, source: 'profit_pool' },
+            { id: 103, date: '2027-03-25', description: 'Termin 3: UAT, Server Cloud & Security Audit', amount: 100000000, source: 'owner_capital' }
+          ]
         },
         {
           id: 2,
           quarter: 'Q2 2027',
           title: 'Sosialisasi Eksternal Skema Tiered Bonus & Uji Coba Paralel (Shadow Run)',
+          projectName: 'Proyek Roadshow Nasional & Kampanye Tiered Bonus',
           pic: 'VP Sales & Network',
           startDate: '2027-04-01',
           endDate: '2027-06-30',
           status: 'Belum Dimulai',
           progress: 0,
-          notes: 'Transisi bertahap dari flat 60% ke skema 45% Base + 15% Kualifikasi Top Performer agar memicu FOMO positif dan kenaikan volume +15%.'
+          notes: 'Transisi bertahap dari flat 60% ke skema 45% Base + 15% Kualifikasi Top Performer agar memicu FOMO positif dan kenaikan volume +15%.',
+          disbursements: [
+            { id: 201, date: '2027-04-10', description: 'Roadshow Sosialisasi Leader Nasional & Materi Edukasi', amount: 120000000, source: 'profit_pool' },
+            { id: 202, date: '2027-05-15', description: 'Insentif Early Adopter Shadow Run Top 20%', amount: 80000000, source: 'extra_cash' }
+          ]
         },
         {
           id: 3,
           quarter: 'Q3 2027',
           title: 'Cut-Off Komisi Lama & Rasionalisasi 5-10 Posisi Administratif',
+          projectName: 'Proyek Restrukturisasi SDM & Kompensasi Transisi',
           pic: 'HRD & Finance',
           startDate: '2027-07-01',
           endDate: '2027-09-30',
           status: 'Belum Dimulai',
           progress: 0,
-          notes: 'Pemberlakuan penuh Tiered Bonus (efektif 57% Pareto) dan realokasi/pengurangan staf admin yang fungsinya telah diambil alih sistem IT.'
+          notes: 'Pemberlakuan penuh Tiered Bonus (efektif 57% Pareto) dan realokasi/pengurangan staf admin yang fungsinya telah diambil alih sistem IT.',
+          disbursements: []
         },
         {
           id: 4,
           quarter: 'Q4 2027',
           title: 'Evaluasi Kinerja P&L Tahunan & Pengamanan Laba Ditahan',
+          projectName: 'Audit Tahunan & Penguatan Brankas Treasury 2027',
           pic: 'Dewan Direksi',
           startDate: '2027-10-01',
           endDate: '2027-12-31',
           status: 'Belum Dimulai',
           progress: 0,
-          notes: 'Audit pencapaian Net Profit Margin di atas 32% dan evaluasi Payback Period investasi IT (< 11 bulan).'
+          notes: 'Audit pencapaian Net Profit Margin di atas 32% dan evaluasi Payback Period investasi IT (< 11 bulan).',
+          disbursements: []
         }
-      ]
+      ],
+
+      // Menu 7: Proyeksi Pembagian Dividen Direksi & Loyalty Bonus Manager
+      dividendLoyalty: {
+        horizonMonths: 12,
+        includeShariaReturn: true,
+        deductProjectFromProfit: false,
+        extraPoolAdjustment: 0,
+        directors: [
+          { id: 1, active: true, name: 'Direktur Utama (CEO)', notes: 'Alokasi Utama Kepemimpinan Strategis', pct: 10.0, amount: 1836000000, lastEdited: 'pct' },
+          { id: 2, active: true, name: 'Direktur Marketing & Network', notes: 'Pengembangan Jaringan Nasional & Omzet', pct: 5.0, amount: 918000000, lastEdited: 'pct' },
+          { id: 3, active: true, name: 'Direktur Keuangan & Operasional', notes: 'Efisiensi OPEX, Otomasi IT & Treasury', pct: 5.0, amount: 918000000, lastEdited: 'pct' }
+        ],
+        managers: [
+          { id: 1, active: true, role: 'Marketing & Network Manager', headcount: 1, pct: 2.0, amount: 367200000, notes: 'Target Pertumbuhan Volume & Event Nasional', lastEdited: 'pct' },
+          { id: 2, active: true, role: 'Finance, Tax & Treasury Manager', headcount: 1, pct: 1.5, amount: 275400000, notes: 'Target Akurasi Kas & Imbal Hasil Syariah', lastEdited: 'pct' },
+          { id: 3, active: true, role: 'IT & Operations Manager', headcount: 1, pct: 1.5, amount: 275400000, notes: 'Target Implementasi Otomasi Back-Office', lastEdited: 'pct' }
+        ]
+      },
+
+      // Menu 5 & Menu 6: Sharia Treasury & Manual Investment State
+      // Default purchaseMode set to 'monthly' (Rutin Tiap Bulan) so monthly set-aside works immediately when nominal is entered
+      shariaTreasury: {
+        accumMonths: 12,
+        extraInitialCash: 0,
+        zakatCorpEnabled: false,
+        regionFilter: 'ALL',
+        reportHorizonMonths: 24,
+        instruments: [
+          {
+            id: 101,
+            selected: false,
+            name: 'Sukuk Negara Ritel / Sukuk Tabungan (SR/ST - Kemenkeu RI)',
+            akad: 'Ijarah Asset to Be Leased (Dijamin 100% Negara)',
+            region: 'Indonesia',
+            risk: 'Sangat Rendah',
+            annualYieldPct: 6.40,
+            tenorMonths: 24,
+            payoutType: 'monthly_coupon',
+            taxPct: 10.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 102,
+            selected: false,
+            name: 'Project Based Sukuk (PBS) / Sukuk Korporasi Syariah AAA',
+            akad: 'Mudharabah / Ijarah Proyek Infrastruktur',
+            region: 'Indonesia',
+            risk: 'Rendah',
+            annualYieldPct: 7.10,
+            tenorMonths: 36,
+            payoutType: 'monthly_coupon',
+            taxPct: 10.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 103,
+            selected: false,
+            name: 'Deposito Mudharabah Bank Syariah Tier-1 (BSI / BCA Syariah)',
+            akad: 'Mudharabah Muthlaqah (Kas Likuid Korporasi)',
+            region: 'Indonesia',
+            risk: 'Sangat Rendah',
+            annualYieldPct: 5.00,
+            tenorMonths: 3,
+            payoutType: 'maturity_lump',
+            taxPct: 20.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 104,
+            selected: false,
+            name: 'Reksa Dana Pasar Uang (RDPU) Syariah',
+            akad: 'Wakalah bil Ujrah (Likuiditas Harian / Bulanan)',
+            region: 'Indonesia',
+            risk: 'Sangat Rendah',
+            annualYieldPct: 5.20,
+            tenorMonths: 6,
+            payoutType: 'maturity_lump',
+            taxPct: 0.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 105,
+            selected: false,
+            name: 'Reksa Dana Pendapatan Tetap (RDPT) Sukuk Syariah',
+            akad: 'Wakalah / Mudharabah Portofolio Sukuk',
+            region: 'Indonesia',
+            risk: 'Rendah - Moderat',
+            annualYieldPct: 6.80,
+            tenorMonths: 12,
+            payoutType: 'monthly_coupon',
+            taxPct: 0.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 106,
+            selected: false,
+            name: 'Sukuk Crowdfunding Syariah (SCF Berizin OJK - Proyek Invoice)',
+            akad: 'Musyarakah / Mudharabah Proyek UKM',
+            region: 'Indonesia',
+            risk: 'Moderat - Tinggi',
+            annualYieldPct: 12.00,
+            tenorMonths: 6,
+            payoutType: 'maturity_lump',
+            taxPct: 15.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 107,
+            selected: false,
+            name: 'Emas Fisik / Bullion Treasury Syariah (Antam / BSI Emas)',
+            akad: 'Murabahah / Sharf (Capital Gain Saat Jatuh Tempo)',
+            region: 'Indonesia',
+            risk: 'Moderat',
+            annualYieldPct: 10.50,
+            tenorMonths: 12,
+            payoutType: 'maturity_lump',
+            taxPct: 0.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 201,
+            selected: false,
+            name: 'Global Sovereign Sukuk (USD - RI SNI / Saudi / UAE Sukuk)',
+            akad: 'Wakalah / Ijarah (Denominasi USD Global)',
+            region: 'Global',
+            risk: 'Rendah',
+            annualYieldPct: 5.35,
+            tenorMonths: 24,
+            payoutType: 'monthly_coupon',
+            taxPct: 10.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 202,
+            selected: false,
+            name: 'Global Sharia Equity ETF (S&P 500 Sharia SPUS / MSCI Islamic ISWD)',
+            akad: 'Musyarakah Saham Syariah Global (Tech & Healthcare)',
+            region: 'Global',
+            risk: 'Moderat - Tinggi',
+            annualYieldPct: 11.20,
+            tenorMonths: 12,
+            payoutType: 'maturity_lump',
+            taxPct: 10.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 203,
+            selected: false,
+            name: 'Global Sukuk Fund (Franklin Global Sukuk / iShares Sukuk UCITS)',
+            akad: 'Wakalah / Ijarah Diversifikasi Sukuk Dunia',
+            region: 'Global',
+            risk: 'Rendah - Moderat',
+            annualYieldPct: 5.60,
+            tenorMonths: 12,
+            payoutType: 'monthly_coupon',
+            taxPct: 10.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          },
+          {
+            id: 204,
+            selected: false,
+            name: 'Islamic Liquidity Commodity Murabahah (IILM / DIFC Treasury)',
+            akad: 'Tawarruq / Murabahah Pasar Uang Internasional',
+            region: 'Global',
+            risk: 'Sangat Rendah',
+            annualYieldPct: 4.90,
+            tenorMonths: 3,
+            payoutType: 'maturity_lump',
+            taxPct: 10.0,
+            nominalPerBuy: 0,
+            purchaseMode: 'monthly',
+            recurringMonths: 12,
+            startMonth: 1
+          }
+        ]
+      }
     };
 
     let barChartInst = null;
     let donutChartInst = null;
+    let shariaScheduleChartInst = null;
+
+    // Helper Nama Bulan (Mulai Jan 2027 = Bulan 1 s/d Des 2030 = Bulan 48)
+    const MONTH_NAMES_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    function formatMonthIndex(mIdx) {
+      const zeroBased = Math.max(0, (Number(mIdx) || 1) - 1);
+      const year = 2027 + Math.floor(zeroBased / 12);
+      const mName = MONTH_NAMES_SHORT[zeroBased % 12];
+      return `${mName} ${year} (Bln ${mIdx})`;
+    }
+
+    function formatMonthShort(mIdx) {
+      const zeroBased = Math.max(0, (Number(mIdx) || 1) - 1);
+      const year = 2027 + Math.floor(zeroBased / 12);
+      const mName = MONTH_NAMES_SHORT[zeroBased % 12];
+      return `${mName} ${year}`;
+    }
 
     // =========================================================================
     // 2. FORMATTING HELPERS
@@ -1474,6 +2488,11 @@
           if (donutChartInst) donutChartInst.resize();
           updateAllViews();
         }, 30);
+      } else if (panelId === 'panel-sharia' || panelId === 'panel-sharia-report') {
+        setTimeout(() => {
+          if (shariaScheduleChartInst) shariaScheduleChartInst.resize();
+          updateAllViews();
+        }, 30);
       }
     }
 
@@ -1514,7 +2533,32 @@
       const baseBonus = baseRevenue * (appState.baseBonusPct / 100);
       const baseOpex = Math.max(0, Number(appState.baseOpex) || 0);
 
-      const baseEbt = baseGrossProfit - baseBonus - baseSalary - baseOpex;
+      // 2B. Custom Additional Expenses (Baseline & Scenario)
+      const scenVolume = Math.max(0, Number(appState.scenario.volume) || 0);
+      const scenPrice = Math.max(0, Number(appState.scenario.price) || 0);
+      const scenRevenue = scenVolume * scenPrice;
+
+      let baseCustomExp = 0;
+      let scenCustomExp = 0;
+      const customExpDetails = (appState.customExpenses || []).map(ce => {
+        let amtBase = 0;
+        let amtScen = 0;
+        const val = Math.max(0, Number(ce.value) || 0);
+        if (ce.active) {
+          if (ce.calcType === 'pct_revenue') {
+            amtBase = baseRevenue * (val / 100);
+            amtScen = scenRevenue * (val / 100);
+          } else {
+            amtBase = val;
+            amtScen = val;
+          }
+        }
+        baseCustomExp += amtBase;
+        scenCustomExp += amtScen;
+        return { ...ce, amtBase, amtScen };
+      });
+
+      const baseEbt = baseGrossProfit - baseBonus - baseSalary - baseOpex - baseCustomExp;
 
       // 3. Baseline Taxes
       let baseTax = 0;
@@ -1531,15 +2575,11 @@
         return { ...t, amountBase };
       });
 
-      const baseTotalCost = baseHpp + baseBonus + baseSalary + baseOpex + baseTax;
+      const baseTotalCost = baseHpp + baseBonus + baseSalary + baseOpex + baseCustomExp + baseTax;
       const baseNetProfit = baseEbt - baseTax;
       const baseMarginPct = baseRevenue > 0 ? (baseNetProfit / baseRevenue) * 100 : 0;
 
       // 4. Scenario Calculations
-      const scenVolume = Math.max(0, Number(appState.scenario.volume) || 0);
-      const scenPrice = Math.max(0, Number(appState.scenario.price) || 0);
-      const scenRevenue = scenVolume * scenPrice;
-
       // HPP scales proportionally with scenario volume
       const scenHpp = scenVolume * baseAvgHpp;
       const scenGrossProfit = scenRevenue - scenHpp;
@@ -1549,7 +2589,7 @@
       const scenSalary = scenEmp * avgSalaryPerEmp;
       const scenOpex = Math.max(0, Number(appState.scenario.opex) || 0);
 
-      const scenEbt = scenGrossProfit - scenBonus - scenSalary - scenOpex;
+      const scenEbt = scenGrossProfit - scenBonus - scenSalary - scenOpex - scenCustomExp;
 
       let scenTax = 0;
       appState.taxes.forEach(t => {
@@ -1562,7 +2602,7 @@
         }
       });
 
-      const scenTotalCost = scenHpp + scenBonus + scenSalary + scenOpex + scenTax;
+      const scenTotalCost = scenHpp + scenBonus + scenSalary + scenOpex + scenCustomExp + scenTax;
       const scenNetProfit = scenEbt - scenTax;
       const scenMarginPct = scenRevenue > 0 ? (scenNetProfit / scenRevenue) * 100 : 0;
 
@@ -1580,6 +2620,8 @@
           avgSalaryPerEmp,
           salary: baseSalary,
           opex: baseOpex,
+          customExp: baseCustomExp,
+          customExpDetails,
           ebt: baseEbt,
           tax: baseTax,
           taxDetails,
@@ -1598,6 +2640,7 @@
           employees: scenEmp,
           salary: scenSalary,
           opex: scenOpex,
+          customExp: scenCustomExp,
           ebt: scenEbt,
           tax: scenTax,
           totalCost: scenTotalCost,
@@ -1786,6 +2829,12 @@
       document.getElementById('tbl-scen-opex').textContent = formatRp(scen.opex);
       setVarCell('tbl-var-opex', scen.opex - base.opex, true);
 
+      const bCustEl = document.getElementById('tbl-base-cust-exp');
+      const sCustEl = document.getElementById('tbl-scen-cust-exp');
+      if (bCustEl) bCustEl.textContent = formatRp(base.customExp || 0);
+      if (sCustEl) sCustEl.textContent = formatRp(scen.customExp || 0);
+      setVarCell('tbl-var-cust-exp', (scen.customExp || 0) - (base.customExp || 0), true);
+
       document.getElementById('tbl-base-tax').textContent = formatRp(base.tax);
       document.getElementById('tbl-scen-tax').textContent = formatRp(scen.tax);
       setVarCell('tbl-var-tax', scen.tax - base.tax, true);
@@ -1817,14 +2866,27 @@
           Math.round(scen.bonus / 1e6),
           Math.round(scen.salary / 1e6),
           Math.round(scen.opex / 1e6),
+          Math.round((scen.customExp || 0) / 1e6),
           Math.round(scen.hpp / 1e6),
           Math.round(scen.tax / 1e6)
         ];
         donutChartInst.update('none');
       }
 
+      // Update Custom Expenses Footer in Tab 2
+      updateCustomExpensesDynamicCells(base, scen);
+
       // Update Tab 3 Full P&L & ROI
       renderFullPnlAndRoi(base, scen);
+
+      // Update Tab 4 Project Budget KPIs
+      updateTimelineProjectKpis(scen);
+
+      // Update Tab 5 Sharia Treasury & Investment Simulator
+      updateShariaTreasuryView(scen);
+
+      // Update Tab 7 Dividend Direksi & Loyalty Bonus Manager
+      updateDividendLoyaltyView(scen);
     }
 
     function renderExecutiveSummary(base, scen) {
@@ -2036,6 +3098,113 @@
       switchMenu('panel-dashboard');
     }
 
+    function renderCustomExpensesTable() {
+      const tbody = document.getElementById('custom-expense-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const fin = computeFinancials();
+
+      appState.customExpenses.forEach((ce, idx) => {
+        const det = fin.base.customExpDetails[idx] || { amtBase: 0, amtScen: 0 };
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align: center;">
+            <input type="checkbox" ${ce.active ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;"
+              onchange="updateCustomExpenseItem(${idx}, 'active', this.checked)" aria-label="Aktifkan Beban Kustom">
+          </td>
+          <td>
+            <input type="text" class="lumi-input" value="${ce.name}" aria-label="Nama Beban Tambahan"
+              oninput="updateCustomExpenseItem(${idx}, 'name', this.value)">
+          </td>
+          <td>
+            <input type="text" class="lumi-input" value="${ce.category || ''}" aria-label="Kategori Beban"
+              oninput="updateCustomExpenseItem(${idx}, 'category', this.value)">
+          </td>
+          <td>
+            <select class="lumi-select" onchange="updateCustomExpenseItem(${idx}, 'calcType', this.value)" aria-label="Tipe Perhitungan Beban">
+              <option value="fixed" ${ce.calcType === 'fixed' ? 'selected' : ''}>Nominal Tetap (Rp / Bulan)</option>
+              <option value="pct_revenue" ${ce.calcType === 'pct_revenue' ? 'selected' : ''}>Persentase dari Omzet (%)</option>
+            </select>
+          </td>
+          <td>
+            <input type="number" class="lumi-input mono" value="${ce.value}" min="0" step="${ce.calcType === 'pct_revenue' ? '0.25' : '5000000'}"
+              aria-label="Nilai Beban Kustom" oninput="updateCustomExpenseItem(${idx}, 'value', this.value)">
+          </td>
+          <td id="cust-exp-base-${idx}" style="font-weight: ${ce.active ? '600' : '400'}; color: ${ce.active ? 'var(--on-surface)' : 'var(--on-surface-variant)'};">
+            ${ce.active ? formatRp(det.amtBase) : 'Rp 0 (Nonaktif)'}
+          </td>
+          <td id="cust-exp-scen-${idx}" style="font-weight: ${ce.active ? '600' : '400'}; color: ${ce.active ? 'var(--error)' : 'var(--on-surface-variant)'};">
+            ${ce.active ? formatRp(det.amtScen) : 'Rp 0 (Nonaktif)'}
+          </td>
+          <td style="text-align: center;">
+            <button type="button" class="btn btn-danger" onclick="removeCustomExpenseRow(${idx})">Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateCustomExpensesDynamicCells(fin.base, fin.scen);
+    }
+
+    function updateCustomExpensesDynamicCells(base, scen) {
+      appState.customExpenses.forEach((ce, idx) => {
+        const det = base.customExpDetails && base.customExpDetails[idx] ? base.customExpDetails[idx] : { amtBase: 0, amtScen: 0 };
+        const bCell = document.getElementById(`cust-exp-base-${idx}`);
+        const sCell = document.getElementById(`cust-exp-scen-${idx}`);
+        if (bCell) {
+          bCell.textContent = ce.active ? formatRp(det.amtBase) : 'Rp 0 (Nonaktif)';
+          bCell.style.fontWeight = ce.active ? '600' : '400';
+          bCell.style.color = ce.active ? 'var(--on-surface)' : 'var(--on-surface-variant)';
+        }
+        if (sCell) {
+          sCell.textContent = ce.active ? formatRp(det.amtScen) : 'Rp 0 (Nonaktif)';
+          sCell.style.fontWeight = ce.active ? '600' : '400';
+          sCell.style.color = ce.active ? 'var(--error)' : 'var(--on-surface-variant)';
+        }
+      });
+      const footB = document.getElementById('foot-cust-exp-base');
+      const footS = document.getElementById('foot-cust-exp-scen');
+      if (footB) footB.textContent = formatRp(base.customExp || 0);
+      if (footS) footS.textContent = formatRp(scen.customExp || 0);
+    }
+
+    function updateCustomExpenseItem(idx, field, val) {
+      if (!appState.customExpenses[idx]) return;
+      if (field === 'value') {
+        const numVal = Math.max(0, parseFloat(val) || 0);
+        appState.customExpenses[idx].value = numVal;
+        if (numVal > 0 && !appState.customExpenses[idx].active) {
+          appState.customExpenses[idx].active = true;
+          renderCustomExpensesTable();
+        }
+      } else {
+        appState.customExpenses[idx][field] = val;
+        if (field === 'calcType' || field === 'active') {
+          renderCustomExpensesTable();
+        }
+      }
+      updateAllViews();
+    }
+
+    function addCustomExpenseRow() {
+      appState.customExpenses.push({
+        id: Date.now(),
+        active: true,
+        name: `Beban Tambahan #${appState.customExpenses.length + 1}`,
+        category: 'Operasional / Marketing',
+        calcType: 'fixed',
+        value: 25000000
+      });
+      renderCustomExpensesTable();
+      updateAllViews();
+    }
+
+    function removeCustomExpenseRow(idx) {
+      appState.customExpenses.splice(idx, 1);
+      renderCustomExpensesTable();
+      updateAllViews();
+    }
+
     function renderTaxesTable() {
       const tbody = document.getElementById('tax-tbody');
       tbody.innerHTML = '';
@@ -2111,9 +3280,32 @@
     // =========================================================================
     // 8. TAB 3 RENDERER: FULL P&L & ROI OTOMASI
     // =========================================================================
+    function onRoiDirectChange() {
+      const redInput = document.getElementById('inp-roi-reduce-emp');
+      const capInput = document.getElementById('inp-roi-capex-direct');
+      const reduceCount = Math.max(0, parseInt(redInput.value, 10) || 0);
+      const capexVal = Math.max(0, parseFloat(capInput.value) || 0);
+
+      appState.itCapex = capexVal;
+      const baseCapexInput = document.getElementById('inp-it-capex');
+      if (baseCapexInput) baseCapexInput.value = capexVal;
+
+      appState.scenario.employees = Math.max(1, appState.baseEmployees - reduceCount);
+      updateAllSliderUIs();
+      updateAllViews();
+    }
+
     function renderFullPnlAndRoi(base, scen) {
       // 1. ROI Card
       const empReduced = base.employees - scen.employees;
+      const redInput = document.getElementById('inp-roi-reduce-emp');
+      if (redInput && document.activeElement !== redInput) {
+        redInput.value = Math.max(0, empReduced);
+      }
+      const capInput = document.getElementById('inp-roi-capex-direct');
+      if (capInput && document.activeElement !== capInput) {
+        capInput.value = appState.itCapex;
+      }
       const monthlySaving = base.salary - scen.salary;
       const annualSaving = monthlySaving * 12;
 
@@ -2154,6 +3346,7 @@
         { label: `(-) Beban Bonus Mitra (${base.bonusPct.toFixed(1)}% vs ${scen.bonusPct.toFixed(1)}%)`, b: -base.bonus, s: -scen.bonus, cls: '' },
         { label: `(-) Beban Gaji Karyawan (${base.employees} vs ${scen.employees} Orang)`, b: -base.salary, s: -scen.salary, cls: '' },
         { label: '(-) Beban Operasional Bulanan (OPEX)', b: -base.opex, s: -scen.opex, cls: '' },
+        { label: '(-) Beban & Biaya Tambahan Kustom', b: -(base.customExp || 0), s: -(scen.customExp || 0), cls: '' },
         { label: 'LABA SEBELUM PAJAK (EBT)', b: base.ebt, s: scen.ebt, cls: 'row-highlight' },
         { label: '(-) Total Estimasi Pajak Aktif', b: -base.tax, s: -scen.tax, cls: '' },
         { label: 'LABA BERSIH (NET PROFIT)', b: base.netProfit, s: scen.netProfit, cls: 'row-accent' }
@@ -2180,16 +3373,92 @@
     }
 
     // =========================================================================
-    // 9. TAB 4 HANDLERS: EDITABLE TIMELINE & ROADMAP
+    // 9. TAB 4 HANDLERS: EDITABLE TIMELINE, PROJECTS & MULTI-DISBURSEMENT BUDGET
     // =========================================================================
+    function computeProjectBudgetSummary() {
+      let totalAll = 0;
+      let fromProfit = 0;
+      let fromExtra = 0;
+      let fromOwner = 0;
+      let totalDisbursementsCount = 0;
+
+      const itemTotals = appState.timeline.map(item => {
+        const list = Array.isArray(item.disbursements) ? item.disbursements : [];
+        let subAll = 0, subProfit = 0, subExtra = 0, subOwner = 0;
+        list.forEach(d => {
+          const amt = Math.max(0, Number(d.amount) || 0);
+          subAll += amt;
+          totalAll += amt;
+          totalDisbursementsCount++;
+          if (d.source === 'extra_cash') {
+            subExtra += amt;
+            fromExtra += amt;
+          } else if (d.source === 'owner_capital') {
+            subOwner += amt;
+            fromOwner += amt;
+          } else {
+            subProfit += amt;
+            fromProfit += amt;
+          }
+        });
+        return { subAll, subProfit, subExtra, subOwner, count: list.length };
+      });
+
+      return { totalAll, fromProfit, fromExtra, fromOwner, totalDisbursementsCount, itemTotals };
+    }
+
+    function updateTimelineProjectKpis(scenObj) {
+      const scen = scenObj || computeFinancials().scen;
+      const sum = computeProjectBudgetSummary();
+
+      const totEl = document.getElementById('proj-kpi-total');
+      const cntEl = document.getElementById('proj-kpi-count');
+      const profEl = document.getElementById('proj-kpi-profit');
+      const profSubEl = document.getElementById('proj-kpi-profit-sub');
+      const extEl = document.getElementById('proj-kpi-extra');
+      const ownEl = document.getElementById('proj-kpi-owner');
+
+      if (totEl) totEl.textContent = formatCompactRp(sum.totalAll);
+      if (cntEl) cntEl.textContent = `${appState.timeline.length} Langkah/Proyek (${sum.totalDisbursementsCount} Input Biaya)`;
+      if (profEl) profEl.textContent = formatCompactRp(sum.fromProfit);
+      if (profSubEl) {
+        const remOneMonth = scen.netProfit - sum.fromProfit;
+        profSubEl.textContent = remOneMonth >= 0
+          ? `Sisa Profit 1 Bln: ${formatCompactRp(remOneMonth)}`
+          : `Akumulasi ${Math.ceil(sum.fromProfit / Math.max(1, scen.netProfit))} Bln Profit`;
+      }
+      if (extEl) extEl.textContent = formatCompactRp(sum.fromExtra);
+      if (ownEl) ownEl.textContent = formatCompactRp(sum.fromOwner);
+
+      // Update per-card subtotal badges without losing focus
+      sum.itemTotals.forEach((it, idx) => {
+        const bEl = document.getElementById(`tl-proj-total-badge-${idx}`);
+        if (bEl) {
+          bEl.textContent = `Total Modal Proyek: ${formatRp(it.subAll)} (${it.count} Termin)`;
+        }
+        const fEl = document.getElementById(`tl-proj-foot-${idx}`);
+        if (fEl) {
+          fEl.innerHTML = `
+            <span>Total Proyek Ini: <strong>${formatRp(it.subAll)}</strong></span>
+            <span>• Profit Bulanan: <strong>${formatCompactRp(it.subProfit)}</strong></span>
+            <span>• Dana Tambahan: <strong>${formatCompactRp(it.subExtra)}</strong></span>
+            <span>• Modal Owner: <strong>${formatCompactRp(it.subOwner)}</strong></span>
+          `;
+        }
+      });
+    }
+
     function renderTimelineList() {
       const container = document.getElementById('timeline-container');
+      if (!container) return;
       container.innerHTML = '';
 
       let sumProgress = 0;
       let doneCount = 0, activeCount = 0, pendingCount = 0;
+      const projSum = computeProjectBudgetSummary();
 
       appState.timeline.forEach((item, idx) => {
+        if (!Array.isArray(item.disbursements)) item.disbursements = [];
         const prog = Math.max(0, Math.min(100, Number(item.progress) || 0));
         sumProgress += prog;
         if (prog >= 100 || item.status === 'Selesai') doneCount++;
@@ -2197,6 +3466,39 @@
         else pendingCount++;
 
         const statusClass = prog >= 100 ? 'status-done' : (prog > 0 ? '' : 'status-pending');
+        const itSum = projSum.itemTotals[idx] || { subAll: 0, subProfit: 0, subExtra: 0, subOwner: 0, count: 0 };
+
+        const disbRowsHtml = item.disbursements.length > 0
+          ? item.disbursements.map((d, dIdx) => `
+              <tr>
+                <td style="width: 155px;">
+                  <input type="date" class="lumi-input mono" style="min-height: 34px; padding: 4px 8px;" value="${d.date || '2027-01-15'}"
+                    aria-label="Tanggal Biaya Proyek" onchange="updateProjectDisbursement(${idx}, ${dIdx}, 'date', this.value)">
+                </td>
+                <td>
+                  <input type="text" class="lumi-input" style="min-height: 34px; padding: 4px 10px;" value="${d.description || ''}"
+                    placeholder="Keterangan peruntukan modal / biaya..." aria-label="Keterangan Peruntukan"
+                    oninput="updateProjectDisbursement(${idx}, ${dIdx}, 'description', this.value)">
+                </td>
+                <td style="width: 240px;">
+                  <select class="lumi-select" style="min-height: 34px; padding: 4px 8px; font-size: 12.5px;"
+                    aria-label="Sumber Dana Proyek" onchange="updateProjectDisbursement(${idx}, ${dIdx}, 'source', this.value)">
+                    <option value="profit_pool" ${d.source === 'profit_pool' ? 'selected' : ''}>Saldo Profit Bulanan</option>
+                    <option value="extra_cash" ${d.source === 'extra_cash' ? 'selected' : ''}>Dana Tambahan Lain</option>
+                    <option value="owner_capital" ${d.source === 'owner_capital' ? 'selected' : ''}>Modal dari Owner</option>
+                  </select>
+                </td>
+                <td style="width: 200px;">
+                  <input type="number" class="lumi-input mono" style="min-height: 34px; padding: 4px 10px; font-weight: 600;" value="${d.amount || 0}"
+                    min="0" step="10000000" aria-label="Nominal Biaya Proyek Manual"
+                    oninput="updateProjectDisbursement(${idx}, ${dIdx}, 'amount', this.value)">
+                </td>
+                <td style="width: 65px; text-align: center;">
+                  <button type="button" class="btn btn-danger" onclick="removeProjectDisbursement(${idx}, ${dIdx})">×</button>
+                </td>
+              </tr>
+            `).join('')
+          : `<tr><td colspan="5" style="text-align: center; color: var(--on-surface-variant); padding: 12px;">Belum ada rincian modal/biaya untuk proyek ini. Klik <strong>+ Tambah Input Biaya Proyek</strong> di kanan atas tabel ini.</td></tr>`;
 
         const card = document.createElement('div');
         card.className = `timeline-card ${statusClass}`;
@@ -2208,12 +3510,20 @@
               <input type="text" class="lumi-input" style="font-weight: 600; font-size: 15px;" value="${item.title}"
                 aria-label="Judul Langkah Kerja" oninput="updateTimelineField(${idx}, 'title', this.value)">
             </div>
-            <button type="button" class="btn btn-danger" onclick="removeTimelineItem(${idx})">Hapus Langkah</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="tl-proj-total-badge-${idx}" class="status-pill" style="background: var(--accent-container); color: var(--primary);">
+                Total Modal Proyek: ${formatRp(itSum.subAll)} (${itSum.count} Termin)
+              </span>
+              <button type="button" class="btn btn-danger" onclick="removeTimelineItem(${idx})">Hapus Langkah</button>
+            </div>
           </div>
 
           <div class="timeline-grid">
             <div class="field-group">
-              <label class="field-hint">Target KPI / Catatan Eksekusi</label>
+              <label class="field-hint">Nama Proyek yang Dikembangkan & Target KPI</label>
+              <input type="text" class="lumi-input" style="font-weight: 600; margin-bottom: 4px;" value="${item.projectName || ''}"
+                placeholder="Nama Proyek yang Dikembangkan..." aria-label="Nama Proyek"
+                oninput="updateTimelineField(${idx}, 'projectName', this.value)">
               <input type="text" class="lumi-input" value="${item.notes}" aria-label="Catatan KPI"
                 oninput="updateTimelineField(${idx}, 'notes', this.value)">
             </div>
@@ -2231,6 +3541,45 @@
               <label class="field-hint">Tanggal Target Selesai</label>
               <input type="date" class="lumi-input mono" value="${item.endDate}" aria-label="Tanggal Selesai"
                 onchange="updateTimelineField(${idx}, 'endDate', this.value)">
+            </div>
+          </div>
+
+          <!-- Rincian Multi-Input Modal / Biaya Proyek & Sumber Dana -->
+          <div style="background: var(--surface-dim); border: 1px solid var(--stroke-default); border-radius: var(--r-s); padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+              <div>
+                <strong style="font-size: 13px;">Rincian Kebutuhan Modal / Biaya Proyek (Multi-Input Tanggal, Peruntukan & Sumber Dana)</strong>
+                <span style="display: block; font-size: 11px; color: var(--on-surface-variant);">
+                  Tambahkan beberapa pencairan biaya sekaligus. Pilih sumber dana dari <strong>Saldo Profit Bulanan</strong>, <strong>Dana Tambahan Lain</strong>, atau <strong>Modal dari Owner</strong>.
+                </span>
+              </div>
+              <button type="button" class="btn btn-primary" style="min-height: 32px; font-size: 12px;" onclick="addProjectDisbursement(${idx})">
+                + Tambah Input Biaya Proyek
+              </button>
+            </div>
+
+            <div class="table-wrapper" style="background: var(--surface-bright);">
+              <table class="mini-table">
+                <thead>
+                  <tr>
+                    <th style="width: 155px;">Tanggal</th>
+                    <th>Keterangan Peruntukan Biaya / Modal Proyek</th>
+                    <th style="width: 240px;">Pilihan Sumber Dana</th>
+                    <th style="width: 200px;">Nominal Biaya (Rp Manual)</th>
+                    <th style="width: 65px; text-align: center;">Hapus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${disbRowsHtml}
+                </tbody>
+              </table>
+            </div>
+
+            <div id="tl-proj-foot-${idx}" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 12px; font-family: var(--ff-mono); color: var(--on-surface-variant);">
+              <span>Total Proyek Ini: <strong>${formatRp(itSum.subAll)}</strong></span>
+              <span>• Profit Bulanan: <strong>${formatCompactRp(itSum.subProfit)}</strong></span>
+              <span>• Dana Tambahan: <strong>${formatCompactRp(itSum.subExtra)}</strong></span>
+              <span>• Modal Owner: <strong>${formatCompactRp(itSum.subOwner)}</strong></span>
             </div>
           </div>
 
@@ -2261,11 +3610,47 @@
         <span class="status-pill" style="background: var(--accent-container); color: var(--primary);">Berjalan: ${activeCount}</span>
         <span class="status-pill" style="background: var(--surface-container-high); color: var(--on-surface-variant);">Belum Mulai: ${pendingCount}</span>
       `;
+
+      updateTimelineProjectKpis();
     }
 
     function updateTimelineField(idx, field, val) {
       if (!appState.timeline[idx]) return;
       appState.timeline[idx][field] = val;
+    }
+
+    function addProjectDisbursement(timelineIdx) {
+      const item = appState.timeline[timelineIdx];
+      if (!item) return;
+      if (!Array.isArray(item.disbursements)) item.disbursements = [];
+      item.disbursements.push({
+        id: Date.now(),
+        date: item.startDate || '2027-01-15',
+        description: `Kebutuhan Modal / Termin #${item.disbursements.length + 1}`,
+        amount: 50000000,
+        source: 'profit_pool'
+      });
+      renderTimelineList();
+      updateAllViews();
+    }
+
+    function updateProjectDisbursement(timelineIdx, disbIdx, field, rawVal) {
+      const item = appState.timeline[timelineIdx];
+      if (!item || !item.disbursements || !item.disbursements[disbIdx]) return;
+      if (field === 'amount') {
+        item.disbursements[disbIdx].amount = Math.max(0, parseFloat(rawVal) || 0);
+      } else {
+        item.disbursements[disbIdx][field] = rawVal;
+      }
+      updateAllViews();
+    }
+
+    function removeProjectDisbursement(timelineIdx, disbIdx) {
+      const item = appState.timeline[timelineIdx];
+      if (!item || !item.disbursements) return;
+      item.disbursements.splice(disbIdx, 1);
+      renderTimelineList();
+      updateAllViews();
     }
 
     function updateTimelineProgress(idx, sliderEl) {
@@ -2309,20 +3694,1338 @@
       appState.timeline.push({
         id: Date.now(),
         quarter: 'Q1-Q4 2027',
-        title: 'Inisiatif Strategis Baru',
+        title: 'Inisiatif & Pengembangan Proyek Baru',
+        projectName: 'Proyek Ekspansi / Pengembangan Baru',
         pic: 'Tim Proyek',
-        startDate: '2027-01-15',
-        endDate: '2027-03-15',
+        startDate: '2027-02-01',
+        endDate: '2027-04-30',
         status: 'Belum Dimulai',
         progress: 0,
-        notes: 'Masukkan rincian langkah kerja dan target penghematan/pendapatan di sini.'
+        notes: 'Masukkan rincian langkah kerja dan target penghematan/pendapatan di sini.',
+        disbursements: [
+          { id: Date.now() + 1, date: '2027-02-10', description: 'Modal Awal Pengembangan Proyek', amount: 100000000, source: 'profit_pool' }
+        ]
       });
       renderTimelineList();
+      updateAllViews();
     }
 
     function removeTimelineItem(idx) {
       appState.timeline.splice(idx, 1);
       renderTimelineList();
+      updateAllViews();
+    }
+
+    // =========================================================================
+    // 9B. TAB 5 & TAB 6 ENGINE: MANUAL SHARIA INVESTMENT & MONTHLY MATURITY SCHEDULE
+    // =========================================================================
+    function computeShariaPortfolio(scenNetProfit) {
+      const st = appState.shariaTreasury;
+      const monthlyProfit = Math.max(0, Number(scenNetProfit) || 0);
+      const months = Math.max(1, Math.min(12, Number(st.accumMonths) || 12));
+      const extraCash = Math.max(0, Number(st.extraInitialCash) || 0);
+
+      // Saldo Real 1 Bulan vs Saldo Akumulasi Referensi
+      const realOneMonthBalance = monthlyProfit + extraCash;
+      const availableBalance = (monthlyProfit * months) + extraCash;
+
+      let totalAllocated = 0;
+      let monthlySetAsideNominal = 0;
+      let totalGrossReturn = 0;
+      let totalTaxAndZakat = 0;
+      let totalNetReturn = 0;
+      let selectedCount = 0;
+      let totalTranchesCount = 0;
+
+      // For comparing "What if all selected instruments were only bought 1x?" vs "Recurring"
+      let singleBuyBaselinePrincipal = 0;
+      let singleBuyBaselineNetReturn = 0;
+
+      // Monthly Schedule Array (Months 1 to 48: Jan 2027 to Dec 2030)
+      const MAX_HORIZON = 48;
+      const monthlySchedule = [];
+      for (let m = 1; m <= MAX_HORIZON; m++) {
+        monthlySchedule.push({
+          monthIndex: m,
+          label: formatMonthShort(m),
+          fullLabel: formatMonthIndex(m),
+          capitalOutflow: 0,
+          monthlyCouponInflow: 0,
+          maturityYieldInflow: 0,
+          principalMaturityInflow: 0,
+          totalCashInflow: 0,
+          cumulativeNetReturn: 0,
+          events: []
+        });
+      }
+
+      const computedInstruments = st.instruments.map(inst => {
+        const isActive = Boolean(inst.selected) && (Number(inst.nominalPerBuy) || 0) > 0;
+        const nominal = isActive ? Math.max(0, Number(inst.nominalPerBuy) || 0) : 0;
+        const yieldPa = Math.max(0, Number(inst.annualYieldPct) || 0);
+        const tenorM = Math.max(1, parseInt(inst.tenorMonths, 10) || 12);
+        const taxRate = Math.max(0, Number(inst.taxPct) || 0);
+        const startM = Math.max(1, Math.min(12, parseInt(inst.startMonth, 10) || 1));
+        const mode = inst.purchaseMode === 'monthly' ? 'monthly' : 'once';
+        const freqCount = mode === 'monthly' ? Math.max(1, Math.min(12, parseInt(inst.recurringMonths, 10) || 12)) : 1;
+
+        // Per 1x tranche calculations
+        const trancheGrossReturn = nominal * (yieldPa / 100) * (tenorM / 12);
+        const trancheTax = trancheGrossReturn * (taxRate / 100);
+        const trancheAfterTax = trancheGrossReturn - trancheTax;
+        const trancheZakat = st.zakatCorpEnabled ? (trancheAfterTax * 0.025) : 0;
+        const trancheNetReturn = trancheAfterTax - trancheZakat;
+
+        const netYieldPa = yieldPa * (1 - taxRate / 100) * (st.zakatCorpEnabled ? 0.975 : 1);
+
+        // Total across all tranches for this instrument
+        const totalInstPrincipal = nominal * freqCount;
+        const totalInstGrossReturn = trancheGrossReturn * freqCount;
+        const totalInstNetReturn = trancheNetReturn * freqCount;
+        const totalInstMaturity = totalInstPrincipal + totalInstNetReturn;
+
+        const firstMaturityMonth = startM + tenorM;
+        const lastMaturityMonth = (startM + freqCount - 1) + tenorM;
+
+        let maturityScheduleText = '-';
+        if (isActive) {
+          selectedCount++;
+          totalTranchesCount += freqCount;
+          monthlySetAsideNominal += nominal;
+          singleBuyBaselinePrincipal += nominal;
+          singleBuyBaselineNetReturn += trancheNetReturn;
+
+          if (freqCount === 1) {
+            maturityScheduleText = formatMonthIndex(firstMaturityMonth);
+          } else {
+            maturityScheduleText = `${formatMonthShort(firstMaturityMonth)} s/d ${formatMonthShort(lastMaturityMonth)} (${freqCount}x Bertahap)`;
+          }
+
+          // Populate monthly cashflows for each tranche k = 0 .. freqCount - 1
+          const shortName = inst.name.split('(')[0].trim();
+          for (let k = 0; k < freqCount; k++) {
+            const buyMonth = startM + k;
+            const matMonth = buyMonth + tenorM;
+            const trancheLabel = freqCount > 1 ? `Tranche #${k + 1} (Beli ${formatMonthShort(buyMonth)})` : `Penempatan ${formatMonthShort(buyMonth)}`;
+
+            if (buyMonth >= 1 && buyMonth <= MAX_HORIZON) {
+              monthlySchedule[buyMonth - 1].capitalOutflow += nominal;
+            }
+
+            if (inst.payoutType === 'monthly_coupon') {
+              const monthlyNetCoupon = trancheNetReturn / tenorM;
+              for (let cm = buyMonth + 1; cm <= matMonth; cm++) {
+                if (cm >= 1 && cm <= MAX_HORIZON) {
+                  monthlySchedule[cm - 1].monthlyCouponInflow += monthlyNetCoupon;
+                  monthlySchedule[cm - 1].events.push({
+                    type: 'coupon',
+                    text: `Kupon ${shortName} (${trancheLabel}): +${formatCompactRp(monthlyNetCoupon)}`
+                  });
+                }
+              }
+            } else {
+              // Lump sum yield at maturity
+              if (matMonth >= 1 && matMonth <= MAX_HORIZON) {
+                monthlySchedule[matMonth - 1].maturityYieldInflow += trancheNetReturn;
+                monthlySchedule[matMonth - 1].events.push({
+                  type: 'yield_maturity',
+                  text: `Bagi Hasil Jatuh Tempo ${shortName} (${trancheLabel}): +${formatCompactRp(trancheNetReturn)}`
+                });
+              }
+            }
+
+            // Principal returns at matMonth
+            if (matMonth >= 1 && matMonth <= MAX_HORIZON) {
+              monthlySchedule[matMonth - 1].principalMaturityInflow += nominal;
+              monthlySchedule[matMonth - 1].events.push({
+                type: 'principal_maturity',
+                text: `Pokok Jatuh Tempo ${shortName} (${trancheLabel}): +${formatCompactRp(nominal)}`
+              });
+            }
+          }
+        }
+
+        totalAllocated += totalInstPrincipal;
+        totalGrossReturn += totalInstGrossReturn;
+        totalTaxAndZakat += (trancheTax + trancheZakat) * freqCount;
+        totalNetReturn += totalInstNetReturn;
+
+        return {
+          ...inst,
+          isActive,
+          nominal,
+          freqCount,
+          netYieldPa,
+          trancheNetReturn,
+          totalInstPrincipal,
+          totalInstGrossReturn,
+          totalInstNetReturn,
+          totalInstMaturity,
+          firstMaturityMonth,
+          lastMaturityMonth,
+          maturityScheduleText
+        };
+      });
+
+      // Compute cumulative net return & total monthly inflow across the 48-month schedule
+      let runningCumNetReturn = 0;
+      monthlySchedule.forEach(ms => {
+        const monthNetProfit = ms.monthlyCouponInflow + ms.maturityYieldInflow;
+        runningCumNetReturn += monthNetProfit;
+        ms.cumulativeNetReturn = runningCumNetReturn;
+        ms.totalCashInflow = monthNetProfit + ms.principalMaturityInflow;
+      });
+
+      const remainingMonthlyCash = monthlyProfit - monthlySetAsideNominal;
+      const remainingBalance = availableBalance - totalAllocated;
+      const exceedsOneMonthReal = totalAllocated > realOneMonthBalance;
+      const exceedsMonthlyFlow = monthlySetAsideNominal > monthlyProfit;
+      const exceedsTotalPool = totalAllocated > availableBalance;
+
+      // IMPORTANT: Never lock or block the projection!
+      const isOverAllocated = false;
+      const overAmount = exceedsTotalPool ? (totalAllocated - availableBalance) : 0;
+
+      // Weighted average annual net yield
+      let weightedAnnualNetYield = 0;
+      if (totalAllocated > 0) {
+        let sumAnnualized = 0;
+        computedInstruments.forEach(ci => {
+          if (ci.isActive && ci.tenorMonths > 0) {
+            sumAnnualized += (ci.totalInstNetReturn / (ci.tenorMonths / 12));
+          }
+        });
+        weightedAnnualNetYield = (sumAnnualized / totalAllocated) * 100;
+      }
+
+      return {
+        monthlyProfit,
+        realOneMonthBalance,
+        months,
+        extraCash,
+        availableBalance,
+        monthlySetAsideNominal,
+        remainingMonthlyCash,
+        totalAllocated,
+        remainingBalance,
+        exceedsOneMonthReal,
+        exceedsMonthlyFlow,
+        exceedsTotalPool,
+        isOverAllocated,
+        overAmount,
+        selectedCount,
+        totalTranchesCount,
+        totalGrossReturn,
+        totalTaxAndZakat,
+        totalNetReturn,
+        weightedAnnualNetYield,
+        singleBuyBaselinePrincipal,
+        singleBuyBaselineNetReturn,
+        computedInstruments,
+        monthlySchedule
+      };
+    }
+
+    function renderShariaTable() {
+      const tbody = document.getElementById('sharia-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const { scen } = computeFinancials();
+      const portfolio = computeShariaPortfolio(scen.netProfit);
+      const filter = appState.shariaTreasury.regionFilter;
+
+      const tenorOptions = [1, 3, 6, 9, 12, 24, 36];
+
+      portfolio.computedInstruments.forEach((inst, idx) => {
+        if (filter !== 'ALL' && inst.region !== filter) return;
+
+        const tr = document.createElement('tr');
+        if (inst.isActive) {
+          tr.style.background = 'var(--surface-bright)';
+        }
+        const regionCls = inst.region === 'Indonesia' ? 'region-id' : 'region-global';
+
+        const tenorSelectHtml = tenorOptions.map(t =>
+          `<option value="${t}" ${Number(inst.tenorMonths) === t ? 'selected' : ''}>${t} Bulan</option>`
+        ).join('');
+
+        const startMonthSelectHtml = Array.from({ length: 12 }, (_, i) => i + 1).map(m =>
+          `<option value="${m}" ${Number(inst.startMonth) === m ? 'selected' : ''}>Bln ${m} (${MONTH_NAMES_SHORT[m - 1]} 27)</option>`
+        ).join('');
+
+        const recurringCountSelectHtml = Array.from({ length: 11 }, (_, i) => i + 2).map(c =>
+          `<option value="${c}" ${Number(inst.recurringMonths) === c ? 'selected' : ''}>Selama ${c} Bulan (${c}x)</option>`
+        ).join('');
+
+        let returnAndMaturityHtml = `<span style="color: var(--on-surface-variant); font-size: 12px;">Belum dipilih (Rp 0)</span>`;
+        if (inst.isActive) {
+          returnAndMaturityHtml = `
+            <div style="color: var(--positive); font-weight: 700; font-size: 13.5px;">+${formatRp(inst.totalInstNetReturn)}</div>
+            <div style="font-size: 11px; color: var(--on-surface-variant); margin-top: 2px;">
+              Jatuh Tempo: <strong>${inst.maturityScheduleText}</strong>
+            </div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">
+              Pokok + Hasil: <strong>${formatCompactRp(inst.totalInstMaturity)}</strong>
+            </div>
+            <div style="font-size: 10px; font-family: var(--ff-mono); color: var(--primary); margin-top: 2px;">
+              *Simulasi / Proyeksi
+            </div>
+          `;
+        }
+
+        tr.innerHTML = `
+          <td style="text-align: center;">
+            <input type="checkbox" id="sharia-chk-${idx}" ${inst.selected ? 'checked' : ''}
+              style="width: 18px; height: 18px; cursor: pointer;"
+              aria-label="Pilih Instrumen ${inst.name}"
+              onchange="toggleShariaSelect(${idx}, this.checked)">
+          </td>
+          <td>
+            <input type="text" class="lumi-input" style="font-weight: 600; margin-bottom: 4px;" value="${inst.name}"
+              aria-label="Nama Instrumen Syariah" oninput="updateShariaField(${idx}, 'name', this.value)">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;">
+              <span class="region-badge ${regionCls}">${inst.region}</span>
+              <span style="font-size: 11px; color: var(--on-surface-variant);">${inst.akad}</span>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div>
+                <span class="field-hint">Yield % p.a.</span>
+                <input type="number" class="lumi-input mono" style="min-height: 34px; padding: 4px 8px;" value="${inst.annualYieldPct}" min="0" max="100" step="0.1"
+                  aria-label="Imbal Hasil Persen per Tahun" oninput="updateShariaField(${idx}, 'annualYieldPct', this.value)">
+              </div>
+              <div>
+                <span class="field-hint">Pajak Final %</span>
+                <input type="number" class="lumi-input mono" style="min-height: 34px; padding: 4px 8px;" value="${inst.taxPct}" min="0" max="100" step="0.5"
+                  aria-label="Pajak Final Persen" oninput="updateShariaField(${idx}, 'taxPct', this.value)">
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <select class="lumi-select mono" style="min-height: 34px; padding: 4px 8px; font-size: 12.5px;"
+                aria-label="Pilih Tenor Bulan" onchange="updateShariaField(${idx}, 'tenorMonths', this.value)">
+                ${tenorSelectHtml}
+              </select>
+              <select class="lumi-select" style="min-height: 34px; padding: 4px 8px; font-size: 12px;"
+                aria-label="Skema Pencairan Bagi Hasil" onchange="updateShariaField(${idx}, 'payoutType', this.value)">
+                <option value="monthly_coupon" ${inst.payoutType === 'monthly_coupon' ? 'selected' : ''}>Kupon Cair Tiap Bulan</option>
+                <option value="maturity_lump" ${inst.payoutType === 'maturity_lump' ? 'selected' : ''}>Cair Saat Jatuh Tempo</option>
+              </select>
+            </div>
+          </td>
+          <td>
+            <input type="number" id="sharia-alloc-inp-${idx}" class="lumi-input mono"
+              placeholder="Ketik nominal Rp..."
+              style="border-color: ${inst.isActive ? 'var(--primary)' : 'var(--stroke-default)'}; font-weight: 600;"
+              value="${inst.nominalPerBuy}" min="0" step="50000000" aria-label="Nominal Investasi per Pembelian"
+              oninput="onManualNominalInput(${idx}, this.value)">
+            <div class="quick-alloc-group">
+              <button type="button" class="btn-xs" onclick="addQuickShariaAlloc(${idx}, 100000000)">+100Jt</button>
+              <button type="button" class="btn-xs" onclick="addQuickShariaAlloc(${idx}, 250000000)">+250Jt</button>
+              <button type="button" class="btn-xs" onclick="addQuickShariaAlloc(${idx}, 500000000)">+500Jt</button>
+              <button type="button" class="btn-xs" onclick="clearSingleShariaRow(${idx})">Reset 0</button>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <select class="lumi-select" style="min-height: 34px; padding: 4px 8px; font-size: 12.5px; font-weight: 600;"
+                aria-label="Mode Frekuensi Pembelian" onchange="onPurchaseModeChange(${idx}, this.value)">
+                <option value="once" ${inst.purchaseMode === 'once' ? 'selected' : ''}>Sekali Beli (1x)</option>
+                <option value="monthly" ${inst.purchaseMode === 'monthly' ? 'selected' : ''}>Rutin Tiap Bulan (Beli Terus)</option>
+              </select>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                <select class="lumi-select" style="min-height: 32px; padding: 2px 6px; font-size: 11.5px; ${inst.purchaseMode === 'once' ? 'opacity:0.45; pointer-events:none;' : ''}"
+                  aria-label="Durasi Bulan Beli Rutin" onchange="updateShariaField(${idx}, 'recurringMonths', this.value)">
+                  ${recurringCountSelectHtml}
+                </select>
+                <select class="lumi-select" style="min-height: 32px; padding: 2px 6px; font-size: 11.5px;"
+                  aria-label="Bulan Mulai Investasi" onchange="updateShariaField(${idx}, 'startMonth', this.value)">
+                  ${startMonthSelectHtml}
+                </select>
+              </div>
+            </div>
+          </td>
+          <td id="sharia-prin-cell-${idx}">
+            <div style="font-weight: 700; font-size: 13.5px; color: ${inst.isActive ? 'var(--on-surface)' : 'var(--on-surface-variant)'};">
+              ${formatRp(inst.totalInstPrincipal)}
+            </div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">
+              ${inst.isActive ? (inst.freqCount > 1 ? `${inst.freqCount}x beli @ ${formatCompactRp(inst.nominal)}/bln` : `1x penempatan`) : 'Tidak aktif'}
+            </div>
+          </td>
+          <td id="sharia-net-cell-${idx}">${returnAndMaturityHtml}</td>
+          <td style="text-align: center;">
+            <button type="button" class="btn btn-danger" onclick="removeShariaInstrument(${idx})" ${appState.shariaTreasury.instruments.length <= 1 ? 'disabled' : ''}>×</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateShariaTreasuryView(scenObj) {
+      const scen = scenObj || computeFinancials().scen;
+      const portfolio = computeShariaPortfolio(scen.netProfit);
+
+      // Update Top Pool Hint & Badge in Tab 5
+      const hintEl = document.getElementById('hint-monthly-netprofit');
+      if (hintEl) {
+        hintEl.textContent = `Saldo Real Laba Bersih 1 Bulan: ${formatRp(portfolio.monthlyProfit)} / bulan (${portfolio.months} Bulan = ${formatCompactRp(portfolio.availableBalance)}). Anda bebas menginput nominal simulasi berapapun.`;
+      }
+      const mBadge = document.getElementById('val-profit-months');
+      if (mBadge) {
+        mBadge.textContent = `${portfolio.months} Bulan Akumulasi Laba (${formatCompactRp(portfolio.availableBalance)})`;
+      }
+
+      // Update 4 Treasury KPI Cards in Tab 5
+      document.getElementById('sharia-kpi-pool').textContent = formatCompactRp(portfolio.realOneMonthBalance);
+      document.getElementById('sharia-kpi-pool-sub').textContent =
+        `Akumulasi ${portfolio.months} Bln: ${formatCompactRp(portfolio.availableBalance)}`;
+
+      const allocEl = document.getElementById('sharia-kpi-allocated');
+      const allocPctEl = document.getElementById('sharia-kpi-alloc-pct');
+      allocEl.textContent = formatCompactRp(portfolio.monthlySetAsideNominal) + ' / bln';
+
+      if (portfolio.remainingMonthlyCash >= 0) {
+        allocPctEl.textContent = `Sisa Kas Laba/Bln: ${formatCompactRp(portfolio.remainingMonthlyCash)}`;
+        allocPctEl.style.color = 'var(--positive)';
+      } else {
+        allocPctEl.textContent = `Simulasi Ekstra Modal/Bln: +${formatCompactRp(Math.abs(portfolio.remainingMonthlyCash))}`;
+        allocPctEl.style.color = 'var(--warning)';
+      }
+
+      const remEl = document.getElementById('sharia-kpi-remaining');
+      const remSubEl = document.getElementById('sharia-kpi-rem-sub');
+      const retEl = document.getElementById('sharia-kpi-net-return');
+      const retSubEl = document.getElementById('sharia-kpi-yield-avg');
+
+      remEl.textContent = formatCompactRp(portfolio.totalAllocated);
+      remEl.style.color = 'var(--on-surface)';
+      remSubEl.textContent = `${portfolio.selectedCount} Produk Dipilih (${portfolio.totalTranchesCount}x Tranche Pembelian)`;
+
+      retEl.textContent = portfolio.totalAllocated > 0 ? ('+' + formatCompactRp(portfolio.totalNetReturn)) : 'Rp 0';
+      retEl.style.color = 'var(--positive)';
+      retSubEl.textContent = portfolio.totalAllocated > 0
+        ? `Yield Bersih: ${portfolio.weightedAnnualNetYield.toFixed(2)}% p.a. | Akhir: ${formatCompactRp(portfolio.totalAllocated + portfolio.totalNetReturn)} (Simulasi)`
+        : 'Ini Hanya Simulasi / Proyeksi';
+
+      // Show friendly simulation note banner if cumulative total exceeds 1-month real balance or monthly flow
+      const guardBanner = document.getElementById('treasury-guard-banner');
+      const guardMsg = document.getElementById('treasury-guard-msg');
+
+      if (portfolio.totalAllocated > 0 && (portfolio.exceedsOneMonthReal || portfolio.exceedsMonthlyFlow)) {
+        guardBanner.classList.add('is-visible');
+        guardMsg.innerHTML = `Anda menyisihkan <strong>${formatRp(portfolio.monthlySetAsideNominal)} / bulan</strong> dengan Total Akumulasi Modal Investasi sebesar <strong>${formatRp(portfolio.totalAllocated)}</strong> (melebihi Saldo Real 1 Bulan sebesar ${formatRp(portfolio.realOneMonthBalance)}). <strong>Proses proyeksi tetap dilanjutkan penuh</strong> karena pembelian dilakukan bertahap setiap bulan dan menghasilkan estimasi Bagi Hasil Bersih <strong>+${formatRp(portfolio.totalNetReturn)}</strong>. <em>(Catatan: Ini hanya simulasi / proyeksi)</em>.`;
+      } else {
+        guardBanner.classList.remove('is-visible');
+      }
+
+      // Update Table Row Cells & Footer in Tab 5 without losing input focus
+      portfolio.computedInstruments.forEach((inst, idx) => {
+        const prinCell = document.getElementById(`sharia-prin-cell-${idx}`);
+        const netCell = document.getElementById(`sharia-net-cell-${idx}`);
+        const inpEl = document.getElementById(`sharia-alloc-inp-${idx}`);
+        const chkEl = document.getElementById(`sharia-chk-${idx}`);
+
+        if (chkEl && chkEl.checked !== Boolean(inst.selected)) {
+          chkEl.checked = Boolean(inst.selected);
+        }
+        if (inpEl) {
+          inpEl.style.borderColor = inst.isActive ? 'var(--primary)' : 'var(--stroke-default)';
+        }
+        if (prinCell) {
+          prinCell.innerHTML = `
+            <div style="font-weight: 700; font-size: 13.5px; color: ${inst.isActive ? 'var(--on-surface)' : 'var(--on-surface-variant)'};">
+              ${formatRp(inst.totalInstPrincipal)}
+            </div>
+            <div style="font-size: 11px; color: var(--on-surface-variant);">
+              ${inst.isActive ? (inst.freqCount > 1 ? `${inst.freqCount}x beli @ ${formatCompactRp(inst.nominal)}/bln` : `1x penempatan`) : 'Tidak aktif'}
+            </div>
+          `;
+        }
+        if (netCell) {
+          if (!inst.isActive) {
+            netCell.innerHTML = `<span style="color: var(--on-surface-variant); font-size: 12px;">Belum dipilih (Rp 0)</span>`;
+          } else {
+            netCell.innerHTML = `
+              <div style="color: var(--positive); font-weight: 700; font-size: 13.5px;">+${formatRp(inst.totalInstNetReturn)}</div>
+              <div style="font-size: 11px; color: var(--on-surface-variant); margin-top: 2px;">
+                Jatuh Tempo: <strong>${inst.maturityScheduleText}</strong>
+              </div>
+              <div style="font-size: 11px; color: var(--on-surface-variant);">
+                Pokok + Hasil: <strong>${formatCompactRp(inst.totalInstMaturity)}</strong>
+              </div>
+              <div style="font-size: 10px; font-family: var(--ff-mono); color: var(--primary); margin-top: 2px;">
+                *Simulasi / Proyeksi
+              </div>
+            `;
+          }
+        }
+      });
+
+      const footAlloc = document.getElementById('sharia-foot-alloc');
+      const footRet = document.getElementById('sharia-foot-net-return');
+      if (footAlloc) {
+        footAlloc.textContent = `${formatRp(portfolio.totalAllocated)} (Disisihkan: ${formatCompactRp(portfolio.monthlySetAsideNominal)}/bln)`;
+      }
+      if (footRet) {
+        footRet.textContent = portfolio.totalAllocated > 0
+          ? `+${formatRp(portfolio.totalNetReturn)} (Total Akhir: ${formatRp(portfolio.totalAllocated + portfolio.totalNetReturn)} — Simulasi / Proyeksi)`
+          : 'Rp 0';
+      }
+
+      // Render Menu 6 Separate Projection Report & Maturity Schedule
+      renderMenu6ShariaReport(portfolio);
+    }
+
+    function renderMenu6ShariaReport(portfolio) {
+      const emptyBox = document.getElementById('report-empty-state');
+      const overBanner = document.getElementById('report-overalloc-banner');
+      const overMsg = document.getElementById('report-overalloc-msg');
+      const mainContent = document.getElementById('report-main-content');
+
+      if (!emptyBox || !mainContent) return;
+
+      if (portfolio.selectedCount === 0 || portfolio.totalAllocated <= 0) {
+        emptyBox.style.display = 'flex';
+        overBanner.classList.remove('is-visible');
+        mainContent.style.display = 'none';
+        return;
+      }
+
+      emptyBox.style.display = 'none';
+      mainContent.style.display = 'flex';
+      mainContent.classList.remove('is-locked');
+
+      if (portfolio.exceedsOneMonthReal || portfolio.exceedsMonthlyFlow) {
+        overBanner.classList.add('is-visible');
+        overMsg.innerHTML = `Total akumulasi modal investasi dalam laporan ini (<strong>${formatRp(portfolio.totalAllocated)}</strong> dari penyisihan <strong>${formatRp(portfolio.monthlySetAsideNominal)}/bulan</strong>) melebihi Saldo Real 1 Bulan (${formatRp(portfolio.realOneMonthBalance)}). Seluruh perhitungan tetap ditampilkan penuh sebagai <strong>Simulasi / Proyeksi Penyisihan Rutin Bulanan</strong>.`;
+      } else {
+        overBanner.classList.remove('is-visible');
+      }
+
+      // 1. Update Menu 6 KPI Summary Cards
+      document.getElementById('rep-kpi-principal').textContent = formatCompactRp(portfolio.totalAllocated);
+      document.getElementById('rep-kpi-principal-sub').textContent =
+        `${portfolio.selectedCount} Instrumen (${portfolio.totalTranchesCount} Tranche Pembelian)`;
+
+      document.getElementById('rep-kpi-netreturn').textContent = '+' + formatCompactRp(portfolio.totalNetReturn);
+      const totalRoiPct = portfolio.totalAllocated > 0 ? ((portfolio.totalNetReturn / portfolio.totalAllocated) * 100).toFixed(2) : '0.00';
+      document.getElementById('rep-kpi-roi-sub').textContent = `Total ROI: +${totalRoiPct}% (Ini Hanya Simulasi / Proyeksi)`;
+
+      document.getElementById('rep-kpi-maturity').textContent = formatCompactRp(portfolio.totalAllocated + portfolio.totalNetReturn);
+      document.getElementById('rep-kpi-zakat-sub').textContent =
+        `Pajak & Zakat dipotong: ${formatCompactRp(portfolio.totalTaxAndZakat)}`;
+
+      document.getElementById('rep-kpi-unallocated').textContent = formatCompactRp(portfolio.monthlySetAsideNominal) + ' / bln';
+      document.getElementById('rep-kpi-yield-sub').textContent =
+        `Weighted Net Yield: ${portfolio.weightedAnnualNetYield.toFixed(2)}% p.a.`;
+
+      // 2. Render Dynamic Comparison Callout (1x Placement vs Monthly Recurring)
+      const calloutEl = document.getElementById('rep-recurring-callout');
+      if (calloutEl) {
+        const extraPrincipalFromRecurring = portfolio.totalAllocated - portfolio.singleBuyBaselinePrincipal;
+        const extraReturnFromRecurring = portfolio.totalNetReturn - portfolio.singleBuyBaselineNetReturn;
+        const hasRecurring = portfolio.computedInstruments.some(i => i.isActive && i.freqCount > 1);
+
+        if (hasRecurring) {
+          calloutEl.innerHTML = `
+            <div class="exec-header">
+              <h3 class="exec-title">Analisis Simulasi Penyisihan Pembelian Rutin Bulanan (Ini Hanya Simulasi / Proyeksi)</h3>
+              <span class="exec-badge" style="background: var(--positive-container); color: var(--positive);">
+                Ekstra Keuntungan Rutin: +${formatCompactRp(extraReturnFromRecurring)}
+              </span>
+            </div>
+            <div class="exec-body">
+              <p>
+                Jika produk yang Anda pilih hanya dibeli <strong>1 kali (Sekali Beli)</strong> dengan modal awal ${formatRp(portfolio.singleBuyBaselinePrincipal)}, proyeksi keuntungan bersihnya adalah <strong>${formatRp(portfolio.singleBuyBaselineNetReturn)}</strong>.
+                Dengan menyisihkan dana <strong>Rutin Setiap Bulan</strong> sebesar <strong>${formatRp(portfolio.monthlySetAsideNominal)}/bulan</strong>, total akumulasi modal bertumbuh menjadi <strong>${formatRp(portfolio.totalAllocated)}</strong> (+${formatRp(extraPrincipalFromRecurring)}) dan melipatgandakan total proyeksi bagi hasil bersih menjadi <strong>+${formatRp(portfolio.totalNetReturn)}</strong>.
+              </p>
+              <p>
+                <strong>Catatan Simulasi / Proyeksi:</strong> Meskipun total akumulasi modal multi-bulan melebihi saldo real 1 bulan saat ini, pembelian dilakukan secara bertahap dari aliran laba bulanan sehingga jadwal jatuh tempo mengalir berurutan di setiap bulannya (lihat Bagian 3).
+              </p>
+            </div>
+          `;
+        } else {
+          calloutEl.innerHTML = `
+            <div class="exec-header">
+              <h3 class="exec-title">Mode Sekali Beli (1x) — Ubah ke "Rutin Tiap Bulan" untuk Simulasi Akumulasi Bulanan</h3>
+              <span class="exec-badge" style="background: var(--accent-container); color: var(--primary);">
+                Catatan: Ini Hanya Simulasi / Proyeksi
+              </span>
+            </div>
+            <div class="exec-body">
+              <p>
+                Saat ini instrumen yang Anda pilih menggunakan mode <strong>Sekali Beli (1x Penempatan)</strong> dengan modal <strong>${formatRp(portfolio.totalAllocated)}</strong> dan proyeksi keuntungan bersih <strong>+${formatRp(portfolio.totalNetReturn)}</strong>.
+                Anda dapat mengubah frekuensi di Menu 5 menjadi <strong>Rutin Tiap Bulan (Beli Terus)</strong> untuk mensimulasikan penyisihan dana setiap bulan tanpa batasan saldo 1 bulan.
+              </p>
+            </div>
+          `;
+        }
+      }
+
+      // 3. Render Bagian 1: Separate Tables by Tenor Group
+      const groupsContainer = document.getElementById('rep-tenor-groups-container');
+      if (groupsContainer) {
+        const activeList = portfolio.computedInstruments.filter(i => i.isActive);
+        const tenorGroups = [
+          {
+            title: '1. Kelompok Jangka Pendek (Tenor 1 – 6 Bulan) — Likuiditas & Perputaran Cepat',
+            filterFn: i => i.tenorMonths <= 6
+          },
+          {
+            title: '2. Kelompok Jangka Menengah (Tenor 9 – 12 Bulan) — Optimalisasi Kas Tahunan',
+            filterFn: i => i.tenorMonths > 6 && i.tenorMonths <= 12
+          },
+          {
+            title: '3. Kelompok Jangka Panjang (Tenor 24 – 36 Bulan) — Kupon Rutin & Pendapatan Korporasi',
+            filterFn: i => i.tenorMonths > 12
+          }
+        ];
+
+        groupsContainer.innerHTML = tenorGroups.map(grp => {
+          const items = activeList.filter(grp.filterFn);
+          if (items.length === 0) {
+            return `
+              <div class="tenor-group-card" style="opacity: 0.7;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <strong style="font-size: 14px;">${grp.title}</strong>
+                  <span class="status-pill" style="background: var(--surface-container-high);">Tidak ada produk dipilih di kelompok tenor ini</span>
+                </div>
+              </div>
+            `;
+          }
+
+          let subPrin = 0, subNet = 0, subMat = 0;
+          const rowsHtml = items.map(it => {
+            subPrin += it.totalInstPrincipal;
+            subNet += it.totalInstNetReturn;
+            subMat += it.totalInstMaturity;
+            const payoutLabel = it.payoutType === 'monthly_coupon' ? 'Kupon Cair Tiap Bulan' : 'Cair Saat Jatuh Tempo';
+            const modeDesc = it.freqCount > 1
+              ? `Rutin ${it.freqCount}x Bln (@ ${formatCompactRp(it.nominal)}/bln)`
+              : `Sekali Beli 1x (${formatMonthShort(it.startMonth)})`;
+
+            return `
+              <tr>
+                <td>
+                  <strong>${it.name}</strong>
+                  <span style="display:block; font-size:11px; color:var(--on-surface-variant);">${it.region} • Tenor ${it.tenorMonths} Bulan</span>
+                </td>
+                <td>${modeDesc}</td>
+                <td>${it.netYieldPa.toFixed(2)}% p.a.</td>
+                <td><span class="status-pill" style="background: var(--surface-dim);">${payoutLabel}</span></td>
+                <td style="text-align: left; font-family: var(--ff-mono); font-size: 12px;">${it.maturityScheduleText}</td>
+                <td style="font-weight: 600;">${formatRp(it.totalInstPrincipal)}</td>
+                <td style="color: var(--positive); font-weight: 700;">+${formatRp(it.totalInstNetReturn)}</td>
+                <td style="font-weight: 700;">${formatRp(it.totalInstMaturity)}</td>
+              </tr>
+            `;
+          }).join('');
+
+          return `
+            <div class="tenor-group-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <strong style="font-size: 14.5px; color: var(--primary);">${grp.title}</strong>
+                <span class="status-pill" style="background: var(--positive-container); color: var(--positive);">
+                  Subtotal Bagi Hasil Bersih: +${formatRp(subNet)}
+                </span>
+              </div>
+              <div class="table-wrapper">
+                <table class="mini-table">
+                  <thead>
+                    <tr>
+                      <th>Instrumen Syariah</th>
+                      <th>Frekuensi & Nominal Beli</th>
+                      <th>Net Yield</th>
+                      <th>Skema Pencairan</th>
+                      <th style="text-align: left;">Bulan Jatuh Tempo Pokok</th>
+                      <th>Total Modal Pokok</th>
+                      <th>Total Bagi Hasil Bersih</th>
+                      <th>Total Dana Kembali</th>
+                    </tr>
+                  </thead>
+                  <tbody>${rowsHtml}</tbody>
+                  <tfoot>
+                    <tr class="row-highlight">
+                      <td colspan="5">SUBTOTAL KELOMPOK TENOR INI</td>
+                      <td>${formatRp(subPrin)}</td>
+                      <td style="color: var(--positive);">+${formatRp(subNet)}</td>
+                      <td>${formatRp(subMat)}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 4. Render Bagian 2 & 3: Monthly Maturity & Cashflow Breakdown Table + Chart
+      const horizon = appState.shariaTreasury.reportHorizonMonths || 24;
+      const onlyActive = document.getElementById('chk-only-active-months')?.checked || false;
+      const slicedSchedule = portfolio.monthlySchedule.slice(0, horizon);
+
+      const schedTbody = document.getElementById('rep-monthly-schedule-tbody');
+      const schedTfoot = document.getElementById('rep-monthly-schedule-tfoot');
+
+      if (schedTbody && schedTfoot) {
+        let sumOut = 0, sumCoupon = 0, sumMatYield = 0, sumPrinMat = 0, sumTotalIn = 0;
+        const rows = [];
+
+        slicedSchedule.forEach(ms => {
+          sumOut += ms.capitalOutflow;
+          sumCoupon += ms.monthlyCouponInflow;
+          sumMatYield += ms.maturityYieldInflow;
+          sumPrinMat += ms.principalMaturityInflow;
+          sumTotalIn += ms.totalCashInflow;
+
+          const hasActivity = ms.capitalOutflow > 0 || ms.totalCashInflow > 0;
+          if (onlyActive && !hasActivity) return;
+
+          let badgesHtml = `<span style="color: var(--on-surface-variant); font-size: 11.5px;">Tidak ada pencairan / jatuh tempo</span>`;
+          if (ms.events.length > 0) {
+            badgesHtml = ms.events.map(ev => {
+              const cls = ev.type === 'coupon' ? 'is-coupon' : 'is-maturity';
+              return `<span class="tranche-badge ${cls}">${ev.text}</span>`;
+            }).join('');
+          }
+
+          rows.push(`
+            <tr style="${ms.principalMaturityInflow > 0 ? 'background: var(--surface-bright);' : ''}">
+              <td style="font-family: var(--ff-mono); font-weight: 600;">${ms.fullLabel}</td>
+              <td style="color: ${ms.capitalOutflow > 0 ? 'var(--on-surface)' : 'var(--on-surface-variant)'};">
+                ${ms.capitalOutflow > 0 ? formatRp(ms.capitalOutflow) : '-'}
+              </td>
+              <td style="color: ${ms.monthlyCouponInflow > 0 ? 'var(--primary)' : 'var(--on-surface-variant)'}; font-weight: ${ms.monthlyCouponInflow > 0 ? '600' : '400'};">
+                ${ms.monthlyCouponInflow > 0 ? '+' + formatRp(ms.monthlyCouponInflow) : '-'}
+              </td>
+              <td style="color: ${ms.maturityYieldInflow > 0 ? 'var(--positive)' : 'var(--on-surface-variant)'}; font-weight: ${ms.maturityYieldInflow > 0 ? '600' : '400'};">
+                ${ms.maturityYieldInflow > 0 ? '+' + formatRp(ms.maturityYieldInflow) : '-'}
+              </td>
+              <td style="font-weight: ${ms.principalMaturityInflow > 0 ? '700' : '400'};">
+                ${ms.principalMaturityInflow > 0 ? formatRp(ms.principalMaturityInflow) : '-'}
+              </td>
+              <td style="font-weight: 700; color: ${ms.totalCashInflow > 0 ? 'var(--positive)' : 'var(--on-surface-variant)'};">
+                ${ms.totalCashInflow > 0 ? '+' + formatRp(ms.totalCashInflow) : 'Rp 0'}
+              </td>
+              <td style="text-align: left; font-family: var(--ff-sans);">${badgesHtml}</td>
+            </tr>
+          `);
+        });
+
+        schedTbody.innerHTML = rows.length > 0
+          ? rows.join('')
+          : `<tr><td colspan="7" style="text-align:center; padding: 20px;">Tidak ada transaksi pada rentang filter bulan ini.</td></tr>`;
+
+        schedTfoot.innerHTML = `
+          <tr class="row-accent">
+            <td>TOTAL (${horizon} BULAN)</td>
+            <td>${formatRp(sumOut)}</td>
+            <td>+${formatRp(sumCoupon)}</td>
+            <td>+${formatRp(sumMatYield)}</td>
+            <td>${formatRp(sumPrinMat)}</td>
+            <td>+${formatRp(sumTotalIn)}</td>
+            <td style="text-align: left; font-size: 12px;">Total Bagi Hasil Bersih Cair: +${formatRp(sumCoupon + sumMatYield)}</td>
+          </tr>
+        `;
+      }
+
+      if (!portfolio.isOverAllocated) {
+        updateShariaScheduleChart(slicedSchedule);
+      }
+    }
+
+    function setAllInstrumentsMode(mode) {
+      appState.shariaTreasury.instruments.forEach(inst => {
+        inst.purchaseMode = mode === 'once' ? 'once' : 'monthly';
+      });
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function loadSampleRecurringSimulation() {
+      // Contoh simulasi menyisihkan laba setiap bulan ke 3 instrumen syariah selama 12 bulan
+      appState.shariaTreasury.instruments.forEach(inst => {
+        inst.selected = false;
+        inst.nominalPerBuy = 0;
+        inst.purchaseMode = 'monthly';
+        inst.recurringMonths = 12;
+      });
+      if (appState.shariaTreasury.instruments[0]) {
+        appState.shariaTreasury.instruments[0].selected = true;
+        appState.shariaTreasury.instruments[0].nominalPerBuy = 500000000; // Rp 500 Jt/bln x 12 bln = Rp 6 Miliar
+      }
+      if (appState.shariaTreasury.instruments[2]) {
+        appState.shariaTreasury.instruments[2].selected = true;
+        appState.shariaTreasury.instruments[2].nominalPerBuy = 300000000; // Rp 300 Jt/bln x 12 bln = Rp 3,6 Miliar
+      }
+      if (appState.shariaTreasury.instruments[4]) {
+        appState.shariaTreasury.instruments[4].selected = true;
+        appState.shariaTreasury.instruments[4].nominalPerBuy = 200000000; // Rp 200 Jt/bln x 12 bln = Rp 2,4 Miliar
+      }
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function onShariaPoolSettingChange() {
+      const mSlider = document.getElementById('slider-profit-months');
+      const extraInp = document.getElementById('inp-extra-treasury');
+      const zakatChk = document.getElementById('chk-zakat-corp');
+
+      if (mSlider) {
+        appState.shariaTreasury.accumMonths = parseInt(mSlider.value, 10) || 12;
+        syncSliderTrackProgress(mSlider);
+      }
+      if (extraInp) {
+        appState.shariaTreasury.extraInitialCash = Math.max(0, parseFloat(extraInp.value) || 0);
+      }
+      if (zakatChk) {
+        appState.shariaTreasury.zakatCorpEnabled = zakatChk.checked;
+      }
+      updateAllViews();
+    }
+
+    function toggleShariaSelect(idx, isChecked) {
+      const inst = appState.shariaTreasury.instruments[idx];
+      if (!inst) return;
+      inst.selected = Boolean(isChecked);
+      // If user unchecks, keep nominal or zero it? Keeping nominal allows easy toggle, or if checked and nominal is 0, focus input
+      renderShariaTable();
+      updateAllViews();
+      if (isChecked && (Number(inst.nominalPerBuy) || 0) === 0) {
+        const inp = document.getElementById(`sharia-alloc-inp-${idx}`);
+        if (inp) inp.focus();
+      }
+    }
+
+    function onManualNominalInput(idx, rawVal) {
+      const inst = appState.shariaTreasury.instruments[idx];
+      if (!inst) return;
+      const val = Math.max(0, parseFloat(rawVal) || 0);
+      inst.nominalPerBuy = val;
+      // Automatically check "Pilih" when user manually types a nominal > 0
+      inst.selected = val > 0;
+      updateAllViews();
+    }
+
+    function onPurchaseModeChange(idx, newMode) {
+      const inst = appState.shariaTreasury.instruments[idx];
+      if (!inst) return;
+      inst.purchaseMode = newMode === 'monthly' ? 'monthly' : 'once';
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function updateShariaField(idx, field, rawVal) {
+      const inst = appState.shariaTreasury.instruments[idx];
+      if (!inst) return;
+      if (field === 'name' || field === 'payoutType') {
+        inst[field] = rawVal;
+      } else {
+        inst[field] = Math.max(0, parseFloat(rawVal) || 0);
+      }
+      if (field === 'tenorMonths' || field === 'payoutType' || field === 'recurringMonths' || field === 'startMonth') {
+        renderShariaTable();
+      }
+      updateAllViews();
+    }
+
+    function addQuickShariaAlloc(idx, deltaRp) {
+      const inst = appState.shariaTreasury.instruments[idx];
+      if (!inst) return;
+      inst.nominalPerBuy = Math.max(0, (Number(inst.nominalPerBuy) || 0) + deltaRp);
+      inst.selected = inst.nominalPerBuy > 0;
+      const inp = document.getElementById(`sharia-alloc-inp-${idx}`);
+      if (inp) inp.value = inst.nominalPerBuy;
+      updateAllViews();
+    }
+
+    function clearSingleShariaRow(idx) {
+      const inst = appState.shariaTreasury.instruments[idx];
+      if (!inst) return;
+      inst.nominalPerBuy = 0;
+      inst.selected = false;
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function autoCapShariaAllocations() {
+      const { scen } = computeFinancials();
+      const portfolio = computeShariaPortfolio(scen.netProfit);
+      if (!portfolio.isOverAllocated) return;
+
+      let runningTotal = 0;
+      const maxPool = Math.max(0, Math.floor(portfolio.availableBalance));
+
+      appState.shariaTreasury.instruments.forEach(inst => {
+        if (!inst.selected || (Number(inst.nominalPerBuy) || 0) <= 0) return;
+        const freq = inst.purchaseMode === 'monthly' ? Math.max(1, parseInt(inst.recurringMonths, 10) || 12) : 1;
+        const currentTotal = inst.nominalPerBuy * freq;
+
+        if (runningTotal + currentTotal <= maxPool) {
+          runningTotal += currentTotal;
+        } else {
+          const allowedTotal = Math.max(0, maxPool - runningTotal);
+          const allowedPerBuy = Math.floor(allowedTotal / freq);
+          inst.nominalPerBuy = allowedPerBuy;
+          if (allowedPerBuy <= 0) inst.selected = false;
+          runningTotal += allowedPerBuy * freq;
+        }
+      });
+
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function incrementProfitMonthsToCover() {
+      const { scen } = computeFinancials();
+      const portfolio = computeShariaPortfolio(scen.netProfit);
+      if (portfolio.monthlyProfit <= 0) return;
+
+      const neededFromMonthly = Math.max(0, portfolio.totalAllocated - portfolio.extraCash);
+      const reqMonths = Math.min(12, Math.max(1, Math.ceil(neededFromMonthly / portfolio.monthlyProfit)));
+      appState.shariaTreasury.accumMonths = reqMonths;
+
+      const mSlider = document.getElementById('slider-profit-months');
+      if (mSlider) {
+        mSlider.value = reqMonths;
+        syncSliderTrackProgress(mSlider);
+      }
+      updateAllViews();
+    }
+
+    function resetShariaAllocations() {
+      appState.shariaTreasury.instruments.forEach(inst => {
+        inst.selected = false;
+        inst.nominalPerBuy = 0;
+        inst.purchaseMode = 'once';
+      });
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function setShariaFilter(region, btnEl) {
+      appState.shariaTreasury.regionFilter = region;
+      ['filter-sharia-all', 'filter-sharia-id', 'filter-sharia-gl'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      if (btnEl) btnEl.classList.add('active');
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function setReportHorizon(months, btnEl) {
+      appState.shariaTreasury.reportHorizonMonths = months;
+      ['btn-horizon-12', 'btn-horizon-24', 'btn-horizon-36', 'btn-horizon-48'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      if (btnEl) btnEl.classList.add('active');
+      updateAllViews();
+    }
+
+    function addCustomShariaInstrument() {
+      appState.shariaTreasury.instruments.push({
+        id: Date.now(),
+        selected: true,
+        name: 'Sukuk / Instrumen Syariah Kustom',
+        akad: 'Mudharabah / Musyarakah',
+        region: 'Indonesia',
+        risk: 'Moderat',
+        annualYieldPct: 7.50,
+        tenorMonths: 12,
+        payoutType: 'monthly_coupon',
+        taxPct: 10.0,
+        nominalPerBuy: 0,
+        purchaseMode: 'once',
+        recurringMonths: 12,
+        startMonth: 1
+      });
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function removeShariaInstrument(idx) {
+      if (appState.shariaTreasury.instruments.length <= 1) return;
+      appState.shariaTreasury.instruments.splice(idx, 1);
+      renderShariaTable();
+      updateAllViews();
+    }
+
+    function updateShariaScheduleChart(slicedSchedule) {
+      if (typeof Chart === 'undefined' || !shariaScheduleChartInst) return;
+
+      const labels = slicedSchedule.map(m => m.label);
+      const yieldInflowData = slicedSchedule.map(m => +((m.monthlyCouponInflow + m.maturityYieldInflow) / 1e6).toFixed(2));
+      const principalMatData = slicedSchedule.map(m => +(m.principalMaturityInflow / 1e6).toFixed(2));
+      const cumNetReturnData = slicedSchedule.map(m => +(m.cumulativeNetReturn / 1e6).toFixed(2));
+
+      shariaScheduleChartInst.data.labels = labels;
+      shariaScheduleChartInst.data.datasets[0].data = yieldInflowData;
+      shariaScheduleChartInst.data.datasets[1].data = principalMatData;
+      shariaScheduleChartInst.data.datasets[2].data = cumNetReturnData;
+      shariaScheduleChartInst.update('none');
+    }
+
+    // =========================================================================
+    // 9C. TAB 7 ENGINE: PROYEKSI DIVIDEN DIREKSI & LOYALTY BONUS MANAGER
+    // =========================================================================
+    function computeDividendAndLoyaltyPool(scenObj) {
+      const scen = scenObj || computeFinancials().scen;
+      const dl = appState.dividendLoyalty;
+      const horizon = Math.max(1, Number(dl.horizonMonths) || 12);
+
+      const profitComponent = Math.max(0, scen.netProfit) * horizon;
+      const shariaPortfolio = computeShariaPortfolio(scen.netProfit);
+      const invReturnComponent = dl.includeShariaReturn ? Math.max(0, shariaPortfolio.totalNetReturn) : 0;
+
+      const projSummary = computeProjectBudgetSummary();
+      const projDeduction = dl.deductProjectFromProfit ? Math.max(0, projSummary.fromProfit) : 0;
+      const extraAdj = Number(dl.extraPoolAdjustment) || 0;
+
+      const distributablePool = Math.max(0, profitComponent + invReturnComponent - projDeduction + extraAdj);
+
+      // Sync each director item (if lastEdited === 'pct', update amount from pool; if 'amount', update pct from pool)
+      let totalDirAmount = 0;
+      let totalDirPct = 0;
+      dl.directors.forEach(d => {
+        if (d.lastEdited === 'amount') {
+          d.amount = Math.max(0, Number(d.amount) || 0);
+          d.pct = distributablePool > 0 ? (d.amount / distributablePool) * 100 : 0;
+        } else {
+          d.pct = Math.max(0, Number(d.pct) || 0);
+          d.amount = distributablePool * (d.pct / 100);
+        }
+        if (d.active) {
+          totalDirAmount += d.amount;
+          totalDirPct += d.pct;
+        }
+      });
+
+      // Sync each manager loyalty item
+      let totalMgrAmount = 0;
+      let totalMgrPct = 0;
+      let totalMgrHeadcount = 0;
+      dl.managers.forEach(m => {
+        const hc = Math.max(1, parseInt(m.headcount, 10) || 1);
+        m.headcount = hc;
+        if (m.lastEdited === 'amount') {
+          m.amount = Math.max(0, Number(m.amount) || 0);
+          m.pct = distributablePool > 0 ? (m.amount / distributablePool) * 100 : 0;
+        } else {
+          m.pct = Math.max(0, Number(m.pct) || 0);
+          m.amount = distributablePool * (m.pct / 100);
+        }
+        if (m.active) {
+          totalMgrAmount += m.amount;
+          totalMgrPct += m.pct;
+          totalMgrHeadcount += hc;
+        }
+      });
+
+      const totalDistributed = totalDirAmount + totalMgrAmount;
+      const retainedPool = distributablePool - totalDistributed;
+      const retainedPct = distributablePool > 0 ? (retainedPool / distributablePool) * 100 : 0;
+
+      return {
+        horizon,
+        profitComponent,
+        invReturnComponent,
+        projDeduction,
+        extraAdj,
+        distributablePool,
+        totalDirAmount,
+        totalDirPct,
+        totalMgrAmount,
+        totalMgrPct,
+        totalMgrHeadcount,
+        totalDistributed,
+        retainedPool,
+        retainedPct
+      };
+    }
+
+    function renderDividendAndLoyaltyTables() {
+      const dirTbody = document.getElementById('director-dividend-tbody');
+      const mgrTbody = document.getElementById('manager-loyalty-tbody');
+      if (!dirTbody || !mgrTbody) return;
+
+      const calc = computeDividendAndLoyaltyPool();
+      const dl = appState.dividendLoyalty;
+
+      dirTbody.innerHTML = dl.directors.map((d, idx) => {
+        const monthlyEq = d.amount / Math.max(1, calc.horizon);
+        return `
+          <tr style="${d.active ? '' : 'opacity: 0.55;'}">
+            <td style="text-align: center;">
+              <input type="checkbox" ${d.active ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;"
+                onchange="onDirectorFieldChange(${idx}, 'active', this.checked)" aria-label="Aktifkan Dividen Direksi">
+            </td>
+            <td>
+              <input type="text" class="lumi-input" style="font-weight: 600;" value="${d.name}"
+                aria-label="Jabatan atau Nama Direksi" oninput="onDirectorFieldChange(${idx}, 'name', this.value)">
+            </td>
+            <td>
+              <input type="text" class="lumi-input" value="${d.notes || ''}"
+                aria-label="Keterangan Dividen" oninput="onDirectorFieldChange(${idx}, 'notes', this.value)">
+            </td>
+            <td>
+              <input type="number" id="dir-pct-inp-${idx}" class="lumi-input mono" style="font-weight: 600;"
+                value="${Number(d.pct).toFixed(2)}" min="0" max="100" step="0.5"
+                aria-label="Input Persentase Dividen Direksi" oninput="onDirectorFieldChange(${idx}, 'pct', this.value)">
+            </td>
+            <td>
+              <input type="number" id="dir-amt-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: var(--primary);"
+                value="${Math.round(d.amount)}" min="0" step="25000000"
+                aria-label="Input Nominal Dividen Direksi" oninput="onDirectorFieldChange(${idx}, 'amount', this.value)">
+            </td>
+            <td id="dir-monthly-cell-${idx}">${formatRp(monthlyEq)} / bln</td>
+            <td id="dir-share-cell-${idx}" style="font-weight: 600; color: var(--primary);">${Number(d.pct).toFixed(2)}% Pool</td>
+            <td style="text-align: center;">
+              <button type="button" class="btn btn-danger" onclick="removeDirectorDividendRow(${idx})" ${dl.directors.length <= 1 ? 'disabled' : ''}>Hapus</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      mgrTbody.innerHTML = dl.managers.map((m, idx) => {
+        const perPerson = m.amount / Math.max(1, m.headcount);
+        return `
+          <tr style="${m.active ? '' : 'opacity: 0.55;'}">
+            <td style="text-align: center;">
+              <input type="checkbox" ${m.active ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;"
+                onchange="onManagerFieldChange(${idx}, 'active', this.checked)" aria-label="Aktifkan Loyalty Bonus Manager">
+            </td>
+            <td>
+              <input type="text" class="lumi-input" style="font-weight: 600;" value="${m.role}"
+                aria-label="Jabatan Manager" oninput="onManagerFieldChange(${idx}, 'role', this.value)">
+            </td>
+            <td>
+              <input type="number" class="lumi-input mono" value="${m.headcount}" min="1" step="1"
+                aria-label="Jumlah Manager" oninput="onManagerFieldChange(${idx}, 'headcount', this.value)">
+            </td>
+            <td>
+              <input type="number" id="mgr-pct-inp-${idx}" class="lumi-input mono" style="font-weight: 600;"
+                value="${Number(m.pct).toFixed(2)}" min="0" max="100" step="0.25"
+                aria-label="Input Persentase Loyalty Bonus" oninput="onManagerFieldChange(${idx}, 'pct', this.value)">
+            </td>
+            <td>
+              <input type="number" id="mgr-amt-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: var(--positive);"
+                value="${Math.round(m.amount)}" min="0" step="10000000"
+                aria-label="Input Nominal Loyalty Bonus" oninput="onManagerFieldChange(${idx}, 'amount', this.value)">
+            </td>
+            <td id="mgr-perperson-cell-${idx}" style="font-weight: 600; color: var(--positive);">${formatRp(perPerson)} / org</td>
+            <td>
+              <input type="text" class="lumi-input" value="${m.notes || ''}"
+                aria-label="Catatan KPI Loyalty" oninput="onManagerFieldChange(${idx}, 'notes', this.value)">
+            </td>
+            <td style="text-align: center;">
+              <button type="button" class="btn btn-danger" onclick="removeManagerLoyaltyRow(${idx})" ${dl.managers.length <= 1 ? 'disabled' : ''}>Hapus</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateDividendLoyaltyView(scenObj) {
+      const calc = computeDividendAndLoyaltyPool(scenObj);
+      const dl = appState.dividendLoyalty;
+
+      const poolEl = document.getElementById('div-kpi-total-pool');
+      const poolSubEl = document.getElementById('div-kpi-pool-breakdown');
+      const dirEl = document.getElementById('div-kpi-directors');
+      const dirPctEl = document.getElementById('div-kpi-directors-pct');
+      const mgrEl = document.getElementById('div-kpi-managers');
+      const mgrPctEl = document.getElementById('div-kpi-managers-pct');
+      const retEl = document.getElementById('div-kpi-retained');
+      const retPctEl = document.getElementById('div-kpi-retained-pct');
+
+      if (poolEl) poolEl.textContent = formatCompactRp(calc.distributablePool);
+      if (poolSubEl) {
+        poolSubEl.textContent = `Profit (${calc.horizon} Bln): ${formatCompactRp(calc.profitComponent)} + Inv: ${formatCompactRp(calc.invReturnComponent)}`;
+      }
+      if (dirEl) dirEl.textContent = formatCompactRp(calc.totalDirAmount);
+      if (dirPctEl) dirPctEl.textContent = `${calc.totalDirPct.toFixed(2)}% dari Total Sumber Dana`;
+      if (mgrEl) mgrEl.textContent = formatCompactRp(calc.totalMgrAmount);
+      if (mgrPctEl) mgrPctEl.textContent = `${calc.totalMgrPct.toFixed(2)}% dari Total Sumber Dana (${calc.totalMgrHeadcount} Manager)`;
+      if (retEl) {
+        retEl.textContent = formatCompactRp(calc.retainedPool);
+        retEl.style.color = calc.retainedPool >= 0 ? 'var(--on-surface)' : 'var(--error)';
+      }
+      if (retPctEl) {
+        retPctEl.textContent = `${calc.retainedPct.toFixed(2)}% Ditahan di Kas Perusahaan`;
+      }
+
+      // Sync row inputs without stealing focus
+      dl.directors.forEach((d, idx) => {
+        const pInp = document.getElementById(`dir-pct-inp-${idx}`);
+        const aInp = document.getElementById(`dir-amt-inp-${idx}`);
+        const mCell = document.getElementById(`dir-monthly-cell-${idx}`);
+        const sCell = document.getElementById(`dir-share-cell-${idx}`);
+        if (pInp && document.activeElement !== pInp) pInp.value = Number(d.pct).toFixed(2);
+        if (aInp && document.activeElement !== aInp) aInp.value = Math.round(d.amount);
+        if (mCell) mCell.textContent = `${formatRp(d.amount / Math.max(1, calc.horizon))} / bln`;
+        if (sCell) sCell.textContent = `${Number(d.pct).toFixed(2)}% Pool`;
+      });
+
+      dl.managers.forEach((m, idx) => {
+        const pInp = document.getElementById(`mgr-pct-inp-${idx}`);
+        const aInp = document.getElementById(`mgr-amt-inp-${idx}`);
+        const ppCell = document.getElementById(`mgr-perperson-cell-${idx}`);
+        if (pInp && document.activeElement !== pInp) pInp.value = Number(m.pct).toFixed(2);
+        if (aInp && document.activeElement !== aInp) aInp.value = Math.round(m.amount);
+        if (ppCell) ppCell.textContent = `${formatRp(m.amount / Math.max(1, m.headcount))} / org`;
+      });
+
+      // Footers
+      const fDirPct = document.getElementById('foot-dir-pct');
+      const fDirAmt = document.getElementById('foot-dir-amount');
+      const fDirMo = document.getElementById('foot-dir-monthly');
+      const fDirSh = document.getElementById('foot-dir-share');
+      if (fDirPct) fDirPct.textContent = `${calc.totalDirPct.toFixed(2)}%`;
+      if (fDirAmt) fDirAmt.textContent = formatRp(calc.totalDirAmount);
+      if (fDirMo) fDirMo.textContent = `${formatRp(calc.totalDirAmount / Math.max(1, calc.horizon))} / bln`;
+      if (fDirSh) fDirSh.textContent = `${calc.totalDirPct.toFixed(2)}% dari Pool`;
+
+      const fMgrHc = document.getElementById('foot-mgr-headcount');
+      const fMgrPct = document.getElementById('foot-mgr-pct');
+      const fMgrAmt = document.getElementById('foot-mgr-amount');
+      const fMgrAvg = document.getElementById('foot-mgr-avg');
+      const fMgrSh = document.getElementById('foot-mgr-share');
+      if (fMgrHc) fMgrHc.textContent = `${calc.totalMgrHeadcount} Org`;
+      if (fMgrPct) fMgrPct.textContent = `${calc.totalMgrPct.toFixed(2)}%`;
+      if (fMgrAmt) fMgrAmt.textContent = formatRp(calc.totalMgrAmount);
+      if (fMgrAvg) fMgrAvg.textContent = `Rata2: ${formatRp(calc.totalMgrAmount / Math.max(1, calc.totalMgrHeadcount))} / org`;
+      if (fMgrSh) fMgrSh.textContent = `${calc.totalMgrPct.toFixed(2)}% dari Pool`;
+
+      // Executive Callout in Menu 7
+      const callout = document.getElementById('div-summary-callout');
+      if (callout) {
+        callout.innerHTML = `
+          <div class="exec-header">
+            <h3 class="exec-title">Ringkasan Eksekutif Distribusi Laba & Imbal Hasil Investasi (${calc.horizon} Bulan)</h3>
+            <span class="exec-badge" style="background: ${calc.retainedPool >= 0 ? 'var(--positive-container)' : 'var(--error-container)'}; color: ${calc.retainedPool >= 0 ? 'var(--positive)' : 'var(--error)'};">
+              Total Dibagikan: ${(calc.totalDirPct + calc.totalMgrPct).toFixed(2)}% (${formatCompactRp(calc.totalDistributed)})
+            </span>
+          </div>
+          <div class="exec-body">
+            <p>
+              Dari total Sumber Dana sebesar <strong>${formatRp(calc.distributablePool)}</strong> — yang berasal dari Saldo Laba Bersih <strong>${formatRp(calc.profitComponent)}</strong> (${calc.horizon} bulan) ditambah Proyeksi Hasil Investasi Syariah <strong>${formatRp(calc.invReturnComponent)}</strong>${calc.projDeduction > 0 ? ` dikurangi pemakaian modal proyek dari profit <strong>${formatRp(calc.projDeduction)}</strong>` : ''} — perusahaan mengalokasikan:
+            </p>
+            <p>
+              • <strong>Dividen Direksi (${calc.totalDirPct.toFixed(2)}%):</strong> Sebesar <strong>${formatRp(calc.totalDirAmount)}</strong> (setara rata-rata <strong>${formatRp(calc.totalDirAmount / Math.max(1, calc.horizon))}/bulan</strong>).<br>
+              • <strong>Loyalty Bonus Manager (${calc.totalMgrPct.toFixed(2)}%):</strong> Sebesar <strong>${formatRp(calc.totalMgrAmount)}</strong> untuk <strong>${calc.totalMgrHeadcount} orang Manager</strong> (rata-rata <strong>${formatRp(calc.totalMgrAmount / Math.max(1, calc.totalMgrHeadcount))}/orang</strong>).<br>
+              • <strong>Saldo Laba Ditahan Akhir (${calc.retainedPct.toFixed(2)}%):</strong> Menyisakan kas bersih di brankas perusahaan sebesar <strong>${formatRp(calc.retainedPool)}</strong>.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    function setDividendPoolHorizon(months, btnEl) {
+      appState.dividendLoyalty.horizonMonths = months;
+      ['btn-div-horizon-1', 'btn-div-horizon-6', 'btn-div-horizon-12'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      if (btnEl) btnEl.classList.add('active');
+      renderDividendAndLoyaltyTables();
+      updateAllViews();
+    }
+
+    function onDividendPoolConfigChange() {
+      const incInv = document.getElementById('chk-div-include-inv');
+      const dedProj = document.getElementById('chk-div-deduct-proj');
+      const extInp = document.getElementById('inp-div-extra-pool');
+      if (incInv) appState.dividendLoyalty.includeShariaReturn = incInv.checked;
+      if (dedProj) appState.dividendLoyalty.deductProjectFromProfit = dedProj.checked;
+      if (extInp) appState.dividendLoyalty.extraPoolAdjustment = parseFloat(extInp.value) || 0;
+      updateAllViews();
+    }
+
+    function onDirectorFieldChange(idx, field, rawVal) {
+      const d = appState.dividendLoyalty.directors[idx];
+      if (!d) return;
+      if (field === 'active') {
+        d.active = Boolean(rawVal);
+        renderDividendAndLoyaltyTables();
+      } else if (field === 'pct') {
+        d.pct = Math.max(0, parseFloat(rawVal) || 0);
+        d.lastEdited = 'pct';
+      } else if (field === 'amount') {
+        d.amount = Math.max(0, parseFloat(rawVal) || 0);
+        d.lastEdited = 'amount';
+      } else {
+        d[field] = rawVal;
+      }
+      updateAllViews();
+    }
+
+    function addDirectorDividendRow() {
+      appState.dividendLoyalty.directors.push({
+        id: Date.now(),
+        active: true,
+        name: `Direktur / Komisaris #${appState.dividendLoyalty.directors.length + 1}`,
+        notes: 'Alokasi Dividen Direksi',
+        pct: 2.5,
+        amount: 0,
+        lastEdited: 'pct'
+      });
+      renderDividendAndLoyaltyTables();
+      updateAllViews();
+    }
+
+    function removeDirectorDividendRow(idx) {
+      if (appState.dividendLoyalty.directors.length <= 1) return;
+      appState.dividendLoyalty.directors.splice(idx, 1);
+      renderDividendAndLoyaltyTables();
+      updateAllViews();
+    }
+
+    function onManagerFieldChange(idx, field, rawVal) {
+      const m = appState.dividendLoyalty.managers[idx];
+      if (!m) return;
+      if (field === 'active') {
+        m.active = Boolean(rawVal);
+        renderDividendAndLoyaltyTables();
+      } else if (field === 'headcount') {
+        m.headcount = Math.max(1, parseInt(rawVal, 10) || 1);
+      } else if (field === 'pct') {
+        m.pct = Math.max(0, parseFloat(rawVal) || 0);
+        m.lastEdited = 'pct';
+      } else if (field === 'amount') {
+        m.amount = Math.max(0, parseFloat(rawVal) || 0);
+        m.lastEdited = 'amount';
+      } else {
+        m[field] = rawVal;
+      }
+      updateAllViews();
+    }
+
+    function addManagerLoyaltyRow() {
+      appState.dividendLoyalty.managers.push({
+        id: Date.now(),
+        active: true,
+        role: `Manager Divisi #${appState.dividendLoyalty.managers.length + 1}`,
+        headcount: 1,
+        pct: 1.0,
+        amount: 0,
+        notes: 'Pencapaian KPI Tahunan',
+        lastEdited: 'pct'
+      });
+      renderDividendAndLoyaltyTables();
+      updateAllViews();
+    }
+
+    function removeManagerLoyaltyRow(idx) {
+      if (appState.dividendLoyalty.managers.length <= 1) return;
+      appState.dividendLoyalty.managers.splice(idx, 1);
+      renderDividendAndLoyaltyTables();
+      updateAllViews();
     }
 
     // =========================================================================
@@ -2412,20 +5115,22 @@
       });
 
       // 2. Doughnut Cost Composition Chart
+      const c6 = getCssVar('--chart-6', '#c84288');
       const ctxDonut = document.getElementById('donutChart').getContext('2d');
       donutChartInst = new Chart(ctxDonut, {
         type: 'doughnut',
         data: {
-          labels: ['Bonus Mitra', 'Beban Gaji', 'OPEX', 'HPP Produk', 'Pajak'],
+          labels: ['Bonus Mitra', 'Beban Gaji', 'OPEX', 'Beban Kustom', 'HPP Produk', 'Pajak'],
           datasets: [{
             data: [
               Math.round(scen.bonus / 1e6),
               Math.round(scen.salary / 1e6),
               Math.round(scen.opex / 1e6),
+              Math.round((scen.customExp || 0) / 1e6),
               Math.round(scen.hpp / 1e6),
               Math.round(scen.tax / 1e6)
             ],
-            backgroundColor: [c1, c2, c3, c4, c5],
+            backgroundColor: [c1, c2, c3, c6, c4, c5],
             borderWidth: 2,
             borderColor: getCssVar('--surface-dim', '#f2f0f0'),
             hoverOffset: 6
@@ -2450,6 +5155,80 @@
           }
         }
       });
+
+      // 3. Menu 6 Monthly Maturity & Yield Schedule Chart
+      const schedEl = document.getElementById('shariaScheduleChart');
+      if (schedEl) {
+        if (shariaScheduleChartInst) shariaScheduleChartInst.destroy();
+        shariaScheduleChartInst = new Chart(schedEl.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: [],
+            datasets: [
+              {
+                type: 'bar',
+                label: 'Bagi Hasil Bersih Cair Bulan Ini (Juta Rp)',
+                data: [],
+                backgroundColor: c3,
+                borderRadius: 4,
+                maxBarThickness: 22,
+                order: 2
+              },
+              {
+                type: 'bar',
+                label: 'Pokok Jatuh Tempo Kembali (Juta Rp)',
+                data: [],
+                backgroundColor: c1,
+                borderRadius: 4,
+                maxBarThickness: 22,
+                order: 3
+              },
+              {
+                type: 'line',
+                label: 'Akumulasi Keuntungan Bersih (Juta Rp)',
+                data: [],
+                borderColor: c4,
+                backgroundColor: c4,
+                borderWidth: 2.5,
+                pointRadius: 3,
+                tension: 0.25,
+                order: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 150 },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: { color: textColor, font: { family: fontSans, size: 12 }, boxWidth: 10, usePointStyle: true }
+              },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `${ctx.dataset.label}: Rp ${formatNum(ctx.parsed.y)} Juta`
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: deColor, font: { family: fontSans, size: 11 } }
+              },
+              y: {
+                grid: { color: gridColor },
+                ticks: {
+                  color: deColor,
+                  font: { family: fontMono, size: 11 },
+                  callback: v => v + ' Jt'
+                }
+              }
+            }
+          }
+        });
+      }
     }
 
     // =========================================================================
@@ -2457,8 +5236,11 @@
     // =========================================================================
     function bootApp() {
       renderProductsTable();
+      renderCustomExpensesTable();
       renderTaxesTable();
       renderTimelineList();
+      renderShariaTable();
+      renderDividendAndLoyaltyTables();
       updateTieredCalculator();
       updateAllSliderUIs();
       initCharts();
