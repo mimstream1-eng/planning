@@ -11,6 +11,9 @@
   <!-- Chart.js 4.4.1 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
     onerror="let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';document.head.appendChild(s)"></script>
+  <!-- PptxGenJS 3.12.0 for In-App PowerPoint (.pptx) Generation -->
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"
+    onerror="let s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/PptxGenJS/3.12.0/pptxgen.bundle.js';document.head.appendChild(s)"></script>
 
   <style>
     /* ============================================================
@@ -951,6 +954,252 @@
       gap: 12px;
     }
 
+    /* In-App Slide Generator & Presentation Styles */
+    .save-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--r-full);
+      font-size: 12px;
+      font-family: var(--ff-mono);
+      background: var(--positive-container);
+      color: var(--positive);
+      border: 1px solid var(--positive);
+      font-weight: 600;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .glossary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .glossary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .glossary-item {
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--r-s);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .glossary-term {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .glossary-plain {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--on-surface);
+    }
+
+    .slides-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 920px) {
+      .slides-preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .slide-canvas-card {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: var(--r-l);
+      border: 2px solid #1e293b;
+      aspect-ratio: 16 / 9;
+      padding: 22px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--elevation-1);
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+
+    .slide-canvas-card:hover {
+      transform: translateY(-2px);
+      border-color: #3186ff;
+    }
+
+    .slide-canvas-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #3186ff, #9dd2ff);
+    }
+
+    .slide-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: #9dd2ff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .slide-main-title {
+      margin: 6px 0 4px 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    .slide-sub-caption {
+      margin: 0 0 10px 0;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .slide-kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .slide-mini-kpi {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .slide-mini-kpi-lbl {
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .slide-mini-kpi-val {
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #9dd2ff;
+    }
+
+    .slide-bullets {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 12px;
+      color: #e2e8f0;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .slide-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 8px;
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      font-size: 10.5px;
+      font-family: var(--ff-mono);
+      color: #64748b;
+    }
+
+    /* Fullscreen Slide Presentation Modal */
+    .presentation-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 24, 0.96);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .presentation-overlay.is-open {
+      display: flex;
+    }
+
+    .presentation-stage {
+      width: min(1160px, 95vw);
+      aspect-ratio: 16 / 9;
+      background: #0f172a;
+      color: #f8fafc;
+      border: 2px solid #3186ff;
+      border-radius: 20px;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .presentation-stage .slide-main-title {
+      font-size: 30px;
+      margin: 10px 0 6px 0;
+    }
+
+    .presentation-stage .slide-sub-caption {
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    .presentation-stage .slide-mini-kpi {
+      padding: 14px 18px;
+    }
+
+    .presentation-stage .slide-mini-kpi-lbl {
+      font-size: 13px;
+    }
+
+    .presentation-stage .slide-mini-kpi-val {
+      font-size: 22px;
+    }
+
+    .presentation-stage .slide-bullets {
+      font-size: 16px;
+      line-height: 1.65;
+      gap: 8px;
+    }
+
+    .presentation-controls {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     .empty-state-box {
       background: var(--surface-dim);
       border: 2px dashed var(--stroke-default);
@@ -975,12 +1224,80 @@
         <h1 class="brand-title">Dashboard Perencanaan & Proyeksi Bisnis 2027</h1>
         <p class="brand-subtitle">Simulator P&L Interaktif, Multi-Produk HPP, Beban Kustom, Proyek & Sumber Dana, Investasi Syariah, serta Dividen Direksi & Loyalty Bonus Manager</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <span id="autosave-status-pill" class="save-status-pill" title="Semua angka yang Anda input otomatis tersimpan di browser ini dan tidak hilang saat di-refresh">
+          ✓ Tersimpan Otomatis
+        </span>
+        <button type="button" class="btn" onclick="toggleGlossaryModal()">
+          📖 Kamus Istilah Mudah
+        </button>
+        <button type="button" class="btn" onclick="exportStateJson()" title="Simpan seluruh data input ke file cadangan (.json)">
+          💾 Simpan File Data
+        </button>
+        <button type="button" class="btn" onclick="document.getElementById('inp-import-json').click()" title="Muat file data cadangan (.json)">
+          📂 Muat Data
+        </button>
+        <input type="file" id="inp-import-json" accept=".json" style="display:none;" onchange="importStateJson(event)">
+        <button type="button" class="btn btn-danger" onclick="resetStateToDefault()" title="Kembalikan semua angka ke pengaturan awal">
+          Reset Awal
+        </button>
         <button type="button" class="btn" id="btn-theme-toggle" onclick="toggleTheme()">
           <span id="theme-label">Mode Gelap / Terang</span>
         </button>
+        <button type="button" class="btn btn-primary" onclick="switchMenu('panel-slides')">
+          📊 Presentasi & Download PPTX
+        </button>
       </div>
     </header>
+
+    <!-- COLLAPSIBLE KAMUS ISTILAH KEUANGAN (BAHASA SEHARI-HARI NON-AKUNTANSI) -->
+    <div id="glossary-banner-card" class="card" style="display: none; border-left: 5px solid var(--primary); background: var(--surface-dim);">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">📖 Kamus Istilah Keuangan Praktis (Bahasa Sehari-hari — Tanpa Istilah Rumit Akuntansi)</h2>
+          <p class="card-subtitle">Panduan cepat memahami istilah di dalam dashboard ini bagi Anda yang tidak berlatar belakang akuntansi atau ekonomi.</p>
+        </div>
+        <button type="button" class="btn" onclick="toggleGlossaryModal()">Tutup Panduan ×</button>
+      </div>
+      <div class="glossary-grid">
+        <div class="glossary-item">
+          <span class="glossary-term">1. Selisih / Variance</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> Perbedaan angka antara <em>Kondisi Awal (Baseline)</em> dengan <em>Simulasi Baru (Skenario)</em>. Jika berwarna <strong>Hijau (+)</strong> pada Laba, artinya simulasi Anda menghasilkan <strong>tambahan untung</strong>. Jika berwarna <strong>Hijau (-)</strong> pada Biaya, artinya Anda berhasil <strong>menghemat pengeluaran</strong>.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">2. Baseline vs Skenario Simulasi</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> <em>Baseline</em> adalah kondisi bisnis Anda saat ini (patokan awal). Sedangkan <em>Skenario Simulasi</em> adalah hasil "coba-coba" ketika Anda menggeser target penjualan, komisi, atau jumlah staf.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">3. Gross Revenue (Omzet Kotor)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> Total seluruh uang hasil jualan produk yang masuk ke kas (Harga Jual × Jumlah Unit Terjual) sebelum dipotong modal produk, komisi, gaji, dan biaya kantor.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">4. HPP (Harga Pokok Produk)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> Modal dasar untuk memproduksi atau membeli 1 unit barang dari pabrik/supplier. Jika harga jual Anda sudah bersih di luar modal pabrik, bagian ini boleh diisi Rp 0.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">5. OPEX (Beban Operasional)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> Biaya rutin bulanan untuk menjalankan kantor sehari-hari (di luar gaji & komisi mitra), seperti listrik, internet, sewa gedung, dan alat tulis kantor.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">6. EBT & Net Profit (Laba Bersih)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> <em>EBT</em> adalah keuntungan sebelum dipotong pajak. Sedangkan <em>Net Profit (Laba Bersih)</em> adalah <strong>uang untung bersih terakhir</strong> setelah semua biaya dan pajak dibayar—uang inilah yang siap ditabung, diinvestasikan, atau dibagi jadi dividen.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">7. Net Profit Margin (%)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> Persentase uang bersih yang tersisa dari setiap Rp 100 omzet penjualan. Contoh: Margin 28,73% berarti dari setiap Rp 100.000 penjualan, perusahaan mengantongi untung bersih Rp 28.730.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">8. CapEx & Payback Period (BEP)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> <em>CapEx</em> adalah modal sekali keluar di awal untuk membangun sistem IT/otomasi. <em>Payback Period (BEP)</em> adalah <strong>berapa bulan waktu yang dibutuhkan</strong> sampai modal IT tersebut tertutup (balik modal) dari penghematan gaji bulanan.</span>
+        </div>
+        <div class="glossary-item">
+          <span class="glossary-term">9. Tenor, Kupon & Tranche (Syariah)</span>
+          <span class="glossary-plain"><strong>Artinya:</strong> <em>Tenor</em> adalah lama bulan uang investasi dikunci. <em>Kupon</em> adalah uang bagi hasil yang cair ke rekening. <em>Tranche</em> adalah kloter/tahap pembelian ketika Anda menyisihkan uang secara rutin tiap bulan.</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ================= 6 MENU NAVIGATION BAR ================= -->
     <nav class="nav-bar-wrapper" aria-label="Menu Utama">
@@ -1012,6 +1329,10 @@
         <button type="button" class="nav-tab-btn" data-tab="panel-dividen" onclick="switchMenu('panel-dividen', this)">
           <span class="nav-step-num">7</span>
           <span>Dividen Direksi & Loyalty Manager</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-tab="panel-slides" onclick="switchMenu('panel-slides', this)">
+          <span class="nav-step-num">8</span>
+          <span>Generator Slide & PPTX</span>
         </button>
       </div>
     </nav>
@@ -1176,7 +1497,7 @@
               <th>Metrik Keuangan (Bulanan)</th>
               <th>Baseline</th>
               <th>Skenario Simulasi</th>
-              <th>Selisih (Variance)</th>
+              <th>Selisih Untung / Hemat (Variance = Skenario dikurangi Baseline)</th>
             </tr>
           </thead>
           <tbody>
@@ -1521,7 +1842,7 @@
                 <th>% Omzet</th>
                 <th>Skenario / Bulan</th>
                 <th>% Omzet</th>
-                <th>Variance / Bulan</th>
+                <th>Selisih (Variance / Bln)</th>
                 <th>Proyeksi Skenario 1 Tahun (2027)</th>
               </tr>
             </thead>
@@ -2099,6 +2420,65 @@
 
     </section>
 
+    <!-- =========================================================================
+         TAB 8: GENERATOR SLIDE PRESENTASI LIVE & UNDUH FILE POWERPOINT (.PPTX)
+         ========================================================================= -->
+    <section id="panel-slides" class="tab-panel">
+
+      <!-- Control Card for Live Slide Deck & PPTX Export -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Generator Slide Presentasi Otomatis & Ekspor PowerPoint (.PPTX)</h2>
+            <p class="card-subtitle">
+              Seluruh isi slide di bawah ini <strong>otomatis mengikuti perubahan angka terbaru</strong> yang sudah Anda input di Menu 1 s/d Menu 7 (dan sudah tersimpan otomatis di browser Anda). Anda dapat langsung menayangkan slide di layar penuh atau mengunduh file <strong>.PPTX</strong>.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn" onclick="openFullscreenPresentation(0)">
+              🖥 Tayangkan Layar Penuh (Mode Presentasi)
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-download-pptx" onclick="exportLivePptx()">
+              ⬇ Download File Slide PowerPoint (.PPTX)
+            </button>
+          </div>
+        </div>
+
+        <div class="input-grid-2" style="background: var(--surface-bright); padding: 14px 16px; border-radius: var(--r-s); border: 1px solid var(--stroke-default); align-items: center;">
+          <div class="field-group">
+            <label class="field-label" for="inp-deck-title">Judul Utama Presentasi (Muncul di Sampul & Header Slide)</label>
+            <input type="text" id="inp-deck-title" class="lumi-input" value="Laporan Perencanaan Strategis & Proyeksi Keuangan 2027" oninput="onSlideMetaChange()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="inp-deck-presenter">Nama Penyaji / Perusahaan (Footer Slide)</label>
+            <input type="text" id="inp-deck-presenter" class="lumi-input" value="Executive Board Advisory — Perencanaan Tahun 2027" oninput="onSlideMetaChange()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Live 16:9 Slide Deck Preview Grid -->
+      <div id="slides-preview-container" class="slides-preview-grid">
+        <!-- Populated dynamically via JS from live appState -->
+      </div>
+
+    </section>
+
+    <!-- FULLSCREEN SLIDE PRESENTATION MODAL -->
+    <div id="presentation-overlay" class="presentation-overlay" role="dialog" aria-modal="true" aria-label="Mode Presentasi Layar Penuh">
+      <div id="presentation-stage" class="presentation-stage">
+        <!-- Active slide rendered here -->
+      </div>
+      <div class="presentation-controls">
+        <button type="button" class="btn" onclick="stepPresentationSlide(-1)">← Slide Sebelumnya</button>
+        <span id="presentation-counter" class="status-pill" style="background: var(--surface-bright); color: var(--on-surface); font-size: 13px; padding: 6px 16px;">
+          Slide 1 / 9
+        </span>
+        <button type="button" class="btn" onclick="stepPresentationSlide(1)">Slide Berikutnya →</button>
+        <button type="button" class="btn btn-primary" onclick="exportLivePptx()">⬇ Download .PPTX</button>
+        <button type="button" class="btn btn-danger" onclick="closeFullscreenPresentation()">Tutup Layar Penuh (ESC)</button>
+      </div>
+    </div>
+
   </div>
 
   <!-- ================= APPLICATION JAVASCRIPT ================= -->
@@ -2106,7 +2486,13 @@
     // =========================================================================
     // 1. CENTRAL APPLICATION STATE
     // =========================================================================
+    const STORAGE_KEY_V3 = 'lumi_dashboard_perencanaan_2027_v3_state';
+
     const appState = {
+      deckMeta: {
+        title: 'Laporan Perencanaan Strategis & Proyeksi Keuangan 2027',
+        presenter: 'Executive Board Advisory — Perencanaan Tahun 2027'
+      },
       // Multi-product baseline (Default matches 15,000 units @ Rp 355,000 = Rp 5.325B)
       products: [
         { id: 1, name: 'Produk Utama (Reguler)', hpp: 0, price: 355000, volume: 15000 }
@@ -2887,6 +3273,12 @@
 
       // Update Tab 7 Dividend Direksi & Loyalty Bonus Manager
       updateDividendLoyaltyView(scen);
+
+      // Update Tab 8 Live Slide Presentation Deck
+      renderInAppSlidesDeck(base, scen);
+
+      // Automatically persist latest user edits to browser localStorage
+      saveStateToStorage();
     }
 
     function renderExecutiveSummary(base, scen) {
@@ -5232,9 +5624,557 @@
     }
 
     // =========================================================================
+    // 10B. AUTO-SAVE PERSISTENCE (LOCALSTORAGE + JSON BACKUP/RESTORE) & GLOSSARY
+    // =========================================================================
+    const DEFAULT_STATE_SNAPSHOT = JSON.parse(JSON.stringify(appState));
+    let isBootingApp = false;
+
+    function toggleGlossaryModal() {
+      const el = document.getElementById('glossary-banner-card');
+      if (!el) return;
+      el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    function saveStateToStorage() {
+      if (isBootingApp) return;
+      try {
+        localStorage.setItem(STORAGE_KEY_V3, JSON.stringify(appState));
+        const pill = document.getElementById('autosave-status-pill');
+        if (pill) {
+          const now = new Date();
+          const hh = String(now.getHours()).padStart(2, '0');
+          const mm = String(now.getMinutes()).padStart(2, '0');
+          const ss = String(now.getSeconds()).padStart(2, '0');
+          pill.textContent = `✓ Tersimpan Otomatis (${hh}:${mm}:${ss})`;
+        }
+      } catch (e) {
+        console.warn('Auto-save localStorage warning:', e);
+      }
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_V3);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return false;
+
+        if (parsed.deckMeta) appState.deckMeta = { ...appState.deckMeta, ...parsed.deckMeta };
+        if (Array.isArray(parsed.products) && parsed.products.length > 0) appState.products = parsed.products;
+        if (typeof parsed.baseEmployees === 'number') appState.baseEmployees = parsed.baseEmployees;
+        if (typeof parsed.baseTotalSalary === 'number') appState.baseTotalSalary = parsed.baseTotalSalary;
+        if (typeof parsed.baseBonusPct === 'number') appState.baseBonusPct = parsed.baseBonusPct;
+        if (typeof parsed.baseOpex === 'number') appState.baseOpex = parsed.baseOpex;
+        if (typeof parsed.itCapex === 'number') appState.itCapex = parsed.itCapex;
+        if (Array.isArray(parsed.customExpenses)) appState.customExpenses = parsed.customExpenses;
+        if (Array.isArray(parsed.taxes)) appState.taxes = parsed.taxes;
+        if (parsed.scenario) appState.scenario = { ...appState.scenario, ...parsed.scenario };
+        if (Array.isArray(parsed.timeline)) appState.timeline = parsed.timeline;
+        if (parsed.dividendLoyalty) appState.dividendLoyalty = { ...appState.dividendLoyalty, ...parsed.dividendLoyalty };
+        if (parsed.shariaTreasury) {
+          appState.shariaTreasury = {
+            ...appState.shariaTreasury,
+            ...parsed.shariaTreasury,
+            instruments: Array.isArray(parsed.shariaTreasury.instruments)
+              ? parsed.shariaTreasury.instruments
+              : appState.shariaTreasury.instruments
+          };
+        }
+        return true;
+      } catch (e) {
+        console.warn('Failed to load state from localStorage:', e);
+        return false;
+      }
+    }
+
+    function syncStaticInputsFromState() {
+      const setVal = (id, v) => {
+        const el = document.getElementById(id);
+        if (el) el.value = v;
+      };
+      setVal('inp-base-emp', appState.baseEmployees);
+      setVal('inp-base-salary', appState.baseTotalSalary);
+      setVal('inp-base-bonus', appState.baseBonusPct);
+      setVal('inp-base-opex', appState.baseOpex);
+      setVal('inp-it-capex', appState.itCapex);
+      const avgSal = appState.baseTotalSalary / Math.max(1, appState.baseEmployees);
+      const avgEl = document.getElementById('out-avg-salary');
+      if (avgEl) avgEl.textContent = formatRp(avgSal) + ' / orang';
+
+      setVal('slider-profit-months', appState.shariaTreasury.accumMonths);
+      syncSliderTrackProgress(document.getElementById('slider-profit-months'));
+      setVal('inp-extra-treasury', appState.shariaTreasury.extraInitialCash);
+      const zChk = document.getElementById('chk-zakat-corp');
+      if (zChk) zChk.checked = Boolean(appState.shariaTreasury.zakatCorpEnabled);
+
+      const incInv = document.getElementById('chk-div-include-inv');
+      if (incInv) incInv.checked = Boolean(appState.dividendLoyalty.includeShariaReturn);
+      const dedProj = document.getElementById('chk-div-deduct-proj');
+      if (dedProj) dedProj.checked = Boolean(appState.dividendLoyalty.deductProjectFromProfit);
+      setVal('inp-div-extra-pool', appState.dividendLoyalty.extraPoolAdjustment || 0);
+
+      if (appState.deckMeta) {
+        setVal('inp-deck-title', appState.deckMeta.title || '');
+        setVal('inp-deck-presenter', appState.deckMeta.presenter || '');
+      }
+    }
+
+    function resetStateToDefault() {
+      if (!confirm('Kembalikan seluruh data input ke pengaturan awal (Baseline Rp 1,53 Miliar)? Perubahan yang Anda buat akan di-reset.')) return;
+      localStorage.removeItem(STORAGE_KEY_V3);
+      const fresh = JSON.parse(JSON.stringify(DEFAULT_STATE_SNAPSHOT));
+      Object.keys(fresh).forEach(k => { appState[k] = fresh[k]; });
+      isBootingApp = true;
+      syncStaticInputsFromState();
+      renderProductsTable();
+      renderCustomExpensesTable();
+      renderTaxesTable();
+      renderTimelineList();
+      renderShariaTable();
+      renderDividendAndLoyaltyTables();
+      updateAllSliderUIs();
+      isBootingApp = false;
+      updateAllViews();
+    }
+
+    function exportStateJson() {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute('href', dataStr);
+      a.setAttribute('download', 'data_perencanaan_2027_tersimpan.json');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function importStateJson(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          localStorage.setItem(STORAGE_KEY_V3, JSON.stringify(parsed));
+          loadStateFromStorage();
+          syncStaticInputsFromState();
+          renderProductsTable();
+          renderCustomExpensesTable();
+          renderTaxesTable();
+          renderTimelineList();
+          renderShariaTable();
+          renderDividendAndLoyaltyTables();
+          updateAllSliderUIs();
+          updateAllViews();
+          alert('Data perencanaan berhasil dimuat dan disimpan!');
+        } catch (err) {
+          alert('File JSON tidak valid.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // =========================================================================
+    // 10C. MENU 8: IN-APP LIVE SLIDE DECK & POWERPOINT (.PPTX) GENERATOR
+    // =========================================================================
+    let currentPresentationSlideIdx = 0;
+
+    function onSlideMetaChange() {
+      const tEl = document.getElementById('inp-deck-title');
+      const pEl = document.getElementById('inp-deck-presenter');
+      if (tEl) appState.deckMeta.title = tEl.value;
+      if (pEl) appState.deckMeta.presenter = pEl.value;
+      const { base, scen } = computeFinancials();
+      renderInAppSlidesDeck(base, scen);
+      saveStateToStorage();
+    }
+
+    function buildLiveSlidesData(baseObj, scenObj) {
+      const fin = (baseObj && scenObj) ? { base: baseObj, scen: scenObj } : computeFinancials();
+      const { base, scen } = fin;
+      const projSum = computeProjectBudgetSummary();
+      const sharia = computeShariaPortfolio(scen.netProfit);
+      const divCalc = computeDividendAndLoyaltyPool(scen);
+
+      const deckTitle = (appState.deckMeta && appState.deckMeta.title) || 'Laporan Perencanaan Strategis & Proyeksi Keuangan 2027';
+      const presenter = (appState.deckMeta && appState.deckMeta.presenter) || 'Executive Board Advisory — Perencanaan Tahun 2027';
+
+      const revDiff = scen.revenue - base.revenue;
+      const profDiff = scen.netProfit - base.netProfit;
+      const costDiff = scen.totalCost - base.totalCost;
+      const empDiff = base.employees - scen.employees;
+      const salSavingMonthly = base.salary - scen.salary;
+      const paybackMonths = salSavingMonthly > 0 ? (appState.itCapex / salSavingMonthly).toFixed(1) + ' Bulan' : 'Tetap (48 Staf)';
+
+      const activeCustomExps = (appState.customExpenses || []).filter(c => c.active);
+      const activeSharia = sharia.computedInstruments.filter(i => i.isActive);
+      const activeDirs = appState.dividendLoyalty.directors.filter(d => d.active);
+      const activeMgrs = appState.dividendLoyalty.managers.filter(m => m.active);
+
+      return [
+        {
+          num: 1,
+          section: 'SAMPUL EKSEKUTIF • PERENCANAAN 2027',
+          title: deckTitle,
+          subtitle: `${presenter} — Dihasilkan Otomatis dari Data Input Live Dashboard`,
+          kpis: [
+            { label: 'Omzet Skenario / Bulan', value: formatCompactRp(scen.revenue) },
+            { label: 'Laba Bersih / Bulan', value: formatCompactRp(scen.netProfit) },
+            { label: 'Proyeksi Laba 1 Tahun (2027)', value: formatCompactRp(scen.netProfit * 12) }
+          ],
+          bullets: [
+            `Kondisi Awal (Baseline): Volume ${formatNum(base.volume)} unit/bln | Omzet ${formatRp(base.revenue)}/bln | Laba Bersih ${formatRp(base.netProfit)}/bln (${base.marginPct.toFixed(2)}%).`,
+            `Target Skenario Aktif: Volume ${formatNum(scen.volume)} unit/bln @ ${formatRp(scen.price)} | Komisi Mitra ${scen.bonusPct.toFixed(1)}% | SDM ${scen.employees} orang.`,
+            `Selisih Untung (Variance Laba Bersih): ${profDiff >= 0 ? '+' : ''}${formatRp(profDiff)}/bulan (${profDiff >= 0 ? '+' : ''}${formatRp(profDiff * 12)}/tahun dibanding Baseline).`,
+            `Cakupan Materi: Evaluasi P&L, Lini Produk & Beban Kustom, ROI Otomasi IT, Anggaran Proyek, Treasury Syariah, serta Dividen Direksi & Loyalty Manager.`
+          ]
+        },
+        {
+          num: 2,
+          section: 'PANDUAN PRAKTIS • KAMUS ISTILAH NON-AKUNTANSI',
+          title: 'Penjelasan Mudah Istilah Keuangan & Maksud "Selisih (Variance)"',
+          subtitle: 'Ringkasan arti istilah di dalam laporan agar mudah dipahami oleh seluruh peserta rapat tanpa latar belakang akuntansi',
+          kpis: [
+            { label: 'Variance Laba Bulanan', value: (profDiff >= 0 ? '+' : '') + formatCompactRp(profDiff) },
+            { label: 'Variance Biaya Bulanan', value: (costDiff >= 0 ? '+' : '') + formatCompactRp(costDiff) },
+            { label: 'Margin Bersih Skenario', value: scen.marginPct.toFixed(2) + '%' }
+          ],
+          bullets: [
+            `Apa itu Selisih (Variance)? Perbandingan angka Skenario Baru dikurangi Kondisi Awal (Baseline). Jika Laba bertanda (+), artinya perusahaan mendapat tambahan keuntungan bersih.`,
+            `Gross Revenue (Omzet Kotor): Total uang masuk dari penjualan produk (${formatRp(scen.revenue)}/bln) sebelum dikurangi biaya apapun.`,
+            `HPP & OPEX: HPP adalah modal dasar produk (${formatRp(scen.hpp)}/bln), sedangkan OPEX adalah biaya rutin kantor bulanan (${formatRp(scen.opex)}/bln).`,
+            `Net Profit (Laba Bersih): Uang untung bersih terakhir (${formatRp(scen.netProfit)}/bln) setelah seluruh komisi, gaji, OPEX, beban tambahan, dan pajak terbayar.`
+          ]
+        },
+        {
+          num: 3,
+          section: 'MENU 1 • RINGKASAN DASHBOARD & VARIANCE P&L',
+          title: 'Perbandingan Kinerja Bulanan: Baseline vs Skenario Simulasi',
+          subtitle: 'Evaluasi dampak perubahan volume penjualan, skema komisi mitra, dan efisiensi operasional terhadap Laba Bersih',
+          kpis: [
+            { label: 'Gross Revenue (Skenario)', value: formatCompactRp(scen.revenue) },
+            { label: 'Total Biaya & Beban', value: formatCompactRp(scen.totalCost) },
+            { label: 'Net Profit (Laba Bersih)', value: formatCompactRp(scen.netProfit) }
+          ],
+          bullets: [
+            `Pendapatan Kotor (Omzet): Baseline ${formatRp(base.revenue)} vs Skenario ${formatRp(scen.revenue)} (Selisih/Variance: ${revDiff >= 0 ? '+' : ''}${formatRp(revDiff)}/bln).`,
+            `Beban Bonus Mitra: Baseline ${base.bonusPct.toFixed(1)}% (${formatRp(base.bonus)}) vs Skenario ${scen.bonusPct.toFixed(1)}% (${formatRp(scen.bonus)}).`,
+            `Beban Gaji & OPEX: Gaji ${scen.employees} staf sebesar ${formatRp(scen.salary)}/bln + OPEX ${formatRp(scen.opex)}/bln + Beban Kustom ${formatRp(scen.customExp || 0)}/bln.`,
+            `Laba Bersih Bulanan: Naik/berubah dari ${formatRp(base.netProfit)} menjadi ${formatRp(scen.netProfit)}/bln (Margin bersih: ${scen.marginPct.toFixed(2)}%).`
+          ]
+        },
+        {
+          num: 4,
+          section: 'MENU 2 • INPUT LINI PRODUK, HPP & BEBAN KUSTOM',
+          title: 'Struktur Lini Produk, Beban Gaji & Biaya Tambahan Kustom',
+          subtitle: 'Rincian sumber omzet per produk serta daftar pos beban tambahan kustom dan pajak perusahaan yang diaktifkan',
+          kpis: [
+            { label: 'Total Lini Produk', value: appState.products.length + ' Produk' },
+            { label: 'Rata-rata Gaji / Staf', value: formatCompactRp(base.avgSalaryPerEmp) },
+            { label: 'Total Beban Kustom Aktif', value: formatCompactRp(scen.customExp || 0) }
+          ],
+          bullets: [
+            `Portofolio Produk (${appState.products.length} Lini): Total target ${formatNum(base.volume)} unit/bln dengan harga rata-rata ${formatRp(base.avgPrice)} dan total HPP ${formatRp(base.hpp)}/bln.`,
+            `Rincian Produk: ${appState.products.map(p => `${p.name} (${formatNum(p.volume)} unit @ ${formatRp(p.price)})`).join(' | ')}.`,
+            `Beban Tambahan Kustom (${activeCustomExps.length} Pos Aktif): ${activeCustomExps.length > 0 ? activeCustomExps.map(c => `${c.name} (${c.calcType === 'pct_revenue' ? c.value + '% Omzet' : formatRp(c.value)})`).join(', ') : 'Tidak ada beban tambahan kustom yang dicentang (Rp 0)'}.`,
+            `Estimasi Pajak Aktif: ${formatRp(scen.tax)}/bulan (${appState.taxes.filter(t => t.active).map(t => t.name).join(', ') || 'Belum ada pajak dicentang / Pre-Tax'}).`
+          ]
+        },
+        {
+          num: 5,
+          section: 'MENU 3 • PROYEKSI P&L 12 BULAN & ROI OTOMASI IT',
+          title: 'Proyeksi Laba Rugi Tahunan (2027) & Kelayakan Investasi IT',
+          subtitle: 'Simulasi akumulasi kinerja 12 bulan penuh serta perhitungan balik modal (Payback Period / BEP) otomasi sistem',
+          kpis: [
+            { label: 'Omzet Tahunan (12 Bln)', value: formatCompactRp(scen.revenue * 12) },
+            { label: 'Laba Bersih Tahunan (2027)', value: formatCompactRp(scen.netProfit * 12) },
+            { label: 'Payback Period CapEx IT', value: paybackMonths }
+          ],
+          bullets: [
+            `Proyeksi 1 Tahun Penuh (2027): Omzet Kotor mencapai ${formatRp(scen.revenue * 12)} dengan Total Biaya ${formatRp(scen.totalCost * 12)}.`,
+            `Akumulasi Laba Bersih 2027: Mencapai ${formatRp(scen.netProfit * 12)}/tahun (Variance Tahunan: ${profDiff >= 0 ? '+' : ''}${formatRp(profDiff * 12)} vs Baseline).`,
+            `Efisiensi SDM & Otomasi: Perubahan staf dari ${base.employees} menjadi ${scen.employees} orang (${empDiff > 0 ? 'Hemat ' + empDiff + ' staf' : 'Jumlah staf tetap'}), menghemat gaji ${formatRp(salSavingMonthly * 12)}/tahun.`,
+            `Anggaran CapEx Sistem IT: ${formatRp(appState.itCapex)} (One-Time) — ${salSavingMonthly > 0 ? `Balik modal dalam ${paybackMonths} melalui efisiensi gaji.` : 'Geser slider jumlah karyawan untuk menguji penghematan otomasi.'}`
+          ]
+        },
+        {
+          num: 6,
+          section: 'MENU 4 • ROADMAP LANGKAH KERJA & MODAL PROYEK',
+          title: 'Rencana Kerja Kuartalan, Proyek Pengembangan & Sumber Dana',
+          subtitle: 'Alokasi kebutuhan biaya/modal proyek multi-termin beserta pemisahan sumber dana (Profit Bulanan, Dana Tambahan, Modal Owner)',
+          kpis: [
+            { label: 'Total Anggaran Proyek', value: formatCompactRp(projSum.totalAll) },
+            { label: 'Dari Saldo Profit Bulanan', value: formatCompactRp(projSum.fromProfit) },
+            { label: 'Dana Tambahan + Modal Owner', value: formatCompactRp(projSum.fromExtra + projSum.fromOwner) }
+          ],
+          bullets: appState.timeline.slice(0, 4).map((t, i) => {
+            const sub = projSum.itemTotals[i] ? projSum.itemTotals[i].subAll : 0;
+            return `${t.quarter} — ${t.projectName || t.title} (${t.status}, Progres ${t.progress}%): Anggaran Proyek ${formatRp(sub)} | PIC: ${t.pic}.`;
+          })
+        },
+        {
+          num: 7,
+          section: 'MENU 5 & 6 • PORTOFOLIO & JADWAL JATUH TEMPO SYARIAH',
+          title: 'Simulasi Penyisihan Investasi Syariah & Proyeksi Bagi Hasil',
+          subtitle: 'Rekapitulasi penempatan kas pada instrumen syariah Indonesia & Global beserta proyeksi imbal hasil bersih',
+          kpis: [
+            { label: 'Disisihkan / Bulan', value: formatCompactRp(sharia.monthlySetAsideNominal) },
+            { label: 'Total Akumulasi Modal Pokok', value: formatCompactRp(sharia.totalAllocated) },
+            { label: 'Total Bagi Hasil Bersih', value: '+' + formatCompactRp(sharia.totalNetReturn) }
+          ],
+          bullets: [
+            `Postur Kas & Penyisihan: Saldo Laba Bersih 1 Bulan ${formatRp(sharia.realOneMonthBalance)} | Disisihkan untuk investasi ${formatRp(sharia.monthlySetAsideNominal)}/bulan.`,
+            `Total Modal & Tranche: ${sharia.selectedCount} instrumen aktif (${sharia.totalTranchesCount}x tranche pembelian) dengan akumulasi modal pokok ${formatRp(sharia.totalAllocated)}.`,
+            `Proyeksi Keuntungan Bersih: Menghasilkan bagi hasil bersih +${formatRp(sharia.totalNetReturn)} (Weighted Net Yield: ${sharia.weightedAnnualNetYield.toFixed(2)}% p.a.), sehingga total dana akhir menjadi ${formatRp(sharia.totalAllocated + sharia.totalNetReturn)}.`,
+            `Instrumen Dipilih: ${activeSharia.length > 0 ? activeSharia.slice(0, 3).map(i => `${i.name.split('(')[0].trim()} (${formatCompactRp(i.totalInstPrincipal)} → Hasil +${formatCompactRp(i.totalInstNetReturn)})`).join(' | ') : 'Belum ada instrumen dicentang di Menu 5 (Gunakan tombol Isi Contoh Simulasi Rutin di Menu 5)'}.`
+          ]
+        },
+        {
+          num: 8,
+          section: 'MENU 7 • DIVIDEN DIREKSI & LOYALTY BONUS MANAGER',
+          title: 'Proyeksi Pembagian Dividen Direksi & Loyalty Bonus Manager',
+          subtitle: `Distribusi keuntungan berdasarkan Sumber Dana gabungan Saldo Profit (${divCalc.horizon} Bulan) + Hasil Investasi Syariah`,
+          kpis: [
+            { label: 'Total Kantong Sumber Dana', value: formatCompactRp(divCalc.distributablePool) },
+            { label: 'Total Dividen Direksi', value: `${formatCompactRp(divCalc.totalDirAmount)} (${divCalc.totalDirPct.toFixed(1)}%)` },
+            { label: 'Total Loyalty Manager', value: `${formatCompactRp(divCalc.totalMgrAmount)} (${divCalc.totalMgrPct.toFixed(1)}%)` }
+          ],
+          bullets: [
+            `Komposisi Sumber Dana (${divCalc.horizon} Bulan): Saldo Profit ${formatRp(divCalc.profitComponent)} + Bagi Hasil Investasi Syariah ${formatRp(divCalc.invReturnComponent)}${divCalc.projDeduction > 0 ? ` - Modal Proyek ${formatRp(divCalc.projDeduction)}` : ''} = ${formatRp(divCalc.distributablePool)}.`,
+            `Rincian Dividen Direksi (${divCalc.totalDirPct.toFixed(2)}% = ${formatRp(divCalc.totalDirAmount)}): ${activeDirs.map(d => `${d.name}: ${Number(d.pct).toFixed(1)}% (${formatCompactRp(d.amount)})`).join(' | ')}.`,
+            `Rincian Loyalty Bonus Manager (${divCalc.totalMgrPct.toFixed(2)}% = ${formatRp(divCalc.totalMgrAmount)} untuk ${divCalc.totalMgrHeadcount} Org): ${activeMgrs.map(m => `${m.role} (${m.headcount} org): ${Number(m.pct).toFixed(2)}% (${formatCompactRp(m.amount)})`).join(' | ')}.`,
+            `Saldo Laba Ditahan Akhir (${divCalc.retainedPct.toFixed(2)}%): Kas bersih yang tetap diamankan di brankas perusahaan sebesar ${formatRp(divCalc.retainedPool)}.`
+          ]
+        }
+      ];
+    }
+
+    function renderInAppSlidesDeck(baseObj, scenObj) {
+      const container = document.getElementById('slides-preview-container');
+      if (!container) return;
+      const slides = buildLiveSlidesData(baseObj, scenObj);
+
+      container.innerHTML = slides.map((s, idx) => `
+        <article class="slide-canvas-card" onclick="openFullscreenPresentation(${idx})" title="Klik untuk memperbesar slide ini ke layar penuh">
+          <div>
+            <div class="slide-top-meta">
+              <span>${s.section}</span>
+              <span>SLIDE ${s.num} / ${slides.length}</span>
+            </div>
+            <h3 class="slide-main-title">${s.title}</h3>
+            <p class="slide-sub-caption">${s.subtitle}</p>
+            <div class="slide-kpi-strip">
+              ${s.kpis.map(k => `
+                <div class="slide-mini-kpi">
+                  <span class="slide-mini-kpi-lbl">${k.label}</span>
+                  <span class="slide-mini-kpi-val">${k.value}</span>
+                </div>
+              `).join('')}
+            </div>
+            <ul class="slide-bullets">
+              ${s.bullets.map(b => `<li>${b}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="slide-footer-bar">
+            <span>${(appState.deckMeta && appState.deckMeta.presenter) || 'Perencanaan Bisnis 2027'}</span>
+            <span>Klik kartu untuk Layar Penuh ↗</span>
+          </div>
+        </article>
+      `).join('');
+
+      // If fullscreen overlay is currently open, refresh its content too
+      const overlay = document.getElementById('presentation-overlay');
+      if (overlay && overlay.classList.contains('is-open')) {
+        renderActiveFullscreenSlide();
+      }
+    }
+
+    function openFullscreenPresentation(slideIdx = 0) {
+      const slides = buildLiveSlidesData();
+      currentPresentationSlideIdx = Math.max(0, Math.min(slides.length - 1, slideIdx));
+      const overlay = document.getElementById('presentation-overlay');
+      if (overlay) {
+        overlay.classList.add('is-open');
+        renderActiveFullscreenSlide();
+      }
+    }
+
+    function closeFullscreenPresentation() {
+      const overlay = document.getElementById('presentation-overlay');
+      if (overlay) overlay.classList.remove('is-open');
+    }
+
+    function stepPresentationSlide(delta) {
+      const slides = buildLiveSlidesData();
+      currentPresentationSlideIdx = (currentPresentationSlideIdx + delta + slides.length) % slides.length;
+      renderActiveFullscreenSlide();
+    }
+
+    function renderActiveFullscreenSlide() {
+      const slides = buildLiveSlidesData();
+      const s = slides[currentPresentationSlideIdx] || slides[0];
+      const stage = document.getElementById('presentation-stage');
+      const counter = document.getElementById('presentation-counter');
+      if (!stage || !s) return;
+
+      if (counter) {
+        counter.textContent = `Slide ${s.num} / ${slides.length}`;
+      }
+
+      stage.innerHTML = `
+        <div>
+          <div class="slide-top-meta" style="font-size: 14px;">
+            <span>${s.section}</span>
+            <span>SLIDE ${s.num} DARI ${slides.length}</span>
+          </div>
+          <h2 class="slide-main-title">${s.title}</h2>
+          <p class="slide-sub-caption">${s.subtitle}</p>
+          <div class="slide-kpi-strip" style="gap: 14px; margin-bottom: 22px;">
+            ${s.kpis.map(k => `
+              <div class="slide-mini-kpi">
+                <span class="slide-mini-kpi-lbl">${k.label}</span>
+                <span class="slide-mini-kpi-val">${k.value}</span>
+              </div>
+            `).join('')}
+          </div>
+          <ul class="slide-bullets">
+            ${s.bullets.map(b => `<li>${b}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="slide-footer-bar" style="font-size: 13px;">
+          <span>${(appState.deckMeta && appState.deckMeta.presenter) || 'Perencanaan Bisnis 2027'}</span>
+          <span>Gunakan tombol Panah Kiri / Kanan di keyboard untuk berpindah slide</span>
+        </div>
+      `;
+    }
+
+    window.addEventListener('keydown', e => {
+      const overlay = document.getElementById('presentation-overlay');
+      if (!overlay || !overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeFullscreenPresentation();
+      else if (e.key === 'ArrowRight' || e.key === ' ') stepPresentationSlide(1);
+      else if (e.key === 'ArrowLeft') stepPresentationSlide(-1);
+    });
+
+    async function exportLivePptx() {
+      const btn = document.getElementById('btn-download-pptx');
+      if (typeof PptxGenJS === 'undefined') {
+        alert('Library PptxGenJS sedang dimuat. Pastikan koneksi internet aktif lalu coba klik kembali dalam 2 detik.');
+        return;
+      }
+
+      const origText = btn ? btn.textContent : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Sedang Menyusun File .PPTX...';
+      }
+
+      try {
+        const pptx = new PptxGenJS();
+        pptx.layout = 'LAYOUT_16x9';
+        pptx.author = (appState.deckMeta && appState.deckMeta.presenter) || 'Executive Board Advisory';
+        pptx.company = 'Perencanaan Strategis 2027';
+        pptx.title = (appState.deckMeta && appState.deckMeta.title) || 'Proyeksi & Simulator Keuangan 2027';
+
+        const slidesData = buildLiveSlidesData();
+
+        slidesData.forEach(s => {
+          const slide = pptx.addSlide();
+          slide.background = { color: '0F172A' };
+
+          // Luminous Top Accent Bar
+          slide.addShape(pptx.ShapeType.rect, {
+            x: 0, y: 0, w: 10.0, h: 0.08,
+            fill: { color: '3186FF' },
+            line: { color: '3186FF', width: 0 }
+          });
+
+          // Section Tag & Slide Number
+          slide.addText(s.section, {
+            x: 0.5, y: 0.25, w: 7.0, h: 0.25,
+            fontSize: 9, bold: true, color: '9DD2FF', fontFace: 'Arial'
+          });
+          slide.addText(`SLIDE ${s.num} / ${slidesData.length}`, {
+            x: 7.5, y: 0.25, w: 2.0, h: 0.25,
+            fontSize: 9, bold: true, color: '94A3B8', align: 'right', fontFace: 'Arial'
+          });
+
+          // Slide Title & Subtitle
+          slide.addText(s.title, {
+            x: 0.5, y: 0.55, w: 9.0, h: 0.55,
+            fontSize: 20, bold: true, color: 'FFFFFF', fontFace: 'Arial'
+          });
+          slide.addText(s.subtitle, {
+            x: 0.5, y: 1.12, w: 9.0, h: 0.35,
+            fontSize: 11, color: '94A3B8', fontFace: 'Arial'
+          });
+
+          // 3 KPI Boxes
+          s.kpis.forEach((k, kIdx) => {
+            const boxX = 0.5 + (kIdx * 3.05);
+            slide.addShape(pptx.ShapeType.roundRect, {
+              x: boxX, y: 1.58, w: 2.9, h: 0.92,
+              fill: { color: '1E293B' },
+              line: { color: '3186FF', width: 1 },
+              rectRadius: 0.08
+            });
+            slide.addText(k.label, {
+              x: boxX + 0.12, y: 1.66, w: 2.66, h: 0.25,
+              fontSize: 9.5, color: '94A3B8', fontFace: 'Arial'
+            });
+            slide.addText(String(k.value), {
+              x: boxX + 0.12, y: 1.94, w: 2.66, h: 0.45,
+              fontSize: 15, bold: true, color: '9DD2FF', fontFace: 'Arial'
+            });
+          });
+
+          // Bullets Box
+          slide.addShape(pptx.ShapeType.roundRect, {
+            x: 0.5, y: 2.68, w: 9.0, h: 2.35,
+            fill: { color: '162032' },
+            line: { color: '334155', width: 1 },
+            rectRadius: 0.08
+          });
+
+          const bulletItems = s.bullets.map(b => ({
+            text: b,
+            options: { bullet: true, breakLine: true, fontSize: 11.5, color: 'E2E8F0', fontFace: 'Arial', paraSpaceAfter: 8 }
+          }));
+
+          slide.addText(bulletItems, {
+            x: 0.68, y: 2.8, w: 8.64, h: 2.1,
+            valign: 'top'
+          });
+
+          // Footer
+          slide.addText((appState.deckMeta && appState.deckMeta.presenter) || 'Dashboard Perencanaan 2027', {
+            x: 0.5, y: 5.18, w: 6.5, h: 0.25,
+            fontSize: 8.5, color: '64748B', fontFace: 'Arial'
+          });
+          slide.addText('Digenerate otomatis dari Dashboard HTML Interaktif', {
+            x: 6.5, y: 5.18, w: 3.0, h: 0.25,
+            fontSize: 8.5, color: '64748B', align: 'right', fontFace: 'Arial'
+          });
+        });
+
+        await pptx.writeFile({ fileName: 'Presentasi_Perencanaan_Bisnis_2027_Live.pptx' });
+      } catch (err) {
+        console.error('Error generating PPTX:', err);
+        alert('Gagal membuat file PPTX: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = origText || '⬇ Download File Slide PowerPoint (.PPTX)';
+        }
+      }
+    }
+
+    // =========================================================================
     // 11. BOOTSTRAP ON LOAD
     // =========================================================================
     function bootApp() {
+      isBootingApp = true;
+      loadStateFromStorage();
+      syncStaticInputsFromState();
       renderProductsTable();
       renderCustomExpensesTable();
       renderTaxesTable();
@@ -5244,6 +6184,7 @@
       updateTieredCalculator();
       updateAllSliderUIs();
       initCharts();
+      isBootingApp = false;
       updateAllViews();
     }
 
