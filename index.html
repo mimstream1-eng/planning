@@ -1200,6 +1200,126 @@
       flex-wrap: wrap;
     }
 
+    /* Cash Flow Waterfall & Dividend Solvency Guardrail Styles */
+    .waterfall-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 960px) {
+      .waterfall-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .waterfall-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .wf-step {
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-top: 4px solid var(--primary);
+      border-radius: var(--r-s);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .wf-step.is-deduct {
+      border-top-color: var(--warning);
+    }
+
+    .wf-step.is-add {
+      border-top-color: var(--positive);
+    }
+
+    .wf-step.is-ceiling {
+      background: var(--accent-container);
+      border-color: var(--primary);
+      border-top-width: 4px;
+    }
+
+    .wf-step-num {
+      font-family: var(--ff-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--on-surface-variant);
+    }
+
+    .wf-step-val {
+      font-family: var(--ff-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .wf-step-desc {
+      font-size: 11px;
+      color: var(--on-surface-variant);
+      line-height: 1.35;
+    }
+
+    .solvency-alert-box {
+      background: var(--error-container);
+      border: 2px solid var(--error);
+      border-left: 6px solid var(--error);
+      border-radius: var(--r-m);
+      padding: 16px 20px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--on-surface);
+      box-shadow: var(--elevation-1);
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .solvency-alert-box.is-triggered {
+      display: flex;
+    }
+
+    .solvency-healthy-box {
+      background: var(--positive-container);
+      border: 1px solid var(--positive);
+      border-left: 5px solid var(--positive);
+      border-radius: var(--r-m);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--on-surface);
+    }
+
+    .row-limit-warning {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--error-container);
+      border: 1px solid var(--error);
+      color: var(--error);
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .row-limit-hint {
+      display: block;
+      margin-top: 3px;
+      font-family: var(--ff-mono);
+      font-size: 10.5px;
+      color: var(--on-surface-variant);
+    }
+
     .empty-state-box {
       background: var(--surface-dim);
       border: 2px dashed var(--stroke-default);
@@ -1228,9 +1348,6 @@
         <span id="autosave-status-pill" class="save-status-pill" title="Semua angka yang Anda input otomatis tersimpan di browser ini dan tidak hilang saat di-refresh">
           ✓ Tersimpan Otomatis
         </span>
-        <button type="button" class="btn" onclick="toggleGlossaryModal()">
-          📖 Kamus Istilah Mudah
-        </button>
         <button type="button" class="btn" onclick="exportStateJson()" title="Simpan seluruh data input ke file cadangan (.json)">
           💾 Simpan File Data
         </button>
@@ -1249,55 +1366,6 @@
         </button>
       </div>
     </header>
-
-    <!-- COLLAPSIBLE KAMUS ISTILAH KEUANGAN (BAHASA SEHARI-HARI NON-AKUNTANSI) -->
-    <div id="glossary-banner-card" class="card" style="display: none; border-left: 5px solid var(--primary); background: var(--surface-dim);">
-      <div class="card-header">
-        <div>
-          <h2 class="card-title">📖 Kamus Istilah Keuangan Praktis (Bahasa Sehari-hari — Tanpa Istilah Rumit Akuntansi)</h2>
-          <p class="card-subtitle">Panduan cepat memahami istilah di dalam dashboard ini bagi Anda yang tidak berlatar belakang akuntansi atau ekonomi.</p>
-        </div>
-        <button type="button" class="btn" onclick="toggleGlossaryModal()">Tutup Panduan ×</button>
-      </div>
-      <div class="glossary-grid">
-        <div class="glossary-item">
-          <span class="glossary-term">1. Selisih / Variance</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> Perbedaan angka antara <em>Kondisi Awal (Baseline)</em> dengan <em>Simulasi Baru (Skenario)</em>. Jika berwarna <strong>Hijau (+)</strong> pada Laba, artinya simulasi Anda menghasilkan <strong>tambahan untung</strong>. Jika berwarna <strong>Hijau (-)</strong> pada Biaya, artinya Anda berhasil <strong>menghemat pengeluaran</strong>.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">2. Baseline vs Skenario Simulasi</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> <em>Baseline</em> adalah kondisi bisnis Anda saat ini (patokan awal). Sedangkan <em>Skenario Simulasi</em> adalah hasil "coba-coba" ketika Anda menggeser target penjualan, komisi, atau jumlah staf.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">3. Gross Revenue (Omzet Kotor)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> Total seluruh uang hasil jualan produk yang masuk ke kas (Harga Jual × Jumlah Unit Terjual) sebelum dipotong modal produk, komisi, gaji, dan biaya kantor.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">4. HPP (Harga Pokok Produk)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> Modal dasar untuk memproduksi atau membeli 1 unit barang dari pabrik/supplier. Jika harga jual Anda sudah bersih di luar modal pabrik, bagian ini boleh diisi Rp 0.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">5. OPEX (Beban Operasional)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> Biaya rutin bulanan untuk menjalankan kantor sehari-hari (di luar gaji & komisi mitra), seperti listrik, internet, sewa gedung, dan alat tulis kantor.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">6. EBT & Net Profit (Laba Bersih)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> <em>EBT</em> adalah keuntungan sebelum dipotong pajak. Sedangkan <em>Net Profit (Laba Bersih)</em> adalah <strong>uang untung bersih terakhir</strong> setelah semua biaya dan pajak dibayar—uang inilah yang siap ditabung, diinvestasikan, atau dibagi jadi dividen.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">7. Net Profit Margin (%)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> Persentase uang bersih yang tersisa dari setiap Rp 100 omzet penjualan. Contoh: Margin 28,73% berarti dari setiap Rp 100.000 penjualan, perusahaan mengantongi untung bersih Rp 28.730.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">8. CapEx & Payback Period (BEP)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> <em>CapEx</em> adalah modal sekali keluar di awal untuk membangun sistem IT/otomasi. <em>Payback Period (BEP)</em> adalah <strong>berapa bulan waktu yang dibutuhkan</strong> sampai modal IT tersebut tertutup (balik modal) dari penghematan gaji bulanan.</span>
-        </div>
-        <div class="glossary-item">
-          <span class="glossary-term">9. Tenor, Kupon & Tranche (Syariah)</span>
-          <span class="glossary-plain"><strong>Artinya:</strong> <em>Tenor</em> adalah lama bulan uang investasi dikunci. <em>Kupon</em> adalah uang bagi hasil yang cair ke rekening. <em>Tranche</em> adalah kloter/tahap pembelian ketika Anda menyisihkan uang secara rutin tiap bulan.</span>
-        </div>
-      </div>
-    </div>
 
     <!-- ================= 6 MENU NAVIGATION BAR ================= -->
     <nav class="nav-bar-wrapper" aria-label="Menu Utama">
@@ -1497,7 +1565,7 @@
               <th>Metrik Keuangan (Bulanan)</th>
               <th>Baseline</th>
               <th>Skenario Simulasi</th>
-              <th>Selisih Untung / Hemat (Variance = Skenario dikurangi Baseline)</th>
+              <th>Selisih (Variance)</th>
             </tr>
           </thead>
           <tbody>
@@ -1565,6 +1633,19 @@
          TAB 2: INPUT DATA (MULTI-PRODUK, HPP, GAJI OTOMATIS, PAJAK DINAMIS)
          ========================================================================= -->
     <section id="panel-input" class="tab-panel">
+
+      <!-- Ringkasan Eksekutif Menu 2 (Input Data, Produk, HPP, SDM, Beban Kustom & Pajak) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif & Evaluasi Struktur Input Data (Menu 2)</h2>
+          <span id="exec-menu2-badge" class="exec-badge" style="background: var(--accent-container); color: var(--primary);">
+            1 Lini Produk | Margin Kotor 100%
+          </span>
+        </div>
+        <div id="exec-summary-menu2" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
 
       <!-- Quick Live Preview Banner inside Input Tab -->
       <div class="highlight-Banner">
@@ -1775,6 +1856,19 @@
          ========================================================================= -->
     <section id="panel-proyeksi" class="tab-panel">
 
+      <!-- Ringkasan Eksekutif Menu 3 (Proyeksi P&L 12 Bulan & Kelayakan ROI Otomasi IT) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif Proyeksi P&L Tahunan & Kelayakan Investasi Otomasi IT (Menu 3)</h2>
+          <span id="exec-menu3-badge" class="exec-badge" style="background: var(--positive-container); color: var(--positive);">
+            Proyeksi 12 Bulan & BEP Otomasi
+          </span>
+        </div>
+        <div id="exec-summary-menu3" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
       <!-- ROI Otomasi & Efisiensi Gaji Card -->
       <div class="card">
         <div class="card-header">
@@ -1860,6 +1954,19 @@
          ========================================================================= -->
     <section id="panel-timeline" class="tab-panel">
 
+      <!-- Ringkasan Eksekutif Menu 4 (Roadmap Eksekusi, Proyek Pengembangan & Struktur Sumber Dana) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif Roadmap Proyek & Kesehatan Alokasi Modal (Menu 4)</h2>
+          <span id="exec-menu4-badge" class="exec-badge" style="background: var(--accent-container); color: var(--primary);">
+            4 Proyek | Total Modal Rp 700 Jt
+          </span>
+        </div>
+        <div id="exec-summary-menu4" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
       <!-- Overall Roadmap & Project Budget Summary Card -->
       <div class="card">
         <div class="card-header">
@@ -1921,6 +2028,19 @@
          TAB 5: PILIH & INPUT INVESTASI SYARIAH (100% MANUAL SELECTION & RECURRING)
          ========================================================================= -->
     <section id="panel-sharia" class="tab-panel">
+
+      <!-- Ringkasan Eksekutif Menu 5 (Strategi Penempatan Treasury Syariah & Keseimbangan Likuiditas) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif Alokasi Treasury Syariah & Efisiensi Kas Menganggur (Menu 5)</h2>
+          <span id="exec-menu5-badge" class="exec-badge" style="background: var(--positive-container); color: var(--positive);">
+            Brankas Treasury Syariah
+          </span>
+        </div>
+        <div id="exec-summary-menu5" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
 
       <!-- CATATAN SIMULASI / PROYEKSI BANNER -->
       <div class="sim-disclaimer-banner" role="note">
@@ -2095,6 +2215,19 @@
          ========================================================================= -->
     <section id="panel-sharia-report" class="tab-panel">
 
+      <!-- Ringkasan Eksekutif Menu 6 (Laporan Proyeksi Bagi Hasil & Jadwal Jatuh Tempo Lintas Tahun) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif Jadwal Pencairan Bagi Hasil & Jatuh Tempo Lintas Tahun (Menu 6)</h2>
+          <span id="exec-menu6-badge" class="exec-badge" style="background: var(--accent-container); color: var(--primary);">
+            Jadwal Pencairan 2027–2030
+          </span>
+        </div>
+        <div id="exec-summary-menu6" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
       <!-- CATATAN SIMULASI / PROYEKSI BANNER DI MENU 6 -->
       <div class="sim-disclaimer-banner" role="note">
         <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -2258,80 +2391,177 @@
     </section>
 
     <!-- =========================================================================
-         TAB 7: PROYEKSI PEMBAGIAN DIVIDEN DIREKSI & LOYALTY BONUS MANAGER
+         TAB 7: PROYEKSI PEMBAGIAN DIVIDEN DIREKSI & LOYALTY BONUS MANAGER (SOLVENCY GUARD)
          ========================================================================= -->
     <section id="panel-dividen" class="tab-panel">
 
-      <!-- 1. Konfigurasi Sumber Dana Pool (Saldo Profit + Hasil Investasi Syariah) -->
+      <!-- Ringkasan Eksekutif Menu 7 (Kesimpulan Arus Kas, Dividen Direksi, Loyalty Manager & Rekomendasi Konsultan CFO) -->
+      <div class="exec-card">
+        <div class="exec-header">
+          <h2 class="exec-title">Ringkasan Eksekutif Distribusi Dividen, Loyalty & Advis Konsultan Cash Flow (Menu 7)</h2>
+          <span id="exec-menu7-badge" class="exec-badge" style="background: var(--positive-container); color: var(--positive);">
+            Cash Flow Sehat & Solven
+          </span>
+        </div>
+        <div id="exec-summary-menu7" class="exec-body">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- 1. ARSITEKTUR WATERFALL ARUS KAS & PRINSIP KESEHATAN KAS KORPORASI -->
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 class="card-title">Sumber Dana Pembagian: Saldo Profit & Hasil Investasi Perusahaan</h2>
-            <p class="card-subtitle">Sumber dana untuk pembagian Dividen Direksi dan Loyalty Bonus Manager diambil dari gabungan <strong>Saldo Laba Bersih (Profit)</strong> serta <strong>Bagi Hasil Bersih Investasi Syariah</strong> yang dilakukan perusahaan.</p>
+            <h2 class="card-title">Arsitektur Cash Flow Waterfall & Uji Kesehatan Kas (Dividend & Royalty Solvency Guard)</h2>
+            <p class="card-subtitle">
+              Sesuai prinsip akuntansi dan manajemen <em>cash flow</em> korporasi yang sehat (serta UU PT Pasal 70 terkait cadangan wajib), pembagian Dividen Direksi & Loyalty/Royalti Manager <strong>hanya boleh diambil dari Kas Bebas Bersih (Free Cash Flow)</strong> setelah dikurangi komitmen Modal Proyek, Setoran Pokok Investasi yang masih terkunci, dan <strong>Cadangan Kas Wajib (Safety Buffer)</strong>.
+            </p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="lumi-chip" id="btn-div-horizon-1" onclick="setDividendPoolHorizon(1, this)">Basis 1 Bulan Profit</button>
+            <button type="button" class="lumi-chip" id="btn-div-horizon-1" onclick="setDividendPoolHorizon(1, this)">Basis 1 Bulan Kas</button>
             <button type="button" class="lumi-chip" id="btn-div-horizon-6" onclick="setDividendPoolHorizon(6, this)">Basis 6 Bulan (Semester)</button>
             <button type="button" class="lumi-chip active" id="btn-div-horizon-12" onclick="setDividendPoolHorizon(12, this)">Basis 12 Bulan (Tahunan 2027)</button>
           </div>
         </div>
 
-        <div class="input-grid-2" style="background: var(--surface-bright); padding: 14px 16px; border-radius: var(--r-s); border: 1px solid var(--stroke-default); align-items: center;">
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <span class="field-label">Komponen Sumber Dana Tersedia (Distributable Pool)</span>
-            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+        <!-- 5-Step Corporate Cash Flow Waterfall Visual -->
+        <div class="waterfall-grid">
+          <div class="wf-step">
+            <span class="wf-step-num">1. Laba Bersih Operasional</span>
+            <span class="wf-step-val" id="wf-val-profit">Rp 18,360 M</span>
+            <span class="wf-step-desc" id="wf-desc-profit">Uang laba masuk dari operasi (12 Bln)</span>
+          </div>
+          <div class="wf-step is-deduct">
+            <span class="wf-step-num">2. (-) Modal Proyek & Investasi</span>
+            <span class="wf-step-val" id="wf-val-outflow" style="color: var(--warning);">-Rp 520,0 Jt</span>
+            <span class="wf-step-desc" id="wf-desc-outflow">Proyek (Profit) + Pokok Investasi Terkunci</span>
+          </div>
+          <div class="wf-step is-add">
+            <span class="wf-step-num">3. (+) Bagi Hasil & Kas Tambahan</span>
+            <span class="wf-step-val" id="wf-val-inflow" style="color: var(--positive);">+Rp 0</span>
+            <span class="wf-step-desc" id="wf-desc-inflow">Imbal hasil bersih investasi syariah cair</span>
+          </div>
+          <div class="wf-step is-deduct">
+            <span class="wf-step-num">4. (-) Cadangan Kas Wajib (Buffer)</span>
+            <span class="wf-step-val" id="wf-val-buffer" style="color: var(--primary);">-Rp 3,568 M</span>
+            <span class="wf-step-desc" id="wf-desc-buffer">Safety Buffer 20% wajib ditahan di kas</span>
+          </div>
+          <div class="wf-step is-ceiling">
+            <span class="wf-step-num">5. (=) PLAFON MAKSIMAL SIAP BAGI</span>
+            <span class="wf-step-val" id="wf-val-ceiling" style="color: var(--primary);">Rp 14,272 M</span>
+            <span class="wf-step-desc" id="wf-desc-ceiling">Batas aman 80.00% dari Kas Bersih Tersedia</span>
+          </div>
+        </div>
+
+        <!-- Pengaturan Prinsip Cash Flow & Safety Buffer -->
+        <div class="input-grid-2" style="background: var(--surface-bright); padding: 14px 16px; border-radius: var(--r-s); border: 1px solid var(--stroke-default); align-items: start;">
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="field-group">
+              <label class="field-label" for="sel-cashflow-mode">Metode Perhitungan Sumber Kas (Prinsip Ekonomi & Arus Kas)</label>
+              <select id="sel-cashflow-mode" class="lumi-select" onchange="onDividendPoolConfigChange()">
+                <option value="strict_free_cash" selected>1. Cash Flow Konservatif (Potong Penuh Setoran Investasi & Proyek + Bagi Hasil)</option>
+                <option value="realized_cash" >2. Likuiditas Riil Tahun Berjalan (Hanya Potong Pokok Belum Jatuh Tempo + Kupon Cair)</option>
+                <option value="accrual_profit">3. Laba Akuntansi Total (Dibagikan Setelah Seluruh Investasi Jatuh Tempo)</option>
+              </select>
+            </div>
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
                 <input type="checkbox" id="chk-div-include-inv" checked style="width: 16px; height: 16px;" onchange="onDividendPoolConfigChange()">
-                <span>Sertakan Proyeksi Hasil Investasi Syariah (Menu 5 & 6)</span>
+                <span>Tambahkan Bagi Hasil Investasi Syariah (Menu 5 & 6)</span>
               </label>
-              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
-                <input type="checkbox" id="chk-div-deduct-proj" style="width: 16px; height: 16px;" onchange="onDividendPoolConfigChange()">
-                <span>Kurangi dengan Modal Proyek dari Saldo Profit (Menu 4)</span>
+              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                <input type="checkbox" id="chk-div-deduct-proj" checked style="width: 16px; height: 16px;" onchange="onDividendPoolConfigChange()">
+                <span>Potong Modal Proyek dari Saldo Profit (Menu 4)</span>
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; cursor: pointer;">
+                <input type="checkbox" id="chk-div-autocap" style="width: 16px; height: 16px;" onchange="onDividendPoolConfigChange()">
+                <span><strong>Kunci Otomatis (Auto-Cap)</strong> jika input melebihi batas aman</span>
               </label>
             </div>
-            <span class="field-hint" id="div-pool-formula-hint">
-              Pool = Akumulasi Laba Bersih Skenario (12 Bln) + Total Bagi Hasil Bersih Investasi Syariah.
-            </span>
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="inp-div-extra-pool">Tambahan Saldo Laba Ditahan / Penyesuaian Manual Pool (Rp)</label>
-            <input type="number" id="inp-div-extra-pool" class="lumi-input mono" value="0" step="50000000" oninput="onDividendPoolConfigChange()">
-            <span class="field-hint">Opsional: Tambahkan saldo kas laba tahun sebelumnya jika ikut dibagikan.</span>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="field-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="field-label" for="slider-safety-buffer">Cadangan Kas Wajib / Working Capital Buffer (%)</label>
+                <span id="badge-safety-buffer" class="status-pill" style="background: var(--accent-container); color: var(--primary);">Wajib Ditahan: 20.0% (Max Bagi: 80.0%)</span>
+              </div>
+              <div class="lumi-slider-container" style="flex: 1;">
+                <input type="range" id="slider-safety-buffer" class="lumi-slider" min="0" max="50" step="5" value="20" style="--progress: 40%;" oninput="onDividendPoolConfigChange()">
+              </div>
+              <span class="field-hint">Prinsip kas sehat menyarankan minimal 15%–25% kas bersih wajib ditahan sebagai bantalan likuiditas perusahaan.</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="inp-div-extra-pool">Tambahan Saldo Kas Laba Ditahan Tahun Lalu (Rp)</label>
+              <input type="number" id="inp-div-extra-pool" class="lumi-input mono" value="0" step="50000000" oninput="onDividendPoolConfigChange()">
+            </div>
           </div>
         </div>
 
         <!-- 4 KPI Cards for Distributable Pool, Dividend, Loyalty Bonus, and Retained Earnings -->
         <div class="kpi-grid">
           <div class="kpi-card">
-            <span class="kpi-label">Total Sumber Dana (Profit + Investasi)</span>
-            <span class="kpi-value" id="div-kpi-total-pool">Rp 18,360 M</span>
-            <span class="kpi-sub" id="div-kpi-pool-breakdown">Profit: Rp 18,360 M | Inv: Rp 0</span>
+            <span class="kpi-label">Kas Bersih Tersedia (Net Cash Pool)</span>
+            <span class="kpi-value" id="div-kpi-total-pool">Rp 17,840 M</span>
+            <span class="kpi-sub" id="div-kpi-pool-breakdown">Plafon Aman (80%): Rp 14,272 M</span>
           </div>
           <div class="kpi-card">
             <span class="kpi-label">Total Dividen Direksi</span>
-            <span class="kpi-value" id="div-kpi-directors" style="color: var(--primary);">Rp 3,672 M</span>
-            <span class="kpi-sub" id="div-kpi-directors-pct">20.00% dari Total Sumber Dana</span>
+            <span class="kpi-value" id="div-kpi-directors" style="color: var(--primary);">Rp 3,568 M</span>
+            <span class="kpi-sub" id="div-kpi-directors-pct">20.00% dari Kas Bersih Tersedia</span>
           </div>
           <div class="kpi-card">
-            <span class="kpi-label">Total Loyalty Bonus Manager</span>
-            <span class="kpi-value" id="div-kpi-managers" style="color: var(--positive);">Rp 918,0 Jt</span>
-            <span class="kpi-sub" id="div-kpi-managers-pct">5.00% dari Total Sumber Dana</span>
+            <span class="kpi-label">Total Loyalty / Royalti Manager</span>
+            <span class="kpi-value" id="div-kpi-managers" style="color: var(--positive);">Rp 892,0 Jt</span>
+            <span class="kpi-sub" id="div-kpi-managers-pct">5.00% dari Kas Bersih Tersedia</span>
           </div>
-          <div class="kpi-card is-accent">
-            <span class="kpi-label">Sisa Laba Ditahan Bersih (Kas)</span>
-            <span class="kpi-value" id="div-kpi-retained">Rp 13,770 M</span>
-            <span class="kpi-sub" id="div-kpi-retained-pct">75.00% Ditahan di Perusahaan</span>
+          <div class="kpi-card is-accent" id="card-div-retained">
+            <span class="kpi-label">Sisa Kas Laba Ditahan Akhir</span>
+            <span class="kpi-value" id="div-kpi-retained">Rp 13,380 M</span>
+            <span class="kpi-sub" id="div-kpi-retained-pct">75.00% Ditahan (Batas Min: 20.00%)</span>
           </div>
         </div>
       </div>
 
-      <!-- 2. Tabel Proyeksi Pembagian Dividen untuk Direksi (Input Manual % & Nominal) -->
+      <!-- 1B. PERINGATAN OTOMATIS SOLVABILITAS & BATAS MAKSIMAL INPUT (GUARDRAIL ALERT) -->
+      <div id="div-solvency-healthy-banner" class="solvency-healthy-box" role="status">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <span class="status-pill" style="background: var(--positive); color: #fff;">✓ ARUS KAS (CASH FLOW) SEHAT & AMAN</span>
+          <span id="div-healthy-msg" style="font-size: 13px;">
+            Total pembagian Dividen Direksi + Loyalty Manager (25.00%) berada di bawah batas maksimal aman (80.00%). Ruang kas aman yang masih bisa dibagikan: <strong>Rp 9.812.000.000 (55.00%)</strong>.
+          </span>
+        </div>
+      </div>
+
+      <div id="div-solvency-alert-banner" class="solvency-alert-box" role="alert">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 280px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="status-pill" style="background: var(--error); color: #fff;">⛔ TIDAK BISA: INPUT MELEBIHI BATAS AMAN KAS / SUMBER DANA!</span>
+              <strong style="font-size: 14px; color: var(--error);" id="div-alert-headline">
+                Besaran Dividen / Loyalty yang diinput melanggar batas kesehatan Cash Flow perusahaan.
+              </strong>
+            </div>
+            <p style="margin: 0; font-size: 13.5px; line-height: 1.55;" id="div-alert-detail">
+              <!-- Populated dynamically with exact Rp and % limits -->
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0;">
+            <button type="button" class="btn btn-primary" onclick="autoCapDividendAndLoyaltyToSafeLimit()">
+              ⚡ Turunkan Otomatis ke Batas Aman Maksimal
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Tabel Proyeksi Pembagian Dividen untuk Direksi (Input Manual % & Nominal + Validasi Batas Maksimal) -->
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 class="card-title">1. Proyeksi Pembagian Dividen untuk Direksi (Input Manual % & Nominal)</h2>
-            <p class="card-subtitle">Ketik langsung <strong>Persentase (%)</strong> atau <strong>Jumlah Nominal (Rp)</strong> yang dibagikan untuk setiap posisi/anggota Direksi. Sistem otomatis menyinkronkan keduanya secara dua arah terhadap Total Sumber Dana.</p>
+            <h2 class="card-title">1. Proyeksi Pembagian Dividen untuk Direksi (Input Manual % & Nominal + Penjaga Batas Kas)</h2>
+            <p class="card-subtitle">
+              Ketik langsung <strong>Persentase (%)</strong> atau <strong>Jumlah Nominal (Rp)</strong>. Jika nilai yang Anda masukkan melebihi sisa Sumber Dana / Plafon Aman Kas, sistem otomatis memberi tahu <strong>harus di bawah nominal berapa Rp atau di bawah berapa %</strong> pada baris tersebut.
+            </p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button type="button" class="btn" onclick="addDirectorDividendRow()">+ Tambah Penerima Dividen Direksi</button>
@@ -2342,14 +2572,14 @@
           <table class="mini-table">
             <thead>
               <tr>
-                <th style="width: 60px; text-align: center;">Aktif</th>
-                <th style="min-width: 210px;">Jabatan / Nama Direksi</th>
-                <th style="min-width: 180px;">Keterangan / Basis Alokasi</th>
-                <th style="width: 165px;">Input Persentase (%)</th>
-                <th style="width: 210px;">Input Jumlah Nominal (Rp)</th>
+                <th style="width: 55px; text-align: center;">Aktif</th>
+                <th style="min-width: 195px;">Jabatan / Nama Direksi</th>
+                <th style="min-width: 165px;">Keterangan / Basis Alokasi</th>
+                <th style="width: 195px;">Input Persentase (%) & Batas Maks</th>
+                <th style="width: 230px;">Input Jumlah Nominal (Rp) & Batas Maks</th>
                 <th>Estimasi Rata-rata / Bulan</th>
-                <th>Porsi dari Total Pool</th>
-                <th style="width: 70px; text-align: center;">Aksi</th>
+                <th>Status Kas Baris Ini</th>
+                <th style="width: 65px; text-align: center;">Aksi</th>
               </tr>
             </thead>
             <tbody id="director-dividend-tbody">
@@ -2359,8 +2589,8 @@
               <tr class="row-accent">
                 <td colspan="3">TOTAL PEMBAGIAN DIVIDEN DIREKSI</td>
                 <td id="foot-dir-pct">20.00%</td>
-                <td id="foot-dir-amount">Rp 3.672.000.000</td>
-                <td id="foot-dir-monthly">Rp 306.000.000 / bln</td>
+                <td id="foot-dir-amount">Rp 3.568.000.000</td>
+                <td id="foot-dir-monthly">Rp 297.333.333 / bln</td>
                 <td id="foot-dir-share">20.00% Pool</td>
                 <td></td>
               </tr>
@@ -2369,12 +2599,14 @@
         </div>
       </div>
 
-      <!-- 3. Tabel Proyeksi Loyalty Bonus untuk Para Manager (Input Manual % & Nominal) -->
+      <!-- 3. Tabel Proyeksi Loyalty / Royalti Bonus untuk Para Manager (Input Manual % & Nominal + Validasi Batas Maksimal) -->
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 class="card-title">2. Proyeksi Pembagian Loyalty Bonus untuk Para Manager (Input Manual % & Nominal)</h2>
-            <p class="card-subtitle">Atur alokasi <strong>Loyalty Bonus</strong> untuk jajaran Manager (baik persentase maupun besaran nominal Rp dapat diinput manual dan dibagi per jumlah orang/jabatan).</p>
+            <h2 class="card-title">2. Proyeksi Pembagian Loyalty / Royalti Bonus untuk Para Manager (Input Manual % & Nominal)</h2>
+            <p class="card-subtitle">
+              Atur alokasi <strong>Loyalty / Royalti Bonus</strong> untuk jajaran Manager. Sistem otomatis menghitung batas maksimal nominal (Rp) dan persentase (%) yang diizinkan setelah memperhitungkan porsi Dividen Direksi dan Cadangan Kas Wajib.
+            </p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button type="button" class="btn" onclick="addManagerLoyaltyRow()">+ Tambah Pos Loyalty Bonus Manager</button>
@@ -2385,14 +2617,14 @@
           <table class="mini-table">
             <thead>
               <tr>
-                <th style="width: 60px; text-align: center;">Aktif</th>
-                <th style="min-width: 210px;">Jabatan / Divisi Manager</th>
-                <th style="width: 110px;">Jml Manager (Org)</th>
-                <th style="width: 160px;">Input Persentase (%)</th>
-                <th style="width: 205px;">Input Total Nominal (Rp)</th>
+                <th style="width: 55px; text-align: center;">Aktif</th>
+                <th style="min-width: 195px;">Jabatan / Divisi Manager</th>
+                <th style="width: 95px;">Jml (Org)</th>
+                <th style="width: 195px;">Input Persentase (%) & Batas Maks</th>
+                <th style="width: 230px;">Input Total Nominal (Rp) & Batas Maks</th>
                 <th>Nominal per Manager (Rp/Org)</th>
-                <th>Keterangan KPI / Syarat Loyalty</th>
-                <th style="width: 70px; text-align: center;">Aksi</th>
+                <th>Keterangan KPI / Status Kas</th>
+                <th style="width: 65px; text-align: center;">Aksi</th>
               </tr>
             </thead>
             <tbody id="manager-loyalty-tbody">
@@ -2400,11 +2632,11 @@
             </tbody>
             <tfoot>
               <tr class="row-highlight">
-                <td colspan="2">TOTAL LOYALTY BONUS PARA MANAGER</td>
+                <td colspan="2">TOTAL LOYALTY / ROYALTI BONUS MANAGER</td>
                 <td id="foot-mgr-headcount">3 Org</td>
                 <td id="foot-mgr-pct">5.00%</td>
-                <td id="foot-mgr-amount">Rp 918.000.000</td>
-                <td id="foot-mgr-avg">Rata2: Rp 306.000.000 / org</td>
+                <td id="foot-mgr-amount">Rp 892.000.000</td>
+                <td id="foot-mgr-avg">Rata2: Rp 297.333.333 / org</td>
                 <td id="foot-mgr-share">5.00% dari Pool</td>
                 <td></td>
               </tr>
@@ -2416,6 +2648,47 @@
       <!-- 4. Ringkasan Alokasi Penggunaan Laba & Hasil Investasi -->
       <div class="exec-card" id="div-summary-callout">
         <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- 5. ADVIS KONSULTAN CFO & SIMULATOR RE-INVESTASI SALDO SISA (NEXT-CYCLE COMPOUNDING) -->
+      <div class="card" id="cfo-surplus-advisor-card" style="border: 1.5px solid var(--primary); background: var(--surface-dim);">
+        <div class="card-header">
+          <div>
+            <span class="brand-badge">● CORPORATE TREASURY & CFO ADVISORY ENGINE</span>
+            <h2 class="card-title" style="margin-top: 2px;">Rekomendasi Konsultan CFO: Optimalisasi & Proyeksi Re-Investasi Saldo Kas Sisa</h2>
+            <p class="card-subtitle">
+              Analisis ahli atas sisa kas perusahaan setelah pembagian Dividen Direksi & Loyalty Manager, lengkap dengan rasio ketahanan operasional (<em>Operating Runway</em>) dan simulasi jika sisa dana kembali dimasukkan ke putaran investasi berikutnya (<em>Compounding Effect</em>).
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary" onclick="reinvestSurplusToSharia()">
+              ⚡ Salurkan Sisa Kas Bebas ke Investasi Syariah (Menu 5) →
+            </button>
+          </div>
+        </div>
+
+        <div id="cfo-advisor-narrative" class="exec-body" style="background: var(--surface-bright); padding: 16px 18px; border-radius: var(--r-s); border: 1px solid var(--stroke-default);">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Tabel Simulasi 3 Strategi Re-Investasi Saldo Kas Sisa (Putaran Berikutnya) -->
+        <div class="table-wrapper">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th style="min-width: 220px;">Strategi Re-Investasi Saldo Kas Sisa (Putaran Berikutnya)</th>
+                <th>Sumber Dana yang Diputar Kembali</th>
+                <th>Estimasi Net Yield (% p.a.)</th>
+                <th>Tambahan Passive Income / Bulan</th>
+                <th>Tambahan Bagi Hasil Bersih / Tahun</th>
+                <th>Total Nilai Akumulasi Kas Akhir (+1 Tahun)</th>
+              </tr>
+            </thead>
+            <tbody id="cfo-reinvest-tbody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </section>
@@ -2471,7 +2744,7 @@
       <div class="presentation-controls">
         <button type="button" class="btn" onclick="stepPresentationSlide(-1)">← Slide Sebelumnya</button>
         <span id="presentation-counter" class="status-pill" style="background: var(--surface-bright); color: var(--on-surface); font-size: 13px; padding: 6px 16px;">
-          Slide 1 / 9
+          Slide 1 / 8
         </span>
         <button type="button" class="btn" onclick="stepPresentationSlide(1)">Slide Berikutnya →</button>
         <button type="button" class="btn btn-primary" onclick="exportLivePptx()">⬇ Download .PPTX</button>
@@ -2486,7 +2759,7 @@
     // =========================================================================
     // 1. CENTRAL APPLICATION STATE
     // =========================================================================
-    const STORAGE_KEY_V3 = 'lumi_dashboard_perencanaan_2027_v3_state';
+    const STORAGE_KEY_V3 = 'lumi_dashboard_perencanaan_2027_v5_state';
 
     const appState = {
       deckMeta: {
@@ -2589,21 +2862,25 @@
         }
       ],
 
-      // Menu 7: Proyeksi Pembagian Dividen Direksi & Loyalty Bonus Manager
+      // Menu 7: Proyeksi Pembagian Dividen Direksi & Loyalty Bonus Manager (Solvency & Cash Flow Guard)
       dividendLoyalty: {
         horizonMonths: 12,
+        cashflowMode: 'strict_free_cash',
+        safetyBufferPct: 20.0,
         includeShariaReturn: true,
-        deductProjectFromProfit: false,
+        deductProjectFromProfit: true,
+        autoCapEnabled: false,
         extraPoolAdjustment: 0,
+        lastEditedTarget: null,
         directors: [
-          { id: 1, active: true, name: 'Direktur Utama (CEO)', notes: 'Alokasi Utama Kepemimpinan Strategis', pct: 10.0, amount: 1836000000, lastEdited: 'pct' },
-          { id: 2, active: true, name: 'Direktur Marketing & Network', notes: 'Pengembangan Jaringan Nasional & Omzet', pct: 5.0, amount: 918000000, lastEdited: 'pct' },
-          { id: 3, active: true, name: 'Direktur Keuangan & Operasional', notes: 'Efisiensi OPEX, Otomasi IT & Treasury', pct: 5.0, amount: 918000000, lastEdited: 'pct' }
+          { id: 1, active: true, name: 'Direktur Utama (CEO)', notes: 'Alokasi Utama Kepemimpinan Strategis', pct: 10.0, amount: 1784000000, lastEdited: 'pct' },
+          { id: 2, active: true, name: 'Direktur Marketing & Network', notes: 'Pengembangan Jaringan Nasional & Omzet', pct: 5.0, amount: 892000000, lastEdited: 'pct' },
+          { id: 3, active: true, name: 'Direktur Keuangan & Operasional', notes: 'Efisiensi OPEX, Otomasi IT & Treasury', pct: 5.0, amount: 892000000, lastEdited: 'pct' }
         ],
         managers: [
-          { id: 1, active: true, role: 'Marketing & Network Manager', headcount: 1, pct: 2.0, amount: 367200000, notes: 'Target Pertumbuhan Volume & Event Nasional', lastEdited: 'pct' },
-          { id: 2, active: true, role: 'Finance, Tax & Treasury Manager', headcount: 1, pct: 1.5, amount: 275400000, notes: 'Target Akurasi Kas & Imbal Hasil Syariah', lastEdited: 'pct' },
-          { id: 3, active: true, role: 'IT & Operations Manager', headcount: 1, pct: 1.5, amount: 275400000, notes: 'Target Implementasi Otomasi Back-Office', lastEdited: 'pct' }
+          { id: 1, active: true, role: 'Marketing & Network Manager', headcount: 1, pct: 2.0, amount: 356800000, notes: 'Target Pertumbuhan Volume & Event Nasional', lastEdited: 'pct' },
+          { id: 2, active: true, role: 'Finance, Tax & Treasury Manager', headcount: 1, pct: 1.5, amount: 267600000, notes: 'Target Akurasi Kas & Imbal Hasil Syariah', lastEdited: 'pct' },
+          { id: 3, active: true, role: 'IT & Operations Manager', headcount: 1, pct: 1.5, amount: 267600000, notes: 'Target Implementasi Otomasi Back-Office', lastEdited: 'pct' }
         ]
       },
 
@@ -3229,8 +3506,9 @@
       document.getElementById('tbl-scen-profit').textContent = formatRp(scen.netProfit);
       setVarCell('tbl-var-profit', scen.netProfit - base.netProfit, false);
 
-      // Update Executive Summary Narrative
+      // Update Executive Summary Narrative across all menus (Menu 1 to Menu 7 + CFO Surplus Advisor)
       renderExecutiveSummary(base, scen);
+      renderAllMenusExecutiveSummaries(base, scen);
 
       // Update Charts
       if (barChartInst) {
@@ -3328,6 +3606,227 @@
       }
 
       container.innerHTML = p1 + p2 + p3;
+    }
+
+    function renderAllMenusExecutiveSummaries(base, scen) {
+      const projSum = computeProjectBudgetSummary();
+      const sharia = computeShariaPortfolio(scen.netProfit);
+      const divCalc = computeDividendAndLoyaltyPool(scen);
+      const activeCustomExps = (appState.customExpenses || []).filter(c => c.active);
+      const activeTaxes = (appState.taxes || []).filter(t => t.active);
+
+      // ================= MENU 2 TOP EXECUTIVE SUMMARY =================
+      const m2Badge = document.getElementById('exec-menu2-badge');
+      const m2Body = document.getElementById('exec-summary-menu2');
+      if (m2Body) {
+        const grossMarginPct = base.revenue > 0 ? ((base.grossProfit / base.revenue) * 100).toFixed(1) : '0.0';
+        if (m2Badge) {
+          m2Badge.textContent = `${appState.products.length} Lini Produk | Gross Margin ${grossMarginPct}%`;
+        }
+        const tierEff = updateTieredCalculator();
+        const tierSavingRp = base.revenue * ((base.bonusPct - tierEff) / 100);
+        m2Body.innerHTML = `
+          <p><strong>1. Struktur Lini Produk & HPP Baseline:</strong> Dari <strong>${appState.products.length} lini produk</strong> dengan total target penjualan <strong>${formatNum(base.volume)} unit/bulan</strong> (harga rata-rata <strong>${formatRp(base.avgPrice)}/unit</strong>), perusahaan membukukan Omzet Kotor <strong>${formatRp(base.revenue)}/bulan</strong> dan total beban HPP <strong>${formatRp(base.hpp)}/bulan</strong>, menghasilkan Laba Kotor <strong>${formatRp(base.grossProfit)}/bulan (${grossMarginPct}%)</strong>.</p>
+          <p><strong>2. Efisiensi Komisi, SDM & Beban Kustom:</strong> Beban komisi baseline sebesar <strong>${base.bonusPct.toFixed(1)}%</strong> (${formatRp(base.bonus)}/bln) dapat ditekan menjadi <strong>${tierEff.toFixed(2)}%</strong> lewat <em>Kalkulator Tiered Bonus</em> (potensi penghematan langsung <strong>+${formatRp(Math.max(0, tierSavingRp))}/bulan</strong>). Beban SDM tercatat <strong>${base.employees} orang</strong> (${formatRp(base.salary)}/bln atau <strong>${formatRp(base.avgSalaryPerEmp)}/orang</strong>), ditambah OPEX <strong>${formatRp(base.opex)}/bln</strong>, Beban Kustom Aktif <strong>${formatRp(base.customExp || 0)}/bln</strong> (${activeCustomExps.length} pos), serta Pajak Aktif <strong>${formatRp(base.tax)}/bln</strong> (${activeTaxes.length} jenis).</p>
+        `;
+      }
+
+      // ================= MENU 3 TOP EXECUTIVE SUMMARY =================
+      const m3Badge = document.getElementById('exec-menu3-badge');
+      const m3Body = document.getElementById('exec-summary-menu3');
+      if (m3Body) {
+        const empReduced = Math.max(0, base.employees - scen.employees);
+        const monthlySalSaved = Math.max(0, base.salary - scen.salary);
+        const annualSalSaved = monthlySalSaved * 12;
+        const paybackM = monthlySalSaved > 0 ? (appState.itCapex / monthlySalSaved).toFixed(1) : null;
+        const annualProfitScen = scen.netProfit * 12;
+        const annualProfitDiff = (scen.netProfit - base.netProfit) * 12;
+
+        if (m3Badge) {
+          m3Badge.textContent = paybackM ? `BEP Otomasi: ${paybackM} Bln | Laba 2027: ${formatCompactRp(annualProfitScen)}` : `Laba Tahunan 2027: ${formatCompactRp(annualProfitScen)}`;
+        }
+        m3Body.innerHTML = `
+          <p><strong>1. Postur Akumulasi Laba Rugi 12 Bulan (2027):</strong> Pada skenario aktif, total Omzet Kotor 1 tahun mencapai <strong>${formatRp(scen.revenue * 12)}</strong> dengan total pengeluaran tahunan <strong>${formatRp(scen.totalCost * 12)}</strong>, menghasilkan <strong>Laba Bersih Tahunan sebesar ${formatRp(annualProfitScen)}</strong> (${annualProfitDiff >= 0 ? 'naik +' : 'turun '}${formatRp(annualProfitDiff)} dibanding Baseline tahunan ${formatRp(base.netProfit * 12)}).</p>
+          <p><strong>2. Advis Konsultan atas ROI Otomasi IT (${formatRp(appState.itCapex)}):</strong> ${monthlySalSaved > 0 ? `Dengan merampingkan <strong>${empReduced} posisi staf administratif</strong>, perusahaan menghemat pengeluaran gaji sebesar <strong>${formatRp(monthlySalSaved)}/bulan</strong> atau <strong>${formatRp(annualSalSaved)}/tahun</strong>. Modal investasi sistem IT sebesar <strong>${formatRp(appState.itCapex)}</strong> akan balik modal penuh (<em>Payback Period</em>) dalam waktu <strong>${paybackM} bulan</strong>, dan setelah itu memberikan penghematan bersih permanen ke kas perusahaan.` : `Saat ini jumlah staf di skenario masih sama dengan Baseline (<strong>${scen.employees} orang</strong>). Masukkan angka target efisiensi staf (misal 5–10 orang) pada kotak simulasi di bawah untuk melihat berapa cepat investasi IT <strong>${formatRp(appState.itCapex)}</strong> kembali balik modal.`}</p>
+        `;
+      }
+
+      // ================= MENU 4 TOP EXECUTIVE SUMMARY =================
+      const m4Badge = document.getElementById('exec-menu4-badge');
+      const m4Body = document.getElementById('exec-summary-menu4');
+      if (m4Body) {
+        const profitSharePct = projSum.totalAll > 0 ? ((projSum.fromProfit / projSum.totalAll) * 100).toFixed(1) : '0.0';
+        const oneMonthCoveragePct = scen.netProfit > 0 ? ((projSum.fromProfit / scen.netProfit) * 100).toFixed(1) : '0.0';
+        if (m4Badge) {
+          m4Badge.textContent = `${appState.timeline.length} Proyek | Total Modal: ${formatCompactRp(projSum.totalAll)}`;
+        }
+        m4Body.innerHTML = `
+          <p><strong>1. Struktur Pendanaan Proyek Pengembangan 2027:</strong> Dari <strong>${appState.timeline.length} langkah kerja/proyek</strong> yang direncanakan (${projSum.totalDisbursementsCount} termin pencairan), total kebutuhan modal mencapai <strong>${formatRp(projSum.totalAll)}</strong>. Sumber pendanaannya terbagi atas: <strong>Saldo Profit Bulanan sebesar ${formatRp(projSum.fromProfit)} (${profitSharePct}%)</strong>, <strong>Dana Tambahan Lain sebesar ${formatRp(projSum.fromExtra)}</strong>, serta <strong>Modal dari Owner sebesar ${formatRp(projSum.fromOwner)}</strong>.</p>
+          <p><strong>2. Evaluasi Beban Proyek terhadap Arus Kas Bulanan:</strong> Porsi modal proyek yang diambil dari Saldo Profit (<strong>${formatRp(projSum.fromProfit)}</strong>) hanya menyerap <strong>${oneMonthCoveragePct}% dari 1 bulan Laba Bersih Skenario (${formatRp(scen.netProfit)}/bulan)</strong> atau <strong>${(scen.netProfit > 0 ? (projSum.fromProfit / (scen.netProfit * 12)) * 100 : 0).toFixed(2)}% dari Laba Tahunan</strong>. Artinya, ekspansi proyek ini sangat aman dibiayai secara internal tanpa mengganggu likuiditas operasional harian.</p>
+        `;
+      }
+
+      // ================= MENU 5 TOP EXECUTIVE SUMMARY =================
+      const m5Badge = document.getElementById('exec-menu5-badge');
+      const m5Body = document.getElementById('exec-summary-menu5');
+      if (m5Body) {
+        const allocRatioMonthly = sharia.monthlyProfit > 0 ? ((sharia.monthlySetAsideNominal / sharia.monthlyProfit) * 100).toFixed(1) : '0.0';
+        if (m5Badge) {
+          m5Badge.textContent = sharia.selectedCount > 0
+            ? `${sharia.selectedCount} Produk Aktif | Net Yield: ${sharia.weightedAnnualNetYield.toFixed(2)}% p.a.`
+            : 'Belum Ada Instrumen Dipilih';
+        }
+        m5Body.innerHTML = sharia.selectedCount > 0
+          ? `<p><strong>1. Postur Penyisihan Kas ke Instrumen Syariah:</strong> Dari Laba Bersih bulanan sebesar <strong>${formatRp(sharia.monthlyProfit)}/bulan</strong>, perusahaan menyisihkan <strong>${formatRp(sharia.monthlySetAsideNominal)}/bulan (${allocRatioMonthly}%)</strong> ke dalam <strong>${sharia.selectedCount} instrumen syariah</strong> (${sharia.totalTranchesCount}x tranche pembelian), menyisakan kas bebas bulanan sebelum dividen sebesar <strong>${formatRp(Math.max(0, sharia.remainingMonthlyCash))}/bulan</strong>.</p>
+             <p><strong>2. Proyeksi Nilai Tambah Treasury (Compounding):</strong> Total akumulasi modal pokok yang ditempatkan mencapai <strong>${formatRp(sharia.totalAllocated)}</strong> dan diproyeksikan menghasilkan <strong>Bagi Hasil Bersih (setelah pajak final${appState.shariaTreasury.zakatCorpEnabled ? ' & zakat 2,5%' : ''}) sebesar +${formatRp(sharia.totalNetReturn)}</strong> (rata-rata imbal hasil bersih tertimbang <strong>${sharia.weightedAnnualNetYield.toFixed(2)}% p.a.</strong>), sehingga nilai kas akhir bertumbuh menjadi <strong>${formatRp(sharia.totalAllocated + sharia.totalNetReturn)}</strong>.</p>`
+          : `<p><strong>1. Potensi Optimalisasi Kas Menganggur (Idle Cash):</strong> Perusahaan memiliki Laba Bersih sebesar <strong>${formatRp(sharia.monthlyProfit)}/bulan</strong> atau <strong>${formatRp(sharia.availableBalance)}</strong> selama ${sharia.months} bulan yang saat ini belum ditempatkan pada instrumen investasi syariah (Rp 0).</p>
+             <p><strong>2. Rekomendasi Konsultan Treasury:</strong> Klik tombol <strong>"Isi Contoh Simulasi Rutin"</strong> di bawah atau centang kombinasi instrumen jangka pendek (Deposito Mudharabah / RDPU 3–6 bulan untuk likuiditas) dan menengah-panjang (Sukuk Negara / RDPT 12–24 bulan) agar kas menganggur menghasilkan tambahan pendapatan pasif 5%–7% bersih per tahun.</p>`;
+      }
+
+      // ================= MENU 6 TOP EXECUTIVE SUMMARY =================
+      const m6Badge = document.getElementById('exec-menu6-badge');
+      const m6Body = document.getElementById('exec-summary-menu6');
+      if (m6Body) {
+        const y27 = sharia.monthlySchedule.slice(0, 12).reduce((a, m) => ({ c: a.c + m.monthlyCouponInflow + m.maturityYieldInflow, p: a.p + m.principalMaturityInflow, t: a.t + m.totalCashInflow }), { c: 0, p: 0, t: 0 });
+        const y28 = sharia.monthlySchedule.slice(12, 24).reduce((a, m) => ({ c: a.c + m.monthlyCouponInflow + m.maturityYieldInflow, p: a.p + m.principalMaturityInflow, t: a.t + m.totalCashInflow }), { c: 0, p: 0, t: 0 });
+        const y29_30 = sharia.monthlySchedule.slice(24, 48).reduce((a, m) => ({ c: a.c + m.monthlyCouponInflow + m.maturityYieldInflow, p: a.p + m.principalMaturityInflow, t: a.t + m.totalCashInflow }), { c: 0, p: 0, t: 0 });
+
+        if (m6Badge) {
+          m6Badge.textContent = sharia.totalAllocated > 0
+            ? `Total Cair Akhir: ${formatCompactRp(sharia.totalAllocated + sharia.totalNetReturn)}`
+            : 'Menunggu Alokasi Menu 5';
+        }
+        m6Body.innerHTML = sharia.totalAllocated > 0
+          ? `<p><strong>1. Ringkasan Arus Kas Masuk Investasi Lintas Tahun (2027–2030):</strong> Dari total modal pokok <strong>${formatRp(sharia.totalAllocated)}</strong> dan bagi hasil bersih <strong>+${formatRp(sharia.totalNetReturn)}</strong>, pencairan kas kembali ke rekening perusahaan berlangsung bertahap sesuai jatuh tempo masing-masing tranche: <strong>Tahun 2027 cair sebesar ${formatRp(y27.t)}</strong> (Bagi Hasil +${formatRp(y27.c)} & Pokok Kembali ${formatRp(y27.p)}), <strong>Tahun 2028 (berganti tahun) cair sebesar ${formatRp(y28.t)}</strong> (Bagi Hasil +${formatRp(y28.c)} & Pokok Kembali ${formatRp(y28.p)}), serta <strong>Tahun 2029–2030 cair sebesar ${formatRp(y29_30.t)}</strong>.</p>
+             <p><strong>2. Evaluasi Likuiditas Jatuh Tempo (Ladder Strategy):</strong> Pemisahan tenor pendek (3–6 bulan), menengah (12 bulan), dan panjang (24–36 bulan) memastikan perusahaan menerima aliran kupon bulanan sekaligus pencairan pokok secara bergulir setiap tahunnya tanpa mengorbankan imbal hasil.</p>`
+          : `<p><strong>Belum Ada Jadwal Jatuh Tempo Aktif:</strong> Silakan pilih instrumen investasi syariah di <strong>Menu 5</strong> atau klik tombol <strong>"Muat Contoh Simulasi Penyisihan Rutin Bulanan"</strong> di bawah untuk melihat rincian bulan dan tahun pencairan kupon serta pengembalian modal pokok dari 2027 hingga 2030.</p>`;
+      }
+
+      // ================= MENU 7 TOP EXECUTIVE SUMMARY & CFO SURPLUS ADVISOR =================
+      const m7Badge = document.getElementById('exec-menu7-badge');
+      const m7Body = document.getElementById('exec-summary-menu7');
+      const cfoNarrative = document.getElementById('cfo-advisor-narrative');
+      const cfoTbody = document.getElementById('cfo-reinvest-tbody');
+
+      const monthlyFixedBurn = Math.max(1, scen.salary + scen.opex + (scen.customExp || 0));
+      const runwayMonths = divCalc.retainedPool > 0 ? (divCalc.retainedPool / monthlyFixedBurn) : 0;
+      const surplusFreeCash = Math.max(0, divCalc.remainingSafeAllowanceAmt);
+      const totalRetainedCash = Math.max(0, divCalc.retainedPool);
+
+      if (m7Badge) {
+        m7Badge.textContent = !divCalc.isOverSafeLimit
+          ? `✓ Kas Sehat | Sisa Kas Ditahan: ${formatCompactRp(totalRetainedCash)} (${runwayMonths.toFixed(1)} Bln Runway)`
+          : `⛔ Peringatan: Melebihi Plafon Aman (+${formatCompactRp(divCalc.excessOverSafeAmt)})`;
+        m7Badge.style.background = !divCalc.isOverSafeLimit ? 'var(--positive-container)' : 'var(--error-container)';
+        m7Badge.style.color = !divCalc.isOverSafeLimit ? 'var(--positive)' : 'var(--error)';
+      }
+
+      if (m7Body) {
+        const activeYieldRef = sharia.weightedAnnualNetYield > 0 ? sharia.weightedAnnualNetYield : 6.35;
+        const projExtraYieldFromSurplus = surplusFreeCash * (activeYieldRef / 100);
+        m7Body.innerHTML = `
+          <p><strong>1. Kesimpulan Sumber Dana & Pembagian (${divCalc.horizon} Bulan):</strong> Dari Kas Bersih Tersedia sebesar <strong>${formatRp(divCalc.distributablePool)}</strong> (setelah dipotong Modal Proyek ${formatRp(divCalc.projDeduction)} dan Pokok Investasi Terkunci ${formatRp(divCalc.invOutflowLocked)}, ditambah Bagi Hasil Investasi ${formatRp(divCalc.invReturnComponent)}), perusahaan mengalokasikan <strong>Dividen Direksi ${divCalc.totalDirPct.toFixed(2)}% (${formatRp(divCalc.totalDirAmount)})</strong> dan <strong>Loyalty/Royalti Manager ${divCalc.totalMgrPct.toFixed(2)}% (${formatRp(divCalc.totalMgrAmount)})</strong>.</p>
+          <p><strong>2. Rekomendasi Konsultan CFO atas Sisa Saldo Kas (${formatRp(totalRetainedCash)}):</strong> Setelah pembagian di atas, perusahaan masih memegang <strong>Saldo Kas Laba Ditahan sebesar ${formatRp(totalRetainedCash)} (${divCalc.retainedPct.toFixed(2)}% dari Pool)</strong>, yang terdiri dari <strong>Cadangan Kas Wajib ${formatRp(divCalc.safetyBufferAmt)} (${divCalc.safetyBufferPct.toFixed(0)}%)</strong> dan <strong>Surplus Kas Bebas Siap Putar sebesar ${formatRp(surplusFreeCash)} (${divCalc.remainingSafeAllowancePct.toFixed(2)}%)</strong>. Saldo kas ini mampu menutup biaya tetap operasional (Gaji + OPEX) selama <strong>${runwayMonths.toFixed(1)} bulan penuh</strong>. Jika Surplus Kas Bebas <strong>${formatRp(surplusFreeCash)}</strong> diputar kembali ke instrumen investasi syariah putaran berikutnya (estimasi yield bersih ${activeYieldRef.toFixed(2)}% p.a.), perusahaan akan memperoleh <strong>tambahan keuntungan pasif bersih +${formatRp(projExtraYieldFromSurplus)}/tahun (+${formatRp(projExtraYieldFromSurplus / 12)}/bulan)</strong> tanpa mengganggu cadangan wajib!</p>
+        `;
+      }
+
+      if (cfoNarrative && cfoTbody) {
+        // Compute 3 Re-investment Strategies for the Remaining Surplus Cash
+        const baseReinvestCapital = surplusFreeCash > 0 ? surplusFreeCash : totalRetainedCash * 0.5;
+        const capLabel = surplusFreeCash > 0
+          ? `Surplus Kas Bebas di Atas Buffer (${divCalc.remainingSafeAllowancePct.toFixed(1)}% Pool)`
+          : `50% dari Sisa Kas Ditahan`;
+
+        const strategies = [
+          {
+            name: '1. Strategi Likuiditas Konservatif (Deposito Mudharabah / RDPU Syariah 3–6 Bln)',
+            sourceDesc: `${formatRp(baseReinvestCapital)} (${capLabel})`,
+            capital: baseReinvestCapital,
+            netYieldPct: 5.20,
+            note: 'Sangat likuid, dapat dicairkan sewaktu-waktu untuk modal kerja mendadak'
+          },
+          {
+            name: '2. Strategi Portofolio Seimbang (Sukuk Negara SR/ST + RDPT Syariah 12–24 Bln)',
+            sourceDesc: `${formatRp(baseReinvestCapital)} (${capLabel})`,
+            capital: baseReinvestCapital,
+            netYieldPct: sharia.weightedAnnualNetYield > 0 ? sharia.weightedAnnualNetYield : 6.35,
+            note: 'Rekomendasi Utama CFO: Kupon cair tiap bulan + dijamin negara/aset AAA'
+          },
+          {
+            name: '3. Strategi Akselerasi Compounding (70% Sukuk/RDPT + 30% Global Sharia ETF / SCF)',
+            sourceDesc: `${formatRp(baseReinvestCapital)} (${capLabel})`,
+            capital: baseReinvestCapital,
+            netYieldPct: 8.00,
+            note: 'Optimalisasi pertumbuhan aset korporasi jangka menengah (12 bulan)'
+          },
+          {
+            name: '4. Skema Maksimal: Putar Seluruh Kas Ditahan (Termasuk Buffer ke RDPU Likuid Harian)',
+            sourceDesc: `${formatRp(totalRetainedCash)} (100% Kas Ditahan Akhir)`,
+            capital: totalRetainedCash,
+            netYieldPct: 5.80,
+            note: 'Buffer 20% ditaruh di RDPU Syariah cair harian + Surplus di Sukuk Kupon Bulanan'
+          }
+        ];
+
+        const recStrat = strategies[1];
+        const recAnnualGain = recStrat.capital * (recStrat.netYieldPct / 100);
+        const recMonthlyGain = recAnnualGain / 12;
+
+        cfoNarrative.innerHTML = !divCalc.isOverSafeLimit && totalRetainedCash > 0
+          ? `<p><strong>Diagnosis Konsultan Keuangan Korporasi (Cash Flow & Capital Allocation Advisory):</strong></p>
+             <p>• <strong>1. Ketahanan Likuiditas Operasional (Operating Runway):</strong> Biaya rutin tetap perusahaan saat ini (Gaji ${scen.employees} staf ${formatRp(scen.salary)} + OPEX ${formatRp(scen.opex)}${(scen.customExp || 0) > 0 ? ` + Beban Kustom ${formatRp(scen.customExp)}` : ''}) adalah <strong>${formatRp(monthlyFixedBurn)}/bulan</strong>. Standar perusahaan yang sehat mewajibkan minimal <strong>3 s/d 6 bulan biaya tetap (${formatRp(monthlyFixedBurn * 3)} – ${formatRp(monthlyFixedBurn * 6)})</strong> disimpan sebagai <em>Operating Buffer</em>. Dengan Sisa Kas Ditahan sebesar <strong>${formatRp(totalRetainedCash)}</strong>, perusahaan Anda memiliki ketahanan kas selama <strong>${runwayMonths.toFixed(1)} bulan</strong> (Status: <strong>${runwayMonths >= 6 ? 'Sangat Kuat / Fortress Balance Sheet' : (runwayMonths >= 3 ? 'Sehat & Memadai' : 'Perlu Diperkuat')}</strong>).</p>
+             <p>• <strong>2. Potensi Dana Menganggur (Unallocated Surplus Cash):</strong> Di luar Cadangan Wajib ${divCalc.safetyBufferPct.toFixed(0)}% (<strong>${formatRp(divCalc.safetyBufferAmt)}</strong>), masih terdapat <strong>Surplus Kas Bebas sebesar ${formatRp(surplusFreeCash)}</strong> yang belum terpakai untuk Dividen maupun Loyalty Manager. Membiarkan dana sebesar <strong>${formatRp(surplusFreeCash)}</strong> mengendap di rekening giro biasa (imbal hasil ~0,5%–1% p.a.) akan menimbulkan <em>opportunity loss</em> akibat inflasi.</p>
+             <p>• <strong>3. Rekomendasi Compounding (Putar Kembali ke Investasi Berikutnya):</strong> Sebagai konsultan, kami menyarankan agar <strong>Surplus Kas Bebas ${formatRp(surplusFreeCash)}</strong> langsung dimasukkan kembali ke <strong>Putaran Investasi Syariah Berikutnya (Roll-Over / Compounding)</strong>. Dengan imbal hasil bersih moderat <strong>${recStrat.netYieldPct.toFixed(2)}% p.a.</strong>, dana sisa tersebut akan mencetak <strong>uang keuntungan baru sebesar +${formatRp(recAnnualGain)}/tahun (+${formatRp(recMonthlyGain)}/bulan)</strong> yang pada periode berikutnya dapat memperbesar kantong Dividen Direksi & Loyalty Manager tanpa mengurangi modal pokok perusahaan!</p>`
+          : `<p style="color: var(--error);"><strong>⚠️ Peringatan Konsultan CFO:</strong> Saat ini tidak ada surplus kas bebas yang dapat diinvestasikan kembali karena input pembagian Dividen Direksi + Loyalty Manager melebihi Plafon Kas Aman. Klik tombol <strong>"⚡ Turunkan Otomatis ke Batas Aman Maksimal"</strong> di atas agar arus kas kembali sehat.</p>`;
+
+        cfoTbody.innerHTML = strategies.map((st, sIdx) => {
+          const annualGain = st.capital * (st.netYieldPct / 100);
+          const monthlyGain = annualGain / 12;
+          const endVal = st.capital + annualGain;
+          return `
+            <tr class="${sIdx === 1 ? 'row-accent' : ''}">
+              <td>
+                <strong>${st.name}</strong>
+                <span style="display: block; font-size: 11px; color: var(--on-surface-variant); font-weight: 400;">${st.note}</span>
+              </td>
+              <td>${st.sourceDesc}</td>
+              <td style="font-weight: 700; color: var(--primary);">${st.netYieldPct.toFixed(2)}% p.a.</td>
+              <td style="color: var(--positive); font-weight: 600;">+${formatRp(monthlyGain)} / bln</td>
+              <td style="color: var(--positive); font-weight: 700;">+${formatRp(annualGain)} / thn</td>
+              <td style="font-weight: 700;">${formatRp(endVal)}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    function reinvestSurplusToSharia() {
+      const { scen } = computeFinancials();
+      const divCalc = computeDividendAndLoyaltyPool(scen);
+      const surplus = Math.max(0, Math.floor(divCalc.remainingSafeAllowanceAmt));
+      if (surplus <= 0) {
+        alert('Saat ini tidak ada sisa ruang kas bebas di atas Cadangan Wajib. Kurangi persentase Dividen/Loyalty terlebih dahulu atau sesuaikan ke batas aman.');
+        return;
+      }
+
+      // Salurkan surplus kas bebas ke instrumen RDPT Sukuk Syariah (ID 105) atau Sukuk Negara (ID 101) di Menu 5 sebagai Tambahan Kas Awal Treasury atau Alokasi Investasi
+      appState.shariaTreasury.extraInitialCash = (Number(appState.shariaTreasury.extraInitialCash) || 0) + surplus;
+      const inpExtra = document.getElementById('inp-extra-treasury');
+      if (inpExtra) inpExtra.value = appState.shariaTreasury.extraInitialCash;
+
+      // Juga tambahkan ke instrumen RDPT Sukuk Syariah (index 4) sebagai penempatan re-investasi
+      const targetInst = appState.shariaTreasury.instruments[4] || appState.shariaTreasury.instruments[0];
+      if (targetInst) {
+        targetInst.selected = true;
+        const perBuyAdd = targetInst.purchaseMode === 'monthly'
+          ? Math.floor(surplus / Math.max(1, targetInst.recurringMonths || 12))
+          : surplus;
+        targetInst.nominalPerBuy = (Number(targetInst.nominalPerBuy) || 0) + perBuyAdd;
+      }
+
+      renderShariaTable();
+      updateAllViews();
+      switchMenu('panel-sharia');
     }
 
     // =========================================================================
@@ -5064,26 +5563,65 @@
     }
 
     // =========================================================================
-    // 9C. TAB 7 ENGINE: PROYEKSI DIVIDEN DIREKSI & LOYALTY BONUS MANAGER
+    // 9C. TAB 7 ENGINE: PROYEKSI DIVIDEN DIREKSI & LOYALTY BONUS MANAGER (SOLVENCY GUARD)
     // =========================================================================
     function computeDividendAndLoyaltyPool(scenObj) {
       const scen = scenObj || computeFinancials().scen;
       const dl = appState.dividendLoyalty;
       const horizon = Math.max(1, Number(dl.horizonMonths) || 12);
+      const cfMode = dl.cashflowMode || 'strict_free_cash';
+      const safetyBufferPct = Math.max(0, Math.min(50, Number(dl.safetyBufferPct) ?? 20));
 
+      // Step 1: Gross Operating Net Profit for the chosen horizon
       const profitComponent = Math.max(0, scen.netProfit) * horizon;
-      const shariaPortfolio = computeShariaPortfolio(scen.netProfit);
-      const invReturnComponent = dl.includeShariaReturn ? Math.max(0, shariaPortfolio.totalNetReturn) : 0;
 
+      // Step 2: Project Capital Deduction (from Profit Pool)
       const projSummary = computeProjectBudgetSummary();
-      const projDeduction = dl.deductProjectFromProfit ? Math.max(0, projSummary.fromProfit) : 0;
+      const projDeduction = dl.deductProjectFromProfit
+        ? Math.max(0, horizon === 12 ? projSummary.fromProfit : projSummary.fromProfit * (horizon / 12))
+        : 0;
+
+      // Step 3: Sharia Investment Outflow Locked & Investment Return Inflow
+      const shariaPortfolio = computeShariaPortfolio(scen.netProfit);
+      const slicedSched = shariaPortfolio.monthlySchedule.slice(0, horizon);
+
+      let invOutflowLocked = 0;
+      let invReturnComponent = 0;
+
+      if (cfMode === 'strict_free_cash') {
+        // Deduct all investment principal outflows set aside during this horizon
+        invOutflowLocked = slicedSched.reduce((acc, m) => acc + (m.capitalOutflow || 0), 0);
+        invReturnComponent = dl.includeShariaReturn
+          ? (horizon === 12 ? Math.max(0, shariaPortfolio.totalNetReturn) : slicedSched.reduce((acc, m) => acc + m.monthlyCouponInflow + m.maturityYieldInflow, 0))
+          : 0;
+      } else if (cfMode === 'realized_cash') {
+        // Deduct only unmatured principal (Outflow minus Principal returned in this horizon)
+        const totOut = slicedSched.reduce((acc, m) => acc + (m.capitalOutflow || 0), 0);
+        const totPrinIn = slicedSched.reduce((acc, m) => acc + (m.principalMaturityInflow || 0), 0);
+        invOutflowLocked = Math.max(0, totOut - totPrinIn);
+        invReturnComponent = dl.includeShariaReturn
+          ? slicedSched.reduce((acc, m) => acc + m.monthlyCouponInflow + m.maturityYieldInflow, 0)
+          : 0;
+      } else {
+        // accrual_profit: Post-maturity accounting basis (no principal deduction)
+        invOutflowLocked = 0;
+        invReturnComponent = dl.includeShariaReturn
+          ? Math.max(0, shariaPortfolio.totalNetReturn) * (horizon / 12)
+          : 0;
+      }
+
       const extraAdj = Number(dl.extraPoolAdjustment) || 0;
 
-      const distributablePool = Math.max(0, profitComponent + invReturnComponent - projDeduction + extraAdj);
+      // Step 4: Net Available Cash Pool (Before Mandatory Safety Buffer)
+      const rawPool = profitComponent - projDeduction - invOutflowLocked + invReturnComponent + extraAdj;
+      const distributablePool = Math.max(0, rawPool);
 
-      // Sync each director item (if lastEdited === 'pct', update amount from pool; if 'amount', update pct from pool)
-      let totalDirAmount = 0;
-      let totalDirPct = 0;
+      // Step 5: Mandatory Cash Safety Buffer & Maximum Safe Distributable Ceiling
+      const safetyBufferAmt = distributablePool * (safetyBufferPct / 100);
+      const maxSafeDistributionAmt = Math.max(0, distributablePool - safetyBufferAmt);
+      const maxSafePct = Math.max(0, 100 - safetyBufferPct);
+
+      // First pass: sync each director & manager row's pct <-> amount
       dl.directors.forEach(d => {
         if (d.lastEdited === 'amount') {
           d.amount = Math.max(0, Number(d.amount) || 0);
@@ -5092,16 +5630,8 @@
           d.pct = Math.max(0, Number(d.pct) || 0);
           d.amount = distributablePool * (d.pct / 100);
         }
-        if (d.active) {
-          totalDirAmount += d.amount;
-          totalDirPct += d.pct;
-        }
       });
 
-      // Sync each manager loyalty item
-      let totalMgrAmount = 0;
-      let totalMgrPct = 0;
-      let totalMgrHeadcount = 0;
       dl.managers.forEach(m => {
         const hc = Math.max(1, parseInt(m.headcount, 10) || 1);
         m.headcount = hc;
@@ -5112,23 +5642,94 @@
           m.pct = Math.max(0, Number(m.pct) || 0);
           m.amount = distributablePool * (m.pct / 100);
         }
+      });
+
+      // Compute total active distribution before auto-cap
+      const sumActiveDirs = () => dl.directors.reduce((acc, d) => acc + (d.active ? d.amount : 0), 0);
+      const sumActiveMgrs = () => dl.managers.reduce((acc, m) => acc + (m.active ? m.amount : 0), 0);
+
+      // If autoCapEnabled is ON and user just edited a target row that pushed total over maxSafeDistributionAmt, cap that row!
+      if (dl.autoCapEnabled && dl.lastEditedTarget) {
+        const { group, index } = dl.lastEditedTarget;
+        const targetList = group === 'dir' ? dl.directors : dl.managers;
+        const row = targetList && targetList[index];
+        if (row && row.active) {
+          const totalOthers = (sumActiveDirs() + sumActiveMgrs()) - row.amount;
+          const maxForRowAmt = Math.max(0, maxSafeDistributionAmt - totalOthers);
+          const maxForRowPct = distributablePool > 0 ? (maxForRowAmt / distributablePool) * 100 : 0;
+          if (row.amount > maxForRowAmt + 1) {
+            row.amount = maxForRowAmt;
+            row.pct = maxForRowPct;
+          }
+        }
+      }
+
+      // Second pass: compute totals and per-row maximum allowed ceiling (`maxAllowedRowAmt` and `maxAllowedRowPct`)
+      let totalDirAmount = 0;
+      let totalDirPct = 0;
+      dl.directors.forEach(d => {
+        if (d.active) {
+          totalDirAmount += d.amount;
+          totalDirPct += d.pct;
+        }
+      });
+
+      let totalMgrAmount = 0;
+      let totalMgrPct = 0;
+      let totalMgrHeadcount = 0;
+      dl.managers.forEach(m => {
         if (m.active) {
           totalMgrAmount += m.amount;
           totalMgrPct += m.pct;
-          totalMgrHeadcount += hc;
+          totalMgrHeadcount += m.headcount;
         }
       });
 
       const totalDistributed = totalDirAmount + totalMgrAmount;
+      const totalDistributedPct = totalDirPct + totalMgrPct;
+
+      // Annotate each row with its specific maximum allowed Rp and % given all OTHER active rows
+      const directorLimits = dl.directors.map(d => {
+        const othersAmt = totalDistributed - (d.active ? d.amount : 0);
+        const othersPct = totalDistributedPct - (d.active ? d.pct : 0);
+        const maxRowAmt = Math.max(0, maxSafeDistributionAmt - othersAmt);
+        const maxRowPct = Math.max(0, maxSafePct - othersPct);
+        const isOver = Boolean(d.active) && (d.amount > maxRowAmt + 1 || d.pct > maxRowPct + 0.005);
+        return { maxRowAmt, maxRowPct, isOver };
+      });
+
+      const managerLimits = dl.managers.map(m => {
+        const othersAmt = totalDistributed - (m.active ? m.amount : 0);
+        const othersPct = totalDistributedPct - (m.active ? m.pct : 0);
+        const maxRowAmt = Math.max(0, maxSafeDistributionAmt - othersAmt);
+        const maxRowPct = Math.max(0, maxSafePct - othersPct);
+        const isOver = Boolean(m.active) && (m.amount > maxRowAmt + 1 || m.pct > maxRowPct + 0.005);
+        return { maxRowAmt, maxRowPct, isOver };
+      });
+
+      const isOverSafeLimit = totalDistributed > maxSafeDistributionAmt + 1 || totalDistributedPct > maxSafePct + 0.005 || (distributablePool <= 0 && totalDistributed > 0);
+      const isOverTotalPool = totalDistributed > distributablePool + 1;
+      const excessOverSafeAmt = Math.max(0, totalDistributed - maxSafeDistributionAmt);
+      const excessOverSafePct = Math.max(0, totalDistributedPct - maxSafePct);
+      const remainingSafeAllowanceAmt = Math.max(0, maxSafeDistributionAmt - totalDistributed);
+      const remainingSafeAllowancePct = Math.max(0, maxSafePct - totalDistributedPct);
+
       const retainedPool = distributablePool - totalDistributed;
       const retainedPct = distributablePool > 0 ? (retainedPool / distributablePool) * 100 : 0;
 
       return {
         horizon,
+        cfMode,
+        safetyBufferPct,
+        safetyBufferAmt,
+        maxSafeDistributionAmt,
+        maxSafePct,
         profitComponent,
-        invReturnComponent,
         projDeduction,
+        invOutflowLocked,
+        invReturnComponent,
         extraAdj,
+        rawPool,
         distributablePool,
         totalDirAmount,
         totalDirPct,
@@ -5136,9 +5737,36 @@
         totalMgrPct,
         totalMgrHeadcount,
         totalDistributed,
+        totalDistributedPct,
+        directorLimits,
+        managerLimits,
+        isOverSafeLimit,
+        isOverTotalPool,
+        excessOverSafeAmt,
+        excessOverSafePct,
+        remainingSafeAllowanceAmt,
+        remainingSafeAllowancePct,
         retainedPool,
         retainedPct
       };
+    }
+
+    function buildRowStatusHtml(isActive, isOver, maxRowAmt, maxRowPct) {
+      if (!isActive) {
+        return `<span style="color: var(--on-surface-variant); font-size: 11.5px;">Nonaktif (Rp 0)</span>`;
+      }
+      if (isOver) {
+        return `
+          <div class="row-limit-warning">
+            ⛔ TIDAK BISA! Melebihi Sumber Kas.<br>
+            Harus di bawah <strong>${formatRp(maxRowAmt)}</strong> atau di bawah <strong>${maxRowPct.toFixed(2)}%</strong>
+          </div>
+        `;
+      }
+      return `
+        <span class="status-pill" style="background: var(--positive-container); color: var(--positive);">✓ Kas Aman</span>
+        <span class="row-limit-hint">Maks baris ini: &le; ${formatCompactRp(maxRowAmt)} (${maxRowPct.toFixed(2)}%)</span>
+      `;
     }
 
     function renderDividendAndLoyaltyTables() {
@@ -5151,8 +5779,10 @@
 
       dirTbody.innerHTML = dl.directors.map((d, idx) => {
         const monthlyEq = d.amount / Math.max(1, calc.horizon);
+        const lim = calc.directorLimits[idx] || { maxRowAmt: 0, maxRowPct: 0, isOver: false };
+        const borderCol = lim.isOver ? 'var(--error)' : 'var(--primary)';
         return `
-          <tr style="${d.active ? '' : 'opacity: 0.55;'}">
+          <tr id="dir-row-${idx}" style="${d.active ? (lim.isOver ? 'background: var(--error-container);' : '') : 'opacity: 0.55;'}">
             <td style="text-align: center;">
               <input type="checkbox" ${d.active ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;"
                 onchange="onDirectorFieldChange(${idx}, 'active', this.checked)" aria-label="Aktifkan Dividen Direksi">
@@ -5166,17 +5796,25 @@
                 aria-label="Keterangan Dividen" oninput="onDirectorFieldChange(${idx}, 'notes', this.value)">
             </td>
             <td>
-              <input type="number" id="dir-pct-inp-${idx}" class="lumi-input mono" style="font-weight: 600;"
+              <input type="number" id="dir-pct-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: ${lim.isOver ? 'var(--error)' : 'var(--stroke-default)'};"
                 value="${Number(d.pct).toFixed(2)}" min="0" max="100" step="0.5"
                 aria-label="Input Persentase Dividen Direksi" oninput="onDirectorFieldChange(${idx}, 'pct', this.value)">
+              <span id="dir-pct-hint-${idx}" class="row-limit-hint" style="color: ${lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)'};">
+                Maks: ${lim.maxRowPct.toFixed(2)}%
+              </span>
             </td>
             <td>
-              <input type="number" id="dir-amt-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: var(--primary);"
+              <input type="number" id="dir-amt-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: ${borderCol};"
                 value="${Math.round(d.amount)}" min="0" step="25000000"
                 aria-label="Input Nominal Dividen Direksi" oninput="onDirectorFieldChange(${idx}, 'amount', this.value)">
+              <span id="dir-amt-hint-${idx}" class="row-limit-hint" style="color: ${lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)'};">
+                Maks: ${formatRp(lim.maxRowAmt)}
+              </span>
             </td>
             <td id="dir-monthly-cell-${idx}">${formatRp(monthlyEq)} / bln</td>
-            <td id="dir-share-cell-${idx}" style="font-weight: 600; color: var(--primary);">${Number(d.pct).toFixed(2)}% Pool</td>
+            <td id="dir-share-cell-${idx}" style="text-align: left;">
+              ${buildRowStatusHtml(d.active, lim.isOver, lim.maxRowAmt, lim.maxRowPct)}
+            </td>
             <td style="text-align: center;">
               <button type="button" class="btn btn-danger" onclick="removeDirectorDividendRow(${idx})" ${dl.directors.length <= 1 ? 'disabled' : ''}>Hapus</button>
             </td>
@@ -5186,8 +5824,10 @@
 
       mgrTbody.innerHTML = dl.managers.map((m, idx) => {
         const perPerson = m.amount / Math.max(1, m.headcount);
+        const lim = calc.managerLimits[idx] || { maxRowAmt: 0, maxRowPct: 0, isOver: false };
+        const borderCol = lim.isOver ? 'var(--error)' : 'var(--positive)';
         return `
-          <tr style="${m.active ? '' : 'opacity: 0.55;'}">
+          <tr id="mgr-row-${idx}" style="${m.active ? (lim.isOver ? 'background: var(--error-container);' : '') : 'opacity: 0.55;'}">
             <td style="text-align: center;">
               <input type="checkbox" ${m.active ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;"
                 onchange="onManagerFieldChange(${idx}, 'active', this.checked)" aria-label="Aktifkan Loyalty Bonus Manager">
@@ -5201,19 +5841,24 @@
                 aria-label="Jumlah Manager" oninput="onManagerFieldChange(${idx}, 'headcount', this.value)">
             </td>
             <td>
-              <input type="number" id="mgr-pct-inp-${idx}" class="lumi-input mono" style="font-weight: 600;"
+              <input type="number" id="mgr-pct-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: ${lim.isOver ? 'var(--error)' : 'var(--stroke-default)'};"
                 value="${Number(m.pct).toFixed(2)}" min="0" max="100" step="0.25"
                 aria-label="Input Persentase Loyalty Bonus" oninput="onManagerFieldChange(${idx}, 'pct', this.value)">
+              <span id="mgr-pct-hint-${idx}" class="row-limit-hint" style="color: ${lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)'};">
+                Maks: ${lim.maxRowPct.toFixed(2)}%
+              </span>
             </td>
             <td>
-              <input type="number" id="mgr-amt-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: var(--positive);"
+              <input type="number" id="mgr-amt-inp-${idx}" class="lumi-input mono" style="font-weight: 600; border-color: ${borderCol};"
                 value="${Math.round(m.amount)}" min="0" step="10000000"
                 aria-label="Input Nominal Loyalty Bonus" oninput="onManagerFieldChange(${idx}, 'amount', this.value)">
+              <span id="mgr-amt-hint-${idx}" class="row-limit-hint" style="color: ${lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)'};">
+                Maks: ${formatRp(lim.maxRowAmt)}
+              </span>
             </td>
             <td id="mgr-perperson-cell-${idx}" style="font-weight: 600; color: var(--positive);">${formatRp(perPerson)} / org</td>
-            <td>
-              <input type="text" class="lumi-input" value="${m.notes || ''}"
-                aria-label="Catatan KPI Loyalty" oninput="onManagerFieldChange(${idx}, 'notes', this.value)">
+            <td id="mgr-status-cell-${idx}" style="text-align: left;">
+              ${buildRowStatusHtml(m.active, lim.isOver, lim.maxRowAmt, lim.maxRowPct)}
             </td>
             <td style="text-align: center;">
               <button type="button" class="btn btn-danger" onclick="removeManagerLoyaltyRow(${idx})" ${dl.managers.length <= 1 ? 'disabled' : ''}>Hapus</button>
@@ -5227,6 +5872,34 @@
       const calc = computeDividendAndLoyaltyPool(scenObj);
       const dl = appState.dividendLoyalty;
 
+      // 1. Update 5-Step Cash Flow Waterfall Cards
+      const setWf = (id, txt) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      };
+      setWf('wf-val-profit', formatCompactRp(calc.profitComponent));
+      setWf('wf-desc-profit', `Laba Bersih Operasional (${calc.horizon} Bulan)`);
+
+      const totalOutflowDeduct = calc.projDeduction + calc.invOutflowLocked;
+      setWf('wf-val-outflow', '-' + formatCompactRp(totalOutflowDeduct));
+      setWf('wf-desc-outflow', `Proyek: ${formatCompactRp(calc.projDeduction)} | Inv Terkunci: ${formatCompactRp(calc.invOutflowLocked)}`);
+
+      const totalInflowAdd = calc.invReturnComponent + calc.extraAdj;
+      setWf('wf-val-inflow', (totalInflowAdd >= 0 ? '+' : '') + formatCompactRp(totalInflowAdd));
+      setWf('wf-desc-inflow', `Bagi Hasil: ${formatCompactRp(calc.invReturnComponent)} | Kas Awal: ${formatCompactRp(calc.extraAdj)}`);
+
+      setWf('wf-val-buffer', '-' + formatCompactRp(calc.safetyBufferAmt));
+      setWf('wf-desc-buffer', `Cadangan Kas Wajib (${calc.safetyBufferPct.toFixed(0)}%) dari Kas Bersih`);
+
+      setWf('wf-val-ceiling', formatCompactRp(calc.maxSafeDistributionAmt));
+      setWf('wf-desc-ceiling', `Plafon Maksimal Dividen + Loyalty (${calc.maxSafePct.toFixed(2)}% Pool)`);
+
+      const bufBadge = document.getElementById('badge-safety-buffer');
+      if (bufBadge) {
+        bufBadge.textContent = `Wajib Ditahan: ${calc.safetyBufferPct.toFixed(0)}% (Plafon Bagi Maks: ${calc.maxSafePct.toFixed(0)}%)`;
+      }
+
+      // 2. Update 4 KPI Cards
       const poolEl = document.getElementById('div-kpi-total-pool');
       const poolSubEl = document.getElementById('div-kpi-pool-breakdown');
       const dirEl = document.getElementById('div-kpi-directors');
@@ -5235,45 +5908,153 @@
       const mgrPctEl = document.getElementById('div-kpi-managers-pct');
       const retEl = document.getElementById('div-kpi-retained');
       const retPctEl = document.getElementById('div-kpi-retained-pct');
+      const retCard = document.getElementById('card-div-retained');
 
       if (poolEl) poolEl.textContent = formatCompactRp(calc.distributablePool);
       if (poolSubEl) {
-        poolSubEl.textContent = `Profit (${calc.horizon} Bln): ${formatCompactRp(calc.profitComponent)} + Inv: ${formatCompactRp(calc.invReturnComponent)}`;
+        poolSubEl.textContent = `Plafon Aman (${calc.maxSafePct.toFixed(0)}%): ${formatCompactRp(calc.maxSafeDistributionAmt)}`;
       }
       if (dirEl) dirEl.textContent = formatCompactRp(calc.totalDirAmount);
-      if (dirPctEl) dirPctEl.textContent = `${calc.totalDirPct.toFixed(2)}% dari Total Sumber Dana`;
+      if (dirPctEl) dirPctEl.textContent = `${calc.totalDirPct.toFixed(2)}% dari Kas Bersih Tersedia`;
       if (mgrEl) mgrEl.textContent = formatCompactRp(calc.totalMgrAmount);
-      if (mgrPctEl) mgrPctEl.textContent = `${calc.totalMgrPct.toFixed(2)}% dari Total Sumber Dana (${calc.totalMgrHeadcount} Manager)`;
+      if (mgrPctEl) mgrPctEl.textContent = `${calc.totalMgrPct.toFixed(2)}% dari Kas Bersih (${calc.totalMgrHeadcount} Manager)`;
       if (retEl) {
         retEl.textContent = formatCompactRp(calc.retainedPool);
-        retEl.style.color = calc.retainedPool >= 0 ? 'var(--on-surface)' : 'var(--error)';
+        retEl.style.color = calc.isOverSafeLimit ? 'var(--error)' : 'var(--on-surface)';
       }
       if (retPctEl) {
-        retPctEl.textContent = `${calc.retainedPct.toFixed(2)}% Ditahan di Kas Perusahaan`;
+        retPctEl.textContent = `${calc.retainedPct.toFixed(2)}% Ditahan (Min Wajib: ${calc.safetyBufferPct.toFixed(0)}%)`;
+        retPctEl.style.color = calc.isOverSafeLimit ? 'var(--error)' : 'var(--on-surface-variant)';
+      }
+      if (retCard) {
+        retCard.style.borderColor = calc.isOverSafeLimit ? 'var(--error)' : 'var(--primary)';
       }
 
-      // Sync row inputs without stealing focus
+      // 3. Trigger Automatic Solvency Alert Banner or Healthy Status Banner
+      const healthyBanner = document.getElementById('div-solvency-healthy-banner');
+      const healthyMsg = document.getElementById('div-healthy-msg');
+      const alertBanner = document.getElementById('div-solvency-alert-banner');
+      const alertHeadline = document.getElementById('div-alert-headline');
+      const alertDetail = document.getElementById('div-alert-detail');
+
+      if (calc.isOverSafeLimit) {
+        if (healthyBanner) healthyBanner.style.display = 'none';
+        if (alertBanner) alertBanner.classList.add('is-triggered');
+
+        // Identify the specific row if user is currently editing one, or show overall limit + per-table limits
+        let specificRowMsg = '';
+        if (dl.lastEditedTarget) {
+          const { group, index } = dl.lastEditedTarget;
+          if (group === 'dir' && dl.directors[index]) {
+            const r = dl.directors[index];
+            const lim = calc.directorLimits[index];
+            if (lim && lim.isOver) {
+              specificRowMsg = `<br>• <strong> Koreksi Input Baris "${r.name}":</strong> Anda menginput <strong>${formatRp(r.amount)} (${Number(r.pct).toFixed(2)}%)</strong>. Hal tersebut <strong>tidak bisa dilakukan</strong> karena melebihi sisa plafon kas. Input pada baris ini <strong>harus di bawah atau maksimal ${formatRp(lim.maxRowAmt)}</strong> atau <strong>di bawah/maksimal ${lim.maxRowPct.toFixed(2)}%</strong>.`;
+            }
+          } else if (group === 'mgr' && dl.managers[index]) {
+            const r = dl.managers[index];
+            const lim = calc.managerLimits[index];
+            if (lim && lim.isOver) {
+              specificRowMsg = `<br>• <strong> Koreksi Input Baris "${r.role}":</strong> Anda menginput <strong>${formatRp(r.amount)} (${Number(r.pct).toFixed(2)}%)</strong>. Hal tersebut <strong>tidak bisa dilakukan</strong> karena melebihi sisa plafon kas. Input pada baris ini <strong>harus di bawah atau maksimal ${formatRp(lim.maxRowAmt)}</strong> atau <strong>di bawah/maksimal ${lim.maxRowPct.toFixed(2)}%</strong>.`;
+            }
+          }
+        }
+
+        if (alertHeadline) {
+          alertHeadline.textContent = calc.distributablePool <= 0
+            ? 'Tidak Bisa Membagikan Dividen / Loyalty: Seluruh Saldo Profit Sedang Terkunci di Investasi / Proyek!'
+            : `Tidak Bisa Membagikan ${formatRp(calc.totalDistributed)} (${calc.totalDistributedPct.toFixed(2)}%) — Melebihi Batas Aman Kas Sebesar +${formatRp(calc.excessOverSafeAmt)} (+${calc.excessOverSafePct.toFixed(2)}%)!`;
+        }
+        if (alertDetail) {
+          const maxDirIfMgrFixed = Math.max(0, calc.maxSafeDistributionAmt - calc.totalMgrAmount);
+          const maxDirPctIfMgrFixed = Math.max(0, calc.maxSafePct - calc.totalMgrPct);
+          const maxMgrIfDirFixed = Math.max(0, calc.maxSafeDistributionAmt - calc.totalDirAmount);
+          const maxMgrPctIfDirFixed = Math.max(0, calc.maxSafePct - calc.totalDirPct);
+
+          alertDetail.innerHTML = `
+            • <strong>Prinsip Kesehatan Cash Flow:</strong> Dari Kas Bersih Tersedia sebesar <strong>${formatRp(calc.distributablePool)}</strong>, perusahaan wajib menahan Cadangan Kas Minimal <strong>${calc.safetyBufferPct.toFixed(0)}% (${formatRp(calc.safetyBufferAmt)})</strong> sehingga <strong>Total Plafon Maksimal Dividen + Loyalty TIDAK BOLEH MELEBIHI ${formatRp(calc.maxSafeDistributionAmt)} (maksimal ${calc.maxSafePct.toFixed(2)}%)</strong>.<br>
+            • <strong>Batas Maksimal Total Dividen Direksi</strong> (dengan Loyalty Manager saat ini ${formatRp(calc.totalMgrAmount)}): <strong>Harus di bawah/maksimal ${formatRp(maxDirIfMgrFixed)}</strong> atau <strong>di bawah/maksimal ${maxDirPctIfMgrFixed.toFixed(2)}%</strong>.<br>
+            • <strong>Batas Maksimal Total Loyalty Manager</strong> (dengan Dividen Direksi saat ini ${formatRp(calc.totalDirAmount)}): <strong>Harus di bawah/maksimal ${formatRp(maxMgrIfDirFixed)}</strong> atau <strong>di bawah/maksimal ${maxMgrPctIfDirFixed.toFixed(2)}%</strong>.${specificRowMsg}
+          `;
+        }
+      } else {
+        if (alertBanner) alertBanner.classList.remove('is-triggered');
+        if (healthyBanner) healthyBanner.style.display = 'flex';
+        if (healthyMsg) {
+          healthyMsg.innerHTML = `
+            Total pembagian Dividen Direksi + Loyalty Manager sebesar <strong>${formatRp(calc.totalDistributed)} (${calc.totalDistributedPct.toFixed(2)}%)</strong> berada di bawah Plafon Kas Aman <strong>${formatRp(calc.maxSafeDistributionAmt)} (${calc.maxSafePct.toFixed(2)}%)</strong>. Sisa ruang kas aman yang masih boleh dibagikan: <strong>${formatRp(calc.remainingSafeAllowanceAmt)} (${calc.remainingSafeAllowancePct.toFixed(2)}%)</strong>.
+          `;
+        }
+      }
+
+      // 4. Sync row inputs, hints & status badges without stealing focus
       dl.directors.forEach((d, idx) => {
+        const lim = calc.directorLimits[idx] || { maxRowAmt: 0, maxRowPct: 0, isOver: false };
+        const trEl = document.getElementById(`dir-row-${idx}`);
         const pInp = document.getElementById(`dir-pct-inp-${idx}`);
         const aInp = document.getElementById(`dir-amt-inp-${idx}`);
+        const pHint = document.getElementById(`dir-pct-hint-${idx}`);
+        const aHint = document.getElementById(`dir-amt-hint-${idx}`);
         const mCell = document.getElementById(`dir-monthly-cell-${idx}`);
         const sCell = document.getElementById(`dir-share-cell-${idx}`);
-        if (pInp && document.activeElement !== pInp) pInp.value = Number(d.pct).toFixed(2);
-        if (aInp && document.activeElement !== aInp) aInp.value = Math.round(d.amount);
+
+        if (trEl && d.active) {
+          trEl.style.background = lim.isOver ? 'var(--error-container)' : '';
+        }
+        if (pInp) {
+          if (document.activeElement !== pInp) pInp.value = Number(d.pct).toFixed(2);
+          pInp.style.borderColor = lim.isOver ? 'var(--error)' : 'var(--stroke-default)';
+        }
+        if (aInp) {
+          if (document.activeElement !== aInp) aInp.value = Math.round(d.amount);
+          aInp.style.borderColor = lim.isOver ? 'var(--error)' : 'var(--primary)';
+        }
+        if (pHint) {
+          pHint.textContent = `Harus ≤ ${lim.maxRowPct.toFixed(2)}%`;
+          pHint.style.color = lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)';
+        }
+        if (aHint) {
+          aHint.textContent = `Harus ≤ ${formatRp(lim.maxRowAmt)}`;
+          aHint.style.color = lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)';
+        }
         if (mCell) mCell.textContent = `${formatRp(d.amount / Math.max(1, calc.horizon))} / bln`;
-        if (sCell) sCell.textContent = `${Number(d.pct).toFixed(2)}% Pool`;
+        if (sCell) sCell.innerHTML = buildRowStatusHtml(d.active, lim.isOver, lim.maxRowAmt, lim.maxRowPct);
       });
 
       dl.managers.forEach((m, idx) => {
+        const lim = calc.managerLimits[idx] || { maxRowAmt: 0, maxRowPct: 0, isOver: false };
+        const trEl = document.getElementById(`mgr-row-${idx}`);
         const pInp = document.getElementById(`mgr-pct-inp-${idx}`);
         const aInp = document.getElementById(`mgr-amt-inp-${idx}`);
+        const pHint = document.getElementById(`mgr-pct-hint-${idx}`);
+        const aHint = document.getElementById(`mgr-amt-hint-${idx}`);
         const ppCell = document.getElementById(`mgr-perperson-cell-${idx}`);
-        if (pInp && document.activeElement !== pInp) pInp.value = Number(m.pct).toFixed(2);
-        if (aInp && document.activeElement !== aInp) aInp.value = Math.round(m.amount);
+        const stCell = document.getElementById(`mgr-status-cell-${idx}`);
+
+        if (trEl && m.active) {
+          trEl.style.background = lim.isOver ? 'var(--error-container)' : '';
+        }
+        if (pInp) {
+          if (document.activeElement !== pInp) pInp.value = Number(m.pct).toFixed(2);
+          pInp.style.borderColor = lim.isOver ? 'var(--error)' : 'var(--stroke-default)';
+        }
+        if (aInp) {
+          if (document.activeElement !== aInp) aInp.value = Math.round(m.amount);
+          aInp.style.borderColor = lim.isOver ? 'var(--error)' : 'var(--positive)';
+        }
+        if (pHint) {
+          pHint.textContent = `Harus ≤ ${lim.maxRowPct.toFixed(2)}%`;
+          pHint.style.color = lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)';
+        }
+        if (aHint) {
+          aHint.textContent = `Harus ≤ ${formatRp(lim.maxRowAmt)}`;
+          aHint.style.color = lim.isOver ? 'var(--error)' : 'var(--on-surface-variant)';
+        }
         if (ppCell) ppCell.textContent = `${formatRp(m.amount / Math.max(1, m.headcount))} / org`;
+        if (stCell) stCell.innerHTML = buildRowStatusHtml(m.active, lim.isOver, lim.maxRowAmt, lim.maxRowPct);
       });
 
-      // Footers
+      // 5. Footers
       const fDirPct = document.getElementById('foot-dir-pct');
       const fDirAmt = document.getElementById('foot-dir-amount');
       const fDirMo = document.getElementById('foot-dir-monthly');
@@ -5281,7 +6062,7 @@
       if (fDirPct) fDirPct.textContent = `${calc.totalDirPct.toFixed(2)}%`;
       if (fDirAmt) fDirAmt.textContent = formatRp(calc.totalDirAmount);
       if (fDirMo) fDirMo.textContent = `${formatRp(calc.totalDirAmount / Math.max(1, calc.horizon))} / bln`;
-      if (fDirSh) fDirSh.textContent = `${calc.totalDirPct.toFixed(2)}% dari Pool`;
+      if (fDirSh) fDirSh.textContent = `${calc.totalDirPct.toFixed(2)}% dari Kas Bersih`;
 
       const fMgrHc = document.getElementById('foot-mgr-headcount');
       const fMgrPct = document.getElementById('foot-mgr-pct');
@@ -5292,30 +6073,59 @@
       if (fMgrPct) fMgrPct.textContent = `${calc.totalMgrPct.toFixed(2)}%`;
       if (fMgrAmt) fMgrAmt.textContent = formatRp(calc.totalMgrAmount);
       if (fMgrAvg) fMgrAvg.textContent = `Rata2: ${formatRp(calc.totalMgrAmount / Math.max(1, calc.totalMgrHeadcount))} / org`;
-      if (fMgrSh) fMgrSh.textContent = `${calc.totalMgrPct.toFixed(2)}% dari Pool`;
+      if (fMgrSh) fMgrSh.textContent = `${calc.totalMgrPct.toFixed(2)}% dari Kas Bersih`;
 
-      // Executive Callout in Menu 7
+      // 6. Executive Callout in Menu 7
       const callout = document.getElementById('div-summary-callout');
       if (callout) {
         callout.innerHTML = `
           <div class="exec-header">
-            <h3 class="exec-title">Ringkasan Eksekutif Distribusi Laba & Imbal Hasil Investasi (${calc.horizon} Bulan)</h3>
-            <span class="exec-badge" style="background: ${calc.retainedPool >= 0 ? 'var(--positive-container)' : 'var(--error-container)'}; color: ${calc.retainedPool >= 0 ? 'var(--positive)' : 'var(--error)'};">
-              Total Dibagikan: ${(calc.totalDirPct + calc.totalMgrPct).toFixed(2)}% (${formatCompactRp(calc.totalDistributed)})
+            <h3 class="exec-title">Ringkasan Eksekutif Arus Kas, Dividen Direksi & Loyalty Manager (${calc.horizon} Bulan)</h3>
+            <span class="exec-badge" style="background: ${!calc.isOverSafeLimit ? 'var(--positive-container)' : 'var(--error-container)'}; color: ${!calc.isOverSafeLimit ? 'var(--positive)' : 'var(--error)'};">
+              ${!calc.isOverSafeLimit ? `✓ Cash Flow Sehat (Terbagi ${calc.totalDistributedPct.toFixed(2)}% dari Maks ${calc.maxSafePct.toFixed(0)}%)` : `⛔ Melebihi Plafon Aman (+${formatCompactRp(calc.excessOverSafeAmt)})`}
             </span>
           </div>
           <div class="exec-body">
             <p>
-              Dari total Sumber Dana sebesar <strong>${formatRp(calc.distributablePool)}</strong> — yang berasal dari Saldo Laba Bersih <strong>${formatRp(calc.profitComponent)}</strong> (${calc.horizon} bulan) ditambah Proyeksi Hasil Investasi Syariah <strong>${formatRp(calc.invReturnComponent)}</strong>${calc.projDeduction > 0 ? ` dikurangi pemakaian modal proyek dari profit <strong>${formatRp(calc.projDeduction)}</strong>` : ''} — perusahaan mengalokasikan:
+              <strong>1. Alur Pembentukan Sumber Kas Bersih (Cash Flow Waterfall):</strong> Laba Bersih Operasional (${calc.horizon} bulan) sebesar <strong>${formatRp(calc.profitComponent)}</strong> dikurangi pemakaian Modal Proyek dari Profit <strong>${formatRp(calc.projDeduction)}</strong> dan Pokok Investasi Syariah yang dikunci <strong>${formatRp(calc.invOutflowLocked)}</strong>, lalu ditambah Bagi Hasil Investasi <strong>${formatRp(calc.invReturnComponent)}</strong> = <strong>Kas Bersih Tersedia ${formatRp(calc.distributablePool)}</strong>.
             </p>
             <p>
-              • <strong>Dividen Direksi (${calc.totalDirPct.toFixed(2)}%):</strong> Sebesar <strong>${formatRp(calc.totalDirAmount)}</strong> (setara rata-rata <strong>${formatRp(calc.totalDirAmount / Math.max(1, calc.horizon))}/bulan</strong>).<br>
-              • <strong>Loyalty Bonus Manager (${calc.totalMgrPct.toFixed(2)}%):</strong> Sebesar <strong>${formatRp(calc.totalMgrAmount)}</strong> untuk <strong>${calc.totalMgrHeadcount} orang Manager</strong> (rata-rata <strong>${formatRp(calc.totalMgrAmount / Math.max(1, calc.totalMgrHeadcount))}/orang</strong>).<br>
-              • <strong>Saldo Laba Ditahan Akhir (${calc.retainedPct.toFixed(2)}%):</strong> Menyisakan kas bersih di brankas perusahaan sebesar <strong>${formatRp(calc.retainedPool)}</strong>.
+              <strong>2. Cadangan Kas Wajib & Plafon Aman:</strong> Sesuai prinsip kehati-hatian kas (<em>solvency buffer</em> ${calc.safetyBufferPct.toFixed(0)}%), minimal <strong>${formatRp(calc.safetyBufferAmt)}</strong> wajib ditahan di kas perusahaan, sehingga <strong>batas maksimal yang boleh dibagikan adalah ${formatRp(calc.maxSafeDistributionAmt)} (${calc.maxSafePct.toFixed(2)}%)</strong>.
+            </p>
+            <p>
+              <strong>3. Realisasi Pembagian & Sisa Kas Akhir:</strong> Dividen Direksi menyerap <strong>${formatRp(calc.totalDirAmount)} (${calc.totalDirPct.toFixed(2)}%)</strong> dan Loyalty Bonus Manager menyerap <strong>${formatRp(calc.totalMgrAmount)} (${calc.totalMgrPct.toFixed(2)}%)</strong>, menyisakan Saldo Kas Laba Ditahan Akhir sebesar <strong>${formatRp(calc.retainedPool)} (${calc.retainedPct.toFixed(2)}%)</strong>.
             </p>
           </div>
         `;
       }
+    }
+
+    function autoCapDividendAndLoyaltyToSafeLimit() {
+      const calc = computeDividendAndLoyaltyPool();
+      const dl = appState.dividendLoyalty;
+      if (calc.distributablePool <= 0 || calc.maxSafeDistributionAmt <= 0) {
+        dl.directors.forEach(d => { d.pct = 0; d.amount = 0; d.lastEdited = 'pct'; });
+        dl.managers.forEach(m => { m.pct = 0; m.amount = 0; m.lastEdited = 'pct'; });
+      } else if (calc.totalDistributed > calc.maxSafeDistributionAmt) {
+        const scale = calc.maxSafeDistributionAmt / calc.totalDistributed;
+        dl.directors.forEach(d => {
+          if (d.active) {
+            d.amount = Math.floor(d.amount * scale);
+            d.pct = +((d.amount / calc.distributablePool) * 100).toFixed(2);
+            d.lastEdited = 'pct';
+          }
+        });
+        dl.managers.forEach(m => {
+          if (m.active) {
+            m.amount = Math.floor(m.amount * scale);
+            m.pct = +((m.amount / calc.distributablePool) * 100).toFixed(2);
+            m.lastEdited = 'pct';
+          }
+        });
+      }
+      dl.lastEditedTarget = null;
+      renderDividendAndLoyaltyTables();
+      updateAllViews();
     }
 
     function setDividendPoolHorizon(months, btnEl) {
@@ -5330,11 +6140,21 @@
     }
 
     function onDividendPoolConfigChange() {
+      const cfSel = document.getElementById('sel-cashflow-mode');
+      const bufSlider = document.getElementById('slider-safety-buffer');
       const incInv = document.getElementById('chk-div-include-inv');
       const dedProj = document.getElementById('chk-div-deduct-proj');
+      const autoCapChk = document.getElementById('chk-div-autocap');
       const extInp = document.getElementById('inp-div-extra-pool');
+
+      if (cfSel) appState.dividendLoyalty.cashflowMode = cfSel.value;
+      if (bufSlider) {
+        appState.dividendLoyalty.safetyBufferPct = parseFloat(bufSlider.value) || 0;
+        syncSliderTrackProgress(bufSlider);
+      }
       if (incInv) appState.dividendLoyalty.includeShariaReturn = incInv.checked;
       if (dedProj) appState.dividendLoyalty.deductProjectFromProfit = dedProj.checked;
+      if (autoCapChk) appState.dividendLoyalty.autoCapEnabled = autoCapChk.checked;
       if (extInp) appState.dividendLoyalty.extraPoolAdjustment = parseFloat(extInp.value) || 0;
       updateAllViews();
     }
@@ -5342,6 +6162,7 @@
     function onDirectorFieldChange(idx, field, rawVal) {
       const d = appState.dividendLoyalty.directors[idx];
       if (!d) return;
+      appState.dividendLoyalty.lastEditedTarget = { group: 'dir', index: idx };
       if (field === 'active') {
         d.active = Boolean(rawVal);
         renderDividendAndLoyaltyTables();
@@ -5381,6 +6202,7 @@
     function onManagerFieldChange(idx, field, rawVal) {
       const m = appState.dividendLoyalty.managers[idx];
       if (!m) return;
+      appState.dividendLoyalty.lastEditedTarget = { group: 'mgr', index: idx };
       if (field === 'active') {
         m.active = Boolean(rawVal);
         renderDividendAndLoyaltyTables();
@@ -5707,10 +6529,15 @@
       const zChk = document.getElementById('chk-zakat-corp');
       if (zChk) zChk.checked = Boolean(appState.shariaTreasury.zakatCorpEnabled);
 
+      setVal('sel-cashflow-mode', appState.dividendLoyalty.cashflowMode || 'strict_free_cash');
+      setVal('slider-safety-buffer', appState.dividendLoyalty.safetyBufferPct ?? 20);
+      syncSliderTrackProgress(document.getElementById('slider-safety-buffer'));
       const incInv = document.getElementById('chk-div-include-inv');
       if (incInv) incInv.checked = Boolean(appState.dividendLoyalty.includeShariaReturn);
       const dedProj = document.getElementById('chk-div-deduct-proj');
       if (dedProj) dedProj.checked = Boolean(appState.dividendLoyalty.deductProjectFromProfit);
+      const autoCapChk = document.getElementById('chk-div-autocap');
+      if (autoCapChk) autoCapChk.checked = Boolean(appState.dividendLoyalty.autoCapEnabled);
       setVal('inp-div-extra-pool', appState.dividendLoyalty.extraPoolAdjustment || 0);
 
       if (appState.deckMeta) {
@@ -5798,151 +6625,222 @@
       const deckTitle = (appState.deckMeta && appState.deckMeta.title) || 'Laporan Perencanaan Strategis & Proyeksi Keuangan 2027';
       const presenter = (appState.deckMeta && appState.deckMeta.presenter) || 'Executive Board Advisory — Perencanaan Tahun 2027';
 
+      // 1. Analisis Sumber Untung / Rugi (Drivers of Profit / Loss & Variance vs Baseline)
       const revDiff = scen.revenue - base.revenue;
+      const hppDiff = scen.hpp - base.hpp;
+      const bonusDiff = scen.bonus - base.bonus;
+      const salDiff = scen.salary - base.salary;
+      const opexDiff = scen.opex - base.opex;
+      const custExpDiff = (scen.customExp || 0) - (base.customExp || 0);
+      const taxDiff = scen.tax - base.tax;
       const profDiff = scen.netProfit - base.netProfit;
-      const costDiff = scen.totalCost - base.totalCost;
-      const empDiff = base.employees - scen.employees;
-      const salSavingMonthly = base.salary - scen.salary;
-      const paybackMonths = salSavingMonthly > 0 ? (appState.itCapex / salSavingMonthly).toFixed(1) + ' Bulan' : 'Tetap (48 Staf)';
+
+      // Identify positive profit contributors vs cost/loss pressures in Scenario vs Baseline
+      const gainSources = [];
+      const lossSources = [];
+
+      if (revDiff > 0) gainSources.push(`Kenaikan Omzet Penjualan (+${formatRp(revDiff)}/bln dari ${formatNum(scen.volume - base.volume)} unit tambahan)`);
+      else if (revDiff < 0) lossSources.push(`Penurunan Omzet Penjualan (${formatRp(revDiff)}/bln)`);
+
+      // Compare bonus payout ratio savings vs volume effect
+      const bonusRateSaving = scen.revenue * ((base.bonusPct - scen.bonusPct) / 100);
+      if (bonusRateSaving > 0) {
+        gainSources.push(`Efisiensi Skema Komisi Mitra dari ${base.bonusPct.toFixed(1)}% ke ${scen.bonusPct.toFixed(1)}% (Hemat +${formatRp(bonusRateSaving)}/bln)`);
+      } else if (bonusRateSaving < 0) {
+        lossSources.push(`Kenaikan Tarif Komisi Mitra ke ${scen.bonusPct.toFixed(1)}% (Beban +${formatRp(Math.abs(bonusRateSaving))}/bln)`);
+      }
+      if (bonusDiff > 0 && revDiff > 0) {
+        lossSources.push(`Tambahan Nominal Komisi karena Kenaikan Volume (+${formatRp(bonusDiff)}/bln)`);
+      }
+
+      if (salDiff < 0) gainSources.push(`Penghematan Gaji dari Efisiensi ${base.employees - scen.employees} Staf (+${formatRp(Math.abs(salDiff))}/bln)`);
+      else if (salDiff > 0) lossSources.push(`Penambahan Beban Gaji ${scen.employees - base.employees} Staf (+${formatRp(salDiff)}/bln)`);
+
+      if (opexDiff < 0) gainSources.push(`Penghematan OPEX Bulanan (+${formatRp(Math.abs(opexDiff))}/bln)`);
+      else if (opexDiff > 0) lossSources.push(`Kenaikan OPEX Bulanan (+${formatRp(opexDiff)}/bln)`);
+
+      if ((scen.customExp || 0) > 0) lossSources.push(`Beban Tambahan Kustom Aktif (${formatRp(scen.customExp)}/bln)`);
+      if (scen.hpp > 0) lossSources.push(`Beban HPP Produk (${formatRp(scen.hpp)}/bln)`);
+      if (scen.tax > 0) lossSources.push(`Potongan Pajak Perusahaan Aktif (${formatRp(scen.tax)}/bln)`);
+
+      const statusUntungRugi = scen.netProfit >= 0
+        ? `UNTUNG BERSIH ${formatRp(scen.netProfit)}/bln (${formatRp(scen.netProfit * 12)}/thn)`
+        : `RUGI BERSIH ${formatRp(scen.netProfit)}/bln (${formatRp(scen.netProfit * 12)}/thn)`;
+
+      // 2. Breakdown Investasi Syariah Lintas Bulan & Pergantian Tahun (2027, 2028, 2029, 2030)
+      const activeSharia = sharia.computedInstruments.filter(i => i.isActive);
+      const yearlySharia = {
+        2027: { outflow: 0, couponIn: 0, matYieldIn: 0, prinIn: 0, totalIn: 0, matEvents: [] },
+        2028: { outflow: 0, couponIn: 0, matYieldIn: 0, prinIn: 0, totalIn: 0, matEvents: [] },
+        2029: { outflow: 0, couponIn: 0, matYieldIn: 0, prinIn: 0, totalIn: 0, matEvents: [] },
+        2030: { outflow: 0, couponIn: 0, matYieldIn: 0, prinIn: 0, totalIn: 0, matEvents: [] }
+      };
+
+      sharia.monthlySchedule.forEach(ms => {
+        const yr = 2027 + Math.floor((ms.monthIndex - 1) / 12);
+        if (yearlySharia[yr]) {
+          yearlySharia[yr].outflow += ms.capitalOutflow;
+          yearlySharia[yr].couponIn += ms.monthlyCouponInflow;
+          yearlySharia[yr].matYieldIn += ms.maturityYieldInflow;
+          yearlySharia[yr].prinIn += ms.principalMaturityInflow;
+          yearlySharia[yr].totalIn += ms.totalCashInflow;
+          if (ms.principalMaturityInflow > 0 || ms.maturityYieldInflow > 0) {
+            yearlySharia[yr].matEvents.push(`${ms.label} (Cair ${formatCompactRp(ms.totalCashInflow)})`);
+          }
+        }
+      });
 
       const activeCustomExps = (appState.customExpenses || []).filter(c => c.active);
-      const activeSharia = sharia.computedInstruments.filter(i => i.isActive);
+      const activeTaxes = (appState.taxes || []).filter(t => t.active);
       const activeDirs = appState.dividendLoyalty.directors.filter(d => d.active);
       const activeMgrs = appState.dividendLoyalty.managers.filter(m => m.active);
+      const salSavingMonthly = base.salary - scen.salary;
+      const paybackMonths = salSavingMonthly > 0 ? (appState.itCapex / salSavingMonthly).toFixed(1) + ' Bulan' : 'Staf Tetap';
 
       return [
         {
           num: 1,
-          section: 'SAMPUL EKSEKUTIF • PERENCANAAN 2027',
+          section: 'MENU 1 • RINGKASAN LABA RUGI & SUMBER UNTUNG / RUGI',
           title: deckTitle,
-          subtitle: `${presenter} — Dihasilkan Otomatis dari Data Input Live Dashboard`,
+          subtitle: `${presenter} — Status Skenario: ${statusUntungRugi}`,
           kpis: [
-            { label: 'Omzet Skenario / Bulan', value: formatCompactRp(scen.revenue) },
-            { label: 'Laba Bersih / Bulan', value: formatCompactRp(scen.netProfit) },
-            { label: 'Proyeksi Laba 1 Tahun (2027)', value: formatCompactRp(scen.netProfit * 12) }
+            { label: 'Omzet Kotor / Bulan', value: formatCompactRp(scen.revenue) },
+            { label: 'Total Beban & Biaya / Bln', value: formatCompactRp(scen.totalCost) },
+            { label: scen.netProfit >= 0 ? 'Laba Bersih / Bulan' : 'Rugi Bersih / Bulan', value: formatCompactRp(scen.netProfit) }
           ],
           bullets: [
-            `Kondisi Awal (Baseline): Volume ${formatNum(base.volume)} unit/bln | Omzet ${formatRp(base.revenue)}/bln | Laba Bersih ${formatRp(base.netProfit)}/bln (${base.marginPct.toFixed(2)}%).`,
-            `Target Skenario Aktif: Volume ${formatNum(scen.volume)} unit/bln @ ${formatRp(scen.price)} | Komisi Mitra ${scen.bonusPct.toFixed(1)}% | SDM ${scen.employees} orang.`,
-            `Selisih Untung (Variance Laba Bersih): ${profDiff >= 0 ? '+' : ''}${formatRp(profDiff)}/bulan (${profDiff >= 0 ? '+' : ''}${formatRp(profDiff * 12)}/tahun dibanding Baseline).`,
-            `Cakupan Materi: Evaluasi P&L, Lini Produk & Beban Kustom, ROI Otomasi IT, Anggaran Proyek, Treasury Syariah, serta Dividen Direksi & Loyalty Manager.`
+            `Sumber Utama Pendapatan & Untung: Penjualan ${formatNum(scen.volume)} unit/bln @ ${formatRp(scen.price)} menghasilkan Omzet ${formatRp(scen.revenue)}/bln (${formatRp(scen.revenue * 12)}/thn) → menyisakan ${statusUntungRugi} (Margin ${scen.marginPct.toFixed(2)}%).`,
+            `Asal Penambahan Untung vs Baseline (${profDiff >= 0 ? '+' : ''}${formatRp(profDiff)}/bln): ${gainSources.length > 0 ? gainSources.join(' | ') : 'Belum ada perubahan parameter positif dibanding Baseline (kondisi sama dengan Baseline)'}.`,
+            `Komponen Penyerap Biaya / Pengurang Laba (Total ${formatRp(scen.totalCost)}/bln): Komisi Mitra ${scen.bonusPct.toFixed(1)}% (${formatRp(scen.bonus)}), Gaji ${scen.employees} Staf (${formatRp(scen.salary)}), OPEX (${formatRp(scen.opex)}), HPP (${formatRp(scen.hpp)}), Beban Kustom (${formatRp(scen.customExp || 0)}), Pajak (${formatRp(scen.tax)}).`,
+            `Faktor Penekan Laba / Tambahan Beban: ${lossSources.length > 0 ? lossSources.join(' | ') : 'Tidak ada lonjakan biaya tambahan di luar struktur standar.'}`
           ]
         },
         {
           num: 2,
-          section: 'PANDUAN PRAKTIS • KAMUS ISTILAH NON-AKUNTANSI',
-          title: 'Penjelasan Mudah Istilah Keuangan & Maksud "Selisih (Variance)"',
-          subtitle: 'Ringkasan arti istilah di dalam laporan agar mudah dipahami oleh seluruh peserta rapat tanpa latar belakang akuntansi',
+          section: 'MENU 2 • RINGKASAN INPUT PRODUK, HPP, GAJI & BEBAN KUSTOM',
+          title: 'Rincian Angka Input Produk, Struktur SDM, Beban Tambahan & Pajak',
+          subtitle: 'Sumber pembentukan omzet per lini produk serta rincian pos pengeluaran yang diinput di Menu 2',
           kpis: [
-            { label: 'Variance Laba Bulanan', value: (profDiff >= 0 ? '+' : '') + formatCompactRp(profDiff) },
-            { label: 'Variance Biaya Bulanan', value: (costDiff >= 0 ? '+' : '') + formatCompactRp(costDiff) },
-            { label: 'Margin Bersih Skenario', value: scen.marginPct.toFixed(2) + '%' }
+            { label: 'Total Omzet Produk Baseline', value: formatCompactRp(base.revenue) },
+            { label: 'Anggaran Gaji (' + base.employees + ' Staf)', value: formatCompactRp(base.salary) },
+            { label: 'Beban Kustom & Pajak Aktif', value: formatCompactRp((scen.customExp || 0) + scen.tax) }
           ],
           bullets: [
-            `Apa itu Selisih (Variance)? Perbandingan angka Skenario Baru dikurangi Kondisi Awal (Baseline). Jika Laba bertanda (+), artinya perusahaan mendapat tambahan keuntungan bersih.`,
-            `Gross Revenue (Omzet Kotor): Total uang masuk dari penjualan produk (${formatRp(scen.revenue)}/bln) sebelum dikurangi biaya apapun.`,
-            `HPP & OPEX: HPP adalah modal dasar produk (${formatRp(scen.hpp)}/bln), sedangkan OPEX adalah biaya rutin kantor bulanan (${formatRp(scen.opex)}/bln).`,
-            `Net Profit (Laba Bersih): Uang untung bersih terakhir (${formatRp(scen.netProfit)}/bln) setelah seluruh komisi, gaji, OPEX, beban tambahan, dan pajak terbayar.`
+            `Lini Produk & HPP (${appState.products.length} Produk): ${appState.products.map(p => `${p.name}: Vol ${formatNum(p.volume)} unit × Harga ${formatRp(p.price)} = Omzet ${formatRp((p.volume || 0) * (p.price || 0))} (HPP ${formatRp((p.volume || 0) * (p.hpp || 0))})`).join(' | ')}.`,
+            `Struktur SDM & Komisi: ${base.employees} karyawan dengan total gaji ${formatRp(base.salary)}/bln (rata-rata ${formatRp(base.avgSalaryPerEmp)}/orang) | Komisi Baseline ${base.bonusPct.toFixed(1)}% vs Skenario ${scen.bonusPct.toFixed(1)}%.`,
+            `Daftar Beban & Biaya Tambahan Kustom (${activeCustomExps.length} Aktif = ${formatRp(scen.customExp || 0)}/bln): ${activeCustomExps.length > 0 ? activeCustomExps.map(c => `${c.name} [${c.category}]: ${c.calcType === 'pct_revenue' ? c.value + '% Omzet (' + formatRp(scen.revenue * (c.value / 100)) + ')' : formatRp(c.value) + '/bln'}`).join(' | ') : 'Rp 0 (Tidak ada beban kustom yang diaktifkan)'}.`,
+            `Konfigurasi Pajak Perusahaan (${activeTaxes.length} Aktif = ${formatRp(scen.tax)}/bln): ${activeTaxes.length > 0 ? activeTaxes.map(t => `${t.name} (${t.rate}% dari ${t.base === 'revenue' ? 'Omzet' : 'EBT'})`).join(' | ') : 'Rp 0 (Seluruh opsi pajak dinonaktifkan / perhitungan Pre-Tax)'}.`
           ]
         },
         {
           num: 3,
-          section: 'MENU 1 • RINGKASAN DASHBOARD & VARIANCE P&L',
-          title: 'Perbandingan Kinerja Bulanan: Baseline vs Skenario Simulasi',
-          subtitle: 'Evaluasi dampak perubahan volume penjualan, skema komisi mitra, dan efisiensi operasional terhadap Laba Bersih',
+          section: 'MENU 3 • RINGKASAN PROYEKSI P&L 12 BULAN & ROI OTOMASI IT',
+          title: 'Rekapitulasi Angka Laba Rugi Setahun Penuh (2027) & Balik Modal IT',
+          subtitle: 'Akumulasi pendapatan, biaya, dan laba bersih selama 12 bulan beserta perhitungan investasi sistem otomasi',
           kpis: [
-            { label: 'Gross Revenue (Skenario)', value: formatCompactRp(scen.revenue) },
-            { label: 'Total Biaya & Beban', value: formatCompactRp(scen.totalCost) },
-            { label: 'Net Profit (Laba Bersih)', value: formatCompactRp(scen.netProfit) }
+            { label: 'Omzet 1 Tahun (2027)', value: formatCompactRp(scen.revenue * 12) },
+            { label: 'Total Biaya 1 Tahun', value: formatCompactRp(scen.totalCost * 12) },
+            { label: 'Laba Bersih 1 Tahun (2027)', value: formatCompactRp(scen.netProfit * 12) }
           ],
           bullets: [
-            `Pendapatan Kotor (Omzet): Baseline ${formatRp(base.revenue)} vs Skenario ${formatRp(scen.revenue)} (Selisih/Variance: ${revDiff >= 0 ? '+' : ''}${formatRp(revDiff)}/bln).`,
-            `Beban Bonus Mitra: Baseline ${base.bonusPct.toFixed(1)}% (${formatRp(base.bonus)}) vs Skenario ${scen.bonusPct.toFixed(1)}% (${formatRp(scen.bonus)}).`,
-            `Beban Gaji & OPEX: Gaji ${scen.employees} staf sebesar ${formatRp(scen.salary)}/bln + OPEX ${formatRp(scen.opex)}/bln + Beban Kustom ${formatRp(scen.customExp || 0)}/bln.`,
-            `Laba Bersih Bulanan: Naik/berubah dari ${formatRp(base.netProfit)} menjadi ${formatRp(scen.netProfit)}/bln (Margin bersih: ${scen.marginPct.toFixed(2)}%).`
+            `Pendapatan & Laba Kotor 2027 (12 Bulan): Gross Revenue ${formatRp(scen.revenue * 12)} dikurangi Total HPP ${formatRp(scen.hpp * 12)} = Laba Kotor ${formatRp(scen.grossProfit * 12)}/tahun.`,
+            `Rincian Pengeluaran Tahunan (12 Bulan): Bonus Mitra ${formatRp(scen.bonus * 12)} + Gaji SDM ${formatRp(scen.salary * 12)} + OPEX ${formatRp(scen.opex * 12)} + Beban Kustom ${formatRp((scen.customExp || 0) * 12)} + Pajak ${formatRp(scen.tax * 12)}.`,
+            `Laba Bersih Tahunan (Net Profit 2027): ${formatRp(scen.netProfit * 12)}/tahun (Selisih/Variance ${profDiff >= 0 ? '+' : ''}${formatRp(profDiff * 12)} dibanding Baseline Tahunan ${formatRp(base.netProfit * 12)}).`,
+            `Investasi CapEx IT & Efisiensi Gaji: Modal IT ${formatRp(appState.itCapex)} | Pengurangan ${Math.max(0, base.employees - scen.employees)} staf menghemat gaji ${formatRp(salSavingMonthly)}/bln (${formatRp(salSavingMonthly * 12)}/thn) → Balik Modal (BEP): ${paybackMonths}.`
           ]
         },
         {
           num: 4,
-          section: 'MENU 2 • INPUT LINI PRODUK, HPP & BEBAN KUSTOM',
-          title: 'Struktur Lini Produk, Beban Gaji & Biaya Tambahan Kustom',
-          subtitle: 'Rincian sumber omzet per produk serta daftar pos beban tambahan kustom dan pajak perusahaan yang diaktifkan',
+          section: 'MENU 4 • RINGKASAN PROYEK PENGEMBANGAN & SUMBER DANA',
+          title: 'Daftar Proyek, Rincian Termin Biaya, Tanggal & Asal Sumber Dana',
+          subtitle: 'Rekapitulasi kebutuhan modal pengembangan proyek di setiap kuartal beserta alokasi sumber pendanaannya',
           kpis: [
-            { label: 'Total Lini Produk', value: appState.products.length + ' Produk' },
-            { label: 'Rata-rata Gaji / Staf', value: formatCompactRp(base.avgSalaryPerEmp) },
-            { label: 'Total Beban Kustom Aktif', value: formatCompactRp(scen.customExp || 0) }
+            { label: 'Total Modal Seluruh Proyek', value: formatCompactRp(projSum.totalAll) },
+            { label: 'Dari Saldo Profit Bulanan', value: formatCompactRp(projSum.fromProfit) },
+            { label: 'Dana Tambahan + Modal Owner', value: formatCompactRp(projSum.fromExtra + projSum.fromOwner) }
           ],
           bullets: [
-            `Portofolio Produk (${appState.products.length} Lini): Total target ${formatNum(base.volume)} unit/bln dengan harga rata-rata ${formatRp(base.avgPrice)} dan total HPP ${formatRp(base.hpp)}/bln.`,
-            `Rincian Produk: ${appState.products.map(p => `${p.name} (${formatNum(p.volume)} unit @ ${formatRp(p.price)})`).join(' | ')}.`,
-            `Beban Tambahan Kustom (${activeCustomExps.length} Pos Aktif): ${activeCustomExps.length > 0 ? activeCustomExps.map(c => `${c.name} (${c.calcType === 'pct_revenue' ? c.value + '% Omzet' : formatRp(c.value)})`).join(', ') : 'Tidak ada beban tambahan kustom yang dicentang (Rp 0)'}.`,
-            `Estimasi Pajak Aktif: ${formatRp(scen.tax)}/bulan (${appState.taxes.filter(t => t.active).map(t => t.name).join(', ') || 'Belum ada pajak dicentang / Pre-Tax'}).`
+            `Komposisi Sumber Dana Proyek (Total ${formatRp(projSum.totalAll)} dari ${projSum.totalDisbursementsCount} termin input): Saldo Profit Bulanan ${formatRp(projSum.fromProfit)} | Dana Tambahan Lain ${formatRp(projSum.fromExtra)} | Modal dari Owner ${formatRp(projSum.fromOwner)}.`,
+            ...appState.timeline.map((t, i) => {
+              const sub = projSum.itemTotals[i] ? projSum.itemTotals[i].subAll : 0;
+              const terminDesc = (t.disbursements && t.disbursements.length > 0)
+                ? t.disbursements.map(d => `${d.date}: ${d.description} (${formatCompactRp(d.amount)} dari ${d.source === 'profit_pool' ? 'Profit' : (d.source === 'extra_cash' ? 'Dana Tambahan' : 'Modal Owner')})`).join('; ')
+                : 'Belum ada input termin biaya (Rp 0)';
+              return `${t.quarter} — ${t.projectName || t.title} [Progres ${t.progress}% | Total ${formatRp(sub)}]: ${terminDesc}.`;
+            })
           ]
         },
         {
           num: 5,
-          section: 'MENU 3 • PROYEKSI P&L 12 BULAN & ROI OTOMASI IT',
-          title: 'Proyeksi Laba Rugi Tahunan (2027) & Kelayakan Investasi IT',
-          subtitle: 'Simulasi akumulasi kinerja 12 bulan penuh serta perhitungan balik modal (Payback Period / BEP) otomasi sistem',
+          section: 'MENU 5 & 6 • RINGKASAN PORTOFOLIO INVESTASI SYARIAH & TENOR CAIR',
+          title: 'Nilai Investasi Syariah, Imbal Hasil & Bulan/Tahun Pencairan per Produk',
+          subtitle: 'Rincian nominal yang diinvestasikan pada setiap instrumen beserta jadwal bulan dan tahun jatuh temponya',
           kpis: [
-            { label: 'Omzet Tahunan (12 Bln)', value: formatCompactRp(scen.revenue * 12) },
-            { label: 'Laba Bersih Tahunan (2027)', value: formatCompactRp(scen.netProfit * 12) },
-            { label: 'Payback Period CapEx IT', value: paybackMonths }
+            { label: 'Disisihkan / Bulan', value: formatCompactRp(sharia.monthlySetAsideNominal) },
+            { label: 'Total Modal Pokok Investasi', value: formatCompactRp(sharia.totalAllocated) },
+            { label: 'Total Bagi Hasil Bersih', value: '+' + formatCompactRp(sharia.totalNetReturn) }
           ],
           bullets: [
-            `Proyeksi 1 Tahun Penuh (2027): Omzet Kotor mencapai ${formatRp(scen.revenue * 12)} dengan Total Biaya ${formatRp(scen.totalCost * 12)}.`,
-            `Akumulasi Laba Bersih 2027: Mencapai ${formatRp(scen.netProfit * 12)}/tahun (Variance Tahunan: ${profDiff >= 0 ? '+' : ''}${formatRp(profDiff * 12)} vs Baseline).`,
-            `Efisiensi SDM & Otomasi: Perubahan staf dari ${base.employees} menjadi ${scen.employees} orang (${empDiff > 0 ? 'Hemat ' + empDiff + ' staf' : 'Jumlah staf tetap'}), menghemat gaji ${formatRp(salSavingMonthly * 12)}/tahun.`,
-            `Anggaran CapEx Sistem IT: ${formatRp(appState.itCapex)} (One-Time) — ${salSavingMonthly > 0 ? `Balik modal dalam ${paybackMonths} melalui efisiensi gaji.` : 'Geser slider jumlah karyawan untuk menguji penghematan otomasi.'}`
+            `Sumber Kas Investasi: Laba Bersih 1 Bulan ${formatRp(sharia.monthlyProfit)} + Kas Awal Tambahan ${formatRp(sharia.extraCash)} | Disisihkan ${formatRp(sharia.monthlySetAsideNominal)}/bln untuk ${sharia.selectedCount} produk (${sharia.totalTranchesCount}x pembelian).`,
+            `Total Akumulasi Modal & Hasil: Modal Pokok ${formatRp(sharia.totalAllocated)} menghasilkan Bagi Hasil Bersih +${formatRp(sharia.totalNetReturn)} (Net Yield rata-rata ${sharia.weightedAnnualNetYield.toFixed(2)}% p.a.) → Total Akhir Pokok + Hasil: ${formatRp(sharia.totalAllocated + sharia.totalNetReturn)}.`,
+            ...(activeSharia.length > 0
+              ? activeSharia.map(inst => {
+                  const modeStr = inst.freqCount > 1 ? `Rutin ${inst.freqCount}x/bln @ ${formatCompactRp(inst.nominal)} (Mulai ${formatMonthShort(inst.startMonth)})` : `Sekali Beli 1x di ${formatMonthShort(inst.startMonth)}`;
+                  const payoutStr = inst.payoutType === 'monthly_coupon' ? 'Kupon Cair Tiap Bulan' : 'Bagi Hasil Cair Saat Jatuh Tempo';
+                  return `${inst.name.split('(')[0].trim()} [Tenor ${inst.tenorMonths} Bln | ${payoutStr}]: ${modeStr} → Total Pokok ${formatRp(inst.totalInstPrincipal)}, Bagi Hasil Bersih +${formatRp(inst.totalInstNetReturn)}, Pokok Cair pada: ${inst.maturityScheduleText}.`;
+                })
+              : ['Belum ada instrumen investasi syariah yang dipilih (Rp 0). Centang produk atau klik "Isi Contoh Simulasi Rutin" di Menu 5 untuk melihat jadwal pencairan.'])
           ]
         },
         {
           num: 6,
-          section: 'MENU 4 • ROADMAP LANGKAH KERJA & MODAL PROYEK',
-          title: 'Rencana Kerja Kuartalan, Proyek Pengembangan & Sumber Dana',
-          subtitle: 'Alokasi kebutuhan biaya/modal proyek multi-termin beserta pemisahan sumber dana (Profit Bulanan, Dana Tambahan, Modal Owner)',
+          section: 'MENU 6 • JADWAL CAIR & JATUH TEMPO LINTAS TAHUN (2027 s/d 2030)',
+          title: 'Kapan Hasil & Pokok Investasi Cair? (Rincian Tahun 2027, 2028, 2029 & 2030)',
+          subtitle: 'Rekapitulasi kas masuk bagi hasil bulanan dan pengembalian pokok investasi yang melewati pergantian tahun',
           kpis: [
-            { label: 'Total Anggaran Proyek', value: formatCompactRp(projSum.totalAll) },
-            { label: 'Dari Saldo Profit Bulanan', value: formatCompactRp(projSum.fromProfit) },
-            { label: 'Dana Tambahan + Modal Owner', value: formatCompactRp(projSum.fromExtra + projSum.fromOwner) }
+            { label: 'Total Kas Cair di 2027', value: formatCompactRp(yearlySharia[2027].totalIn) },
+            { label: 'Total Kas Cair di 2028', value: formatCompactRp(yearlySharia[2028].totalIn) },
+            { label: 'Total Kas Cair di 2029–2030', value: formatCompactRp(yearlySharia[2029].totalIn + yearlySharia[2030].totalIn) }
           ],
-          bullets: appState.timeline.slice(0, 4).map((t, i) => {
-            const sub = projSum.itemTotals[i] ? projSum.itemTotals[i].subAll : 0;
-            return `${t.quarter} — ${t.projectName || t.title} (${t.status}, Progres ${t.progress}%): Anggaran Proyek ${formatRp(sub)} | PIC: ${t.pic}.`;
-          })
+          bullets: [
+            `Tahun 2027 (Bln 1–12): Modal Keluar ${formatRp(yearlySharia[2027].outflow)} | Bagi Hasil Cair (Kupon + Jatuh Tempo) +${formatRp(yearlySharia[2027].couponIn + yearlySharia[2027].matYieldIn)} | Pokok Jatuh Tempo Kembali ${formatRp(yearlySharia[2027].prinIn)} → Total Kas Masuk 2027: ${formatRp(yearlySharia[2027].totalIn)}.`,
+            `Tahun 2028 (Berganti Tahun — Bln 13–24): Modal Keluar ${formatRp(yearlySharia[2028].outflow)} | Bagi Hasil Cair +${formatRp(yearlySharia[2028].couponIn + yearlySharia[2028].matYieldIn)} | Pokok Jatuh Tempo Kembali ${formatRp(yearlySharia[2028].prinIn)} → Total Kas Masuk 2028: ${formatRp(yearlySharia[2028].totalIn)} (${yearlySharia[2028].matEvents.slice(0, 3).join(', ') || 'Tidak ada jatuh tempo'}).`,
+            `Tahun 2029 (Berganti Tahun — Bln 25–36): Bagi Hasil Cair +${formatRp(yearlySharia[2029].couponIn + yearlySharia[2029].matYieldIn)} | Pokok Jatuh Tempo Kembali ${formatRp(yearlySharia[2029].prinIn)} → Total Kas Masuk 2029: ${formatRp(yearlySharia[2029].totalIn)} (${yearlySharia[2029].matEvents.slice(0, 3).join(', ') || 'Tidak ada jatuh tempo'}).`,
+            `Tahun 2030 (Berganti Tahun — Bln 37–48): Bagi Hasil Cair +${formatRp(yearlySharia[2030].couponIn + yearlySharia[2030].matYieldIn)} | Pokok Jatuh Tempo Kembali ${formatRp(yearlySharia[2030].prinIn)} → Total Kas Masuk 2030: ${formatRp(yearlySharia[2030].totalIn)}.`
+          ]
         },
         {
           num: 7,
-          section: 'MENU 5 & 6 • PORTOFOLIO & JADWAL JATUH TEMPO SYARIAH',
-          title: 'Simulasi Penyisihan Investasi Syariah & Proyeksi Bagi Hasil',
-          subtitle: 'Rekapitulasi penempatan kas pada instrumen syariah Indonesia & Global beserta proyeksi imbal hasil bersih',
+          section: 'MENU 7 • WATERFALL ARUS KAS, DIVIDEN DIREKSI & LOYALTY MANAGER',
+          title: 'Asal Kas Bebas, Batas Cadangan Wajib & Rincian Dividen + Loyalty',
+          subtitle: `Status Cash Flow (${divCalc.horizon} Bln): ${!divCalc.isOverSafeLimit ? 'SEHAT & AMAN' : 'MELEBIHI PLAFON AMAN KAS'} — Plafon Maksimal Bagi ${divCalc.maxSafePct.toFixed(0)}% (${formatCompactRp(divCalc.maxSafeDistributionAmt)})`,
           kpis: [
-            { label: 'Disisihkan / Bulan', value: formatCompactRp(sharia.monthlySetAsideNominal) },
-            { label: 'Total Akumulasi Modal Pokok', value: formatCompactRp(sharia.totalAllocated) },
-            { label: 'Total Bagi Hasil Bersih', value: '+' + formatCompactRp(sharia.totalNetReturn) }
+            { label: 'Kas Bersih Tersedia (Pool)', value: formatCompactRp(divCalc.distributablePool) },
+            { label: `Dividen Direksi (${divCalc.totalDirPct.toFixed(1)}%)`, value: formatCompactRp(divCalc.totalDirAmount) },
+            { label: `Loyalty Manager (${divCalc.totalMgrPct.toFixed(1)}%)`, value: formatCompactRp(divCalc.totalMgrAmount) }
           ],
           bullets: [
-            `Postur Kas & Penyisihan: Saldo Laba Bersih 1 Bulan ${formatRp(sharia.realOneMonthBalance)} | Disisihkan untuk investasi ${formatRp(sharia.monthlySetAsideNominal)}/bulan.`,
-            `Total Modal & Tranche: ${sharia.selectedCount} instrumen aktif (${sharia.totalTranchesCount}x tranche pembelian) dengan akumulasi modal pokok ${formatRp(sharia.totalAllocated)}.`,
-            `Proyeksi Keuntungan Bersih: Menghasilkan bagi hasil bersih +${formatRp(sharia.totalNetReturn)} (Weighted Net Yield: ${sharia.weightedAnnualNetYield.toFixed(2)}% p.a.), sehingga total dana akhir menjadi ${formatRp(sharia.totalAllocated + sharia.totalNetReturn)}.`,
-            `Instrumen Dipilih: ${activeSharia.length > 0 ? activeSharia.slice(0, 3).map(i => `${i.name.split('(')[0].trim()} (${formatCompactRp(i.totalInstPrincipal)} → Hasil +${formatCompactRp(i.totalInstNetReturn)})`).join(' | ') : 'Belum ada instrumen dicentang di Menu 5 (Gunakan tombol Isi Contoh Simulasi Rutin di Menu 5)'}.`
+            `Waterfall Sumber Kas Bersih (${formatRp(divCalc.distributablePool)}): Laba Operasional ${formatRp(divCalc.profitComponent)} (-) Modal Proyek dari Profit ${formatRp(divCalc.projDeduction)} (-) Pokok Investasi Terkunci ${formatRp(divCalc.invOutflowLocked)} (+) Bagi Hasil Investasi ${formatRp(divCalc.invReturnComponent)}.`,
+            `Cadangan Kas Wajib & Plafon Maksimal: Wajib ditahan minimal ${divCalc.safetyBufferPct.toFixed(0)}% (${formatRp(divCalc.safetyBufferAmt)}) untuk kesehatan kas → Plafon Maksimal Dividen + Loyalty adalah ${formatRp(divCalc.maxSafeDistributionAmt)} (${divCalc.maxSafePct.toFixed(2)}%).`,
+            `Rincian Dividen Direksi (${divCalc.totalDirPct.toFixed(2)}% = ${formatRp(divCalc.totalDirAmount)}): ${activeDirs.map(d => `${d.name}: ${Number(d.pct).toFixed(2)}% (${formatRp(d.amount)})`).join(' | ') || 'Rp 0'}.`,
+            `Rincian Loyalty Manager (${divCalc.totalMgrPct.toFixed(2)}% = ${formatRp(divCalc.totalMgrAmount)} untuk ${divCalc.totalMgrHeadcount} Org): ${activeMgrs.map(m => `${m.role}: ${Number(m.pct).toFixed(2)}% (${formatRp(m.amount)})`).join(' | ') || 'Rp 0'} → Sisa Kas Laba Ditahan Akhir: ${formatRp(divCalc.retainedPool)} (${divCalc.retainedPct.toFixed(2)}%).`
           ]
         },
         {
           num: 8,
-          section: 'MENU 7 • DIVIDEN DIREKSI & LOYALTY BONUS MANAGER',
-          title: 'Proyeksi Pembagian Dividen Direksi & Loyalty Bonus Manager',
-          subtitle: `Distribusi keuntungan berdasarkan Sumber Dana gabungan Saldo Profit (${divCalc.horizon} Bulan) + Hasil Investasi Syariah`,
+          section: 'REKOMENDASI KONSULTAN CFO • RE-INVESTASI SALDO KAS SISA (COMPOUNDING)',
+          title: 'Advis Konsultan atas Sisa Saldo Kas & Proyeksi Re-Investasi Berikutnya',
+          subtitle: `Analisis pemanfaatan Sisa Kas Ditahan (${formatCompactRp(Math.max(0, divCalc.retainedPool))}) setelah Dividen Direksi & Loyalty Manager dibagikan`,
           kpis: [
-            { label: 'Total Kantong Sumber Dana', value: formatCompactRp(divCalc.distributablePool) },
-            { label: 'Total Dividen Direksi', value: `${formatCompactRp(divCalc.totalDirAmount)} (${divCalc.totalDirPct.toFixed(1)}%)` },
-            { label: 'Total Loyalty Manager', value: `${formatCompactRp(divCalc.totalMgrAmount)} (${divCalc.totalMgrPct.toFixed(1)}%)` }
+            { label: 'Sisa Kas Laba Ditahan', value: formatCompactRp(Math.max(0, divCalc.retainedPool)) },
+            { label: 'Surplus Bebas Di Atas Buffer', value: formatCompactRp(Math.max(0, divCalc.remainingSafeAllowanceAmt)) },
+            { label: 'Potensi Hasil Re-Investasi/Thn', value: '+' + formatCompactRp(Math.max(0, divCalc.remainingSafeAllowanceAmt) * ((sharia.weightedAnnualNetYield > 0 ? sharia.weightedAnnualNetYield : 6.35) / 100)) }
           ],
           bullets: [
-            `Komposisi Sumber Dana (${divCalc.horizon} Bulan): Saldo Profit ${formatRp(divCalc.profitComponent)} + Bagi Hasil Investasi Syariah ${formatRp(divCalc.invReturnComponent)}${divCalc.projDeduction > 0 ? ` - Modal Proyek ${formatRp(divCalc.projDeduction)}` : ''} = ${formatRp(divCalc.distributablePool)}.`,
-            `Rincian Dividen Direksi (${divCalc.totalDirPct.toFixed(2)}% = ${formatRp(divCalc.totalDirAmount)}): ${activeDirs.map(d => `${d.name}: ${Number(d.pct).toFixed(1)}% (${formatCompactRp(d.amount)})`).join(' | ')}.`,
-            `Rincian Loyalty Bonus Manager (${divCalc.totalMgrPct.toFixed(2)}% = ${formatRp(divCalc.totalMgrAmount)} untuk ${divCalc.totalMgrHeadcount} Org): ${activeMgrs.map(m => `${m.role} (${m.headcount} org): ${Number(m.pct).toFixed(2)}% (${formatCompactRp(m.amount)})`).join(' | ')}.`,
-            `Saldo Laba Ditahan Akhir (${divCalc.retainedPct.toFixed(2)}%): Kas bersih yang tetap diamankan di brankas perusahaan sebesar ${formatRp(divCalc.retainedPool)}.`
+            `Ketahanan Kas Operasional (Runway): Sisa Kas Laba Ditahan sebesar ${formatRp(Math.max(0, divCalc.retainedPool))} terdiri dari Cadangan Kas Wajib ${divCalc.safetyBufferPct.toFixed(0)}% (${formatRp(divCalc.safetyBufferAmt)}) dan Surplus Kas Bebas ${formatRp(Math.max(0, divCalc.remainingSafeAllowanceAmt))} — mampu menutup biaya tetap (Gaji + OPEX ${formatRp(scen.salary + scen.opex)}/bln) selama ${(Math.max(0, divCalc.retainedPool) / Math.max(1, scen.salary + scen.opex)).toFixed(1)} bulan penuh.`,
+            `Opsi 1 — Re-Investasi Konservatif Likuid (RDPU / Deposito Syariah @ 5,20% net p.a.): Memutar kembali Surplus Kas Bebas ${formatRp(Math.max(0, divCalc.remainingSafeAllowanceAmt))} menghasilkan tambahan keuntungan pasif +${formatRp(Math.max(0, divCalc.remainingSafeAllowanceAmt) * 0.052)}/tahun (+${formatRp((Math.max(0, divCalc.remainingSafeAllowanceAmt) * 0.052) / 12)}/bulan).`,
+            `Opsi 2 — Re-Investasi Portofolio Sukuk Seimbang (@ ${(sharia.weightedAnnualNetYield > 0 ? sharia.weightedAnnualNetYield : 6.35).toFixed(2)}% net p.a.): Menghasilkan tambahan bagi hasil bersih +${formatRp(Math.max(0, divCalc.remainingSafeAllowanceAmt) * ((sharia.weightedAnnualNetYield > 0 ? sharia.weightedAnnualNetYield : 6.35) / 100))}/tahun sehingga akumulasi kas tumbuh menjadi ${formatRp(Math.max(0, divCalc.remainingSafeAllowanceAmt) * (1 + (sharia.weightedAnnualNetYield > 0 ? sharia.weightedAnnualNetYield : 6.35) / 100))}.`,
+            `Opsi 3 — Re-Investasi Akselerasi Compounding (@ 8,00% net p.a. / Full Treasury Roll-Over): Menghasilkan ekstra +${formatRp(Math.max(0, divCalc.remainingSafeAllowanceAmt) * 0.08)}/tahun dari Surplus Bebas (atau +${formatRp(Math.max(0, divCalc.retainedPool) * 0.058)}/tahun jika 100% Kas Ditahan ditempatkan pada kombinasi RDPU Harian & Sukuk Kupon Bulanan).`
           ]
         }
       ];
